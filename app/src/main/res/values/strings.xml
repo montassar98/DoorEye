@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Door Eye</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="enter_your_code_here">Enter Your Code Here</string>
+    <string name="continu">continue</string>
+    <string name="phone_number_verification">Phone Number Verification</string>
+    <string name="wait_verification">Please wait, while we are verifying your phone number.</string>
+    <string name="submit">submit</string>
+    <string name="home">Home</string>
+    <string name="permissions_not_granted">This app needs access to your camera and mic to make video calls</string>
+
+</resources>

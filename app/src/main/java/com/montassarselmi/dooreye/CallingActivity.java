@@ -1,0 +1,148 @@
+package com.montassarselmi.dooreye;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+public class CallingActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private final String TAG="CallingActivity";
+
+    private ImageView imgEndCall, imgPickUpCall;
+    private Animation animCall;
+    private FirebaseDatabase database;
+    private DatabaseReference userInfoRef,userBoxRef;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor editor;
+    private FirebaseAuth mAuth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_calling);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+        mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
+        imgPickUpCall = (ImageView) findViewById(R.id.img_pickup);
+        imgEndCall = (ImageView) findViewById(R.id.img_end_call);
+        imgPickUpCall.setOnClickListener(this);
+        imgEndCall.setOnClickListener(this);
+        animCall = AnimationUtils.loadAnimation(this,R.anim.anim_ringing);
+        imgEndCall.setAnimation(animCall);
+        imgPickUpCall.setAnimation(animCall);
+
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""))
+                .child("users").child(mAuth.getUid());
+        userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""));
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id)
+        {
+            case R.id.img_pickup:
+                pickUpCall();
+                break;
+            case R.id.img_end_call:
+                endCall();
+                break;
+        }
+    }
+
+    private void endCall() {
+        Log.d(TAG, "endCall");
+        userInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //look for the Ringing Reference and delete it when the user end the call.
+                if (dataSnapshot.hasChild("Ringing"))
+                {
+                    Log.d(TAG, "onDataChange: delete ringing reference.");
+                    userInfoRef.child("Ringing").removeValue();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        userBoxRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("Calling")) {
+                    userBoxRef.child("Calling").child(mAuth.getUid()).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        finish();
+    }
+
+    private void pickUpCall() {
+        Log.d(TAG, "pickUpCall");
+        userInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //look for the Ringing Reference and delete it when the user end the call.
+                if (dataSnapshot.hasChild("Ringing"))
+                {
+                    Log.d(TAG, "onDataChange: delete ringing reference.");
+                   // userInfoRef.child("Ringing").removeValue();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        userBoxRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("Calling")) {
+                    //userBoxRef.child("Calling").child(mAuth.getUid()).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        startActivity(new Intent(CallingActivity.this, VideoChatActivity.class));
+        finish();
+
+    }
+}

@@ -1,0 +1,283 @@
+package com.montassarselmi.dooreye;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.hbb20.CountryCodePicker;
+import com.montassarselmi.dooreye.Model.User;
+
+import java.util.concurrent.TimeUnit;
+
+public class RegistrationActivity extends AppCompatActivity {
+
+    private final String TAG="RegistrationActivity";
+
+    private CountryCodePicker ccp;
+    private EditText edtPhone,edtConfirmCode;
+    private Button btnContinue;
+    private String  phoneNumber="";
+    private Boolean isSent =false;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
+    private FirebaseAuth mAuth;
+    private String mVerifcationId;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+    private ProgressDialog loadingProgress;
+    private LinearLayout llPhone;
+    private DatabaseReference userRef;
+    private DatabaseReference boxUserRef;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public Boolean saved=false;
+    public SharedPreferences mSharedPreferences;
+    public SharedPreferences.Editor editor;
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration);
+
+        mSharedPreferences = getBaseContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
+        mAuth = FirebaseAuth.getInstance();
+        userRef = database.getReference("Users/");
+        boxUserRef= database.getReference("BoxList/");
+        loadingProgress = new ProgressDialog(this);
+
+        edtPhone = (EditText) findViewById(R.id.edt_phone);
+        edtConfirmCode = (EditText) findViewById(R.id.edt_confirm_code);
+        btnContinue = (Button) findViewById(R.id.btn_continue);
+        ccp = (CountryCodePicker) findViewById(R.id.countryCodeHolder);
+        ccp.registerCarrierNumberEditText(edtPhone);
+        llPhone =(LinearLayout) findViewById(R.id.ll_phone);
+
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ((btnContinue.getText().equals(getResources().getString(R.string.submit))) || isSent)
+                {
+                    llPhone.setVisibility(View.GONE);
+                    String verificationCode = edtConfirmCode.getText().toString();
+                    if (verificationCode.equals(""))
+                        Toast.makeText(RegistrationActivity.this, "Please write your verification code.", Toast.LENGTH_SHORT).show();
+                    else{
+                        loadingProgress.setTitle("Code Verification");
+                        loadingProgress.setMessage("Please wait, while we are verification your code");
+                        loadingProgress.setCanceledOnTouchOutside(false);
+                        loadingProgress.show();
+                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerifcationId, verificationCode);
+                        signInWithPhoneAuthCredential(credential);
+                    }
+                }else {
+                    phoneNumber = ccp.getFullNumberWithPlus();
+                    if (!phoneNumber.equals(""))
+                    {
+                        loadingProgress.setTitle(getResources().getString(R.string.phone_number_verification));
+                        loadingProgress.setMessage(getResources().getString(R.string.wait_verification));
+                        loadingProgress.setCanceledOnTouchOutside(false);
+                        loadingProgress.show();
+
+                        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                                phoneNumber,
+                                60,
+                                TimeUnit.SECONDS,
+                                RegistrationActivity.this,
+                                callbacks
+                        );
+
+                    }
+                }
+            }
+        });
+
+        callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                    llPhone.setVisibility(View.VISIBLE);
+                loadingProgress.dismiss();
+                Toast.makeText(RegistrationActivity.this, "invalid code.", Toast.LENGTH_SHORT).show();
+                btnContinue.setText(getResources().getString(R.string.continu));
+                edtConfirmCode.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+
+                mVerifcationId=s;
+                mResendToken = forceResendingToken;
+                llPhone.setVisibility(View.GONE);
+                isSent=true;
+                btnContinue.setText(getResources().getString(R.string.submit));
+                edtConfirmCode.setVisibility(View.VISIBLE);
+                loadingProgress.dismiss();
+
+            }
+        };
+
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            loadingProgress.dismiss();
+                            FirebaseUser user = task.getResult().getUser();
+                            Toast.makeText(RegistrationActivity.this, "", Toast.LENGTH_SHORT).show();
+                            Intent intent;
+                            if (mSharedPreferences.getBoolean("IS_SAVED",false))
+                            {
+                                intent = new Intent(RegistrationActivity.this,MainActivity.class);
+
+                            }else {
+                                intent = new Intent(RegistrationActivity.this,ConfigureActivity.class);
+
+                            }
+                            startActivity(intent);
+                            finish();
+                            // ...
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(RegistrationActivity.this, ""+task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void isSaved()
+    {
+
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Toast.makeText(RegistrationActivity.this, "onChildAdded - REG", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Toast.makeText(RegistrationActivity.this, "onChildChanged - REG", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                editor.putBoolean("IS_SAVED",false);
+                editor.commit();
+                startActivity(new Intent(RegistrationActivity.this,ConfigureActivity.class));
+
+                Toast.makeText(RegistrationActivity.this, "onChildRemoved - REG:"+dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Toast.makeText(RegistrationActivity.this, "onChildMoved - REG", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        ValueEventListener userSaved  =new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren())
+                {
+                    Toast.makeText(RegistrationActivity.this, "onDataChange - REG", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onDataChange: mAuth uid="+mAuth.getUid());
+                    Log.d(TAG, "onDataChange: data key="+data.getKey());
+                    if (data.getKey().equals(mAuth.getUid()))
+                    {
+                        editor.putBoolean("IS_SAVED",true);
+                        editor.commit();
+                        return;
+                      //  Toast.makeText(RegistrationActivity.this, " Configure Successful", Toast.LENGTH_SHORT).show();
+                    }else {
+                        editor.putBoolean("IS_SAVED",false);
+                        editor.commit();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        userRef.addValueEventListener(userSaved);
+        userRef.addChildEventListener(childEventListener);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user!=null)
+        {
+            //Toast.makeText(this, "already connected."+user.getPhoneNumber(), Toast.LENGTH_LONG).show();
+            Intent intent;
+            isSaved();
+            Toast.makeText(this, ""+mSharedPreferences.getBoolean("IS_SAVED",false), Toast.LENGTH_SHORT).show();
+            if (mSharedPreferences.getBoolean("IS_SAVED",false))
+            {
+                intent = new Intent(this,MainActivity.class);
+            }else {
+                intent = new Intent(this,ConfigureActivity.class);
+            }
+
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+}

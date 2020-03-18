@@ -119,6 +119,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
                 {
                     Log.d(TAG, "onDataChange: delete ringing reference.");
                    // userInfoRef.child("Ringing").removeValue();
+                    userInfoRef.child("Ringing").child("pickup").setValue(true);
 
                 }
             }

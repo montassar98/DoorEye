@@ -2,6 +2,7 @@ package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +10,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,9 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.Constants;
 
+import com.montassarselmi.dooreye.Services.ForegroundCallService;
+
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG ="MainActivity";
+    private final String CALLING_TAG ="Calling listener";
+
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference usersRef = database.getReference("Users");
@@ -29,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private DatabaseReference boxIdRef,ringingRef;
-
-
+    private FirebaseJobDispatcher jobDispatcher;
+    private Job job;
+    private  DatabaseReference myRef = database.getReference("door");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +59,43 @@ public class MainActivity extends AppCompatActivity {
         boxIdRef = database.getReference("Users/"+mAuth.getUid()+"/");
         checkIfUserAvailable();
         checkForCalls();
+
+        /*
+
+        jobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        job =jobDispatcher.newJobBuilder()
+                .setService(BackgroundCallingService.class)
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setTag(CALLING_TAG)
+                .setTrigger(Trigger.executionWindow(0, 1))
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                .setReplaceCurrent(false)
+                .setConstraints(
+                        Constraint.ON_ANY_NETWORK
+
+                )
+                .build();
+
+        findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Start Service", Toast.LENGTH_SHORT).show();
+                startService();
+                //startService(new Intent(MainActivity.this, CallBackgroundService.class));
+            }
+        });
+        findViewById(R.id.btnEnd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "end Service", Toast.LENGTH_SHORT).show();
+                stopService();
+                //stopService(new Intent(MainActivity.this,CallBackgroundService.class));
+            }
+        });*/
     }
+
+
 
     private void checkIfUserAvailable() {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -80,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
+        stopService();
+        //jobDispatcher.cancel(CALLING_TAG);
+        //Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -151,7 +204,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: ");
+
     }
+
 
     @Override
     protected void onRestart() {
@@ -162,6 +217,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        startService();
         Log.d(TAG, "onStop: ");
+
+    }
+
+    public void startService() {
+        //if deleteSharedPreferences()
+        Intent serviceIntent = new Intent(this, ForegroundCallService.class);
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        ContextCompat.startForegroundService(this, serviceIntent);
+    }
+
+    public void stopService() {
+        Intent serviceIntent = new Intent(this, ForegroundCallService.class);
+        stopService(serviceIntent);
     }
 }

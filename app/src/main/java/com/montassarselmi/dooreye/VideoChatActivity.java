@@ -240,6 +240,11 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
                 {
                     Log.d(LOG_TAG, "onDataChange: delete ringing reference.");
                     userInfoRef.child("Ringing").removeValue();
+                }
+                if (dataSnapshot.hasChild("pickup"))
+                {
+                    Log.d(LOG_TAG, "onDataChange: delete ringing reference.");
+                    userInfoRef.child("pickup").removeValue();
 
                 }
             }

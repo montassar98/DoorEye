@@ -1,6 +1,7 @@
 package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -21,6 +22,7 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
-
         boxIdRef = database.getReference("Users/"+mAuth.getUid()+"/");
         checkIfUserAvailable();
         checkForCalls();
@@ -169,13 +170,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: data "+ dataSnapshot.getValue());
-                if (dataSnapshot.hasChild("Ringing"))
+                if (dataSnapshot.hasChild("Ringing") && dataSnapshot.hasChild("pickup"))
                 {
-                    Log.d(TAG, "onDataChange: user have a call");
-                    Toast.makeText(MainActivity.this, "user have a call", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(MainActivity.this,CallingActivity.class));
-                   // finish();
+                        if (dataSnapshot.child("pickup").getValue().equals(false)) {
+                            Log.d(TAG, "onDataChange: user have a call");
+                            Toast.makeText(MainActivity.this, "user have a call", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(MainActivity.this, CallingActivity.class));
+                            finish();
+                        }
+
+
                 }else Log.d(TAG, "onDataChange: there is no call yet.");
+
             }
 
             @Override
@@ -183,8 +189,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     @Override

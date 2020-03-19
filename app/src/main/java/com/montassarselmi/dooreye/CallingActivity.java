@@ -56,6 +56,28 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""));
+
+        checkIfSomeonePickedUp();
+    }
+
+    private void checkIfSomeonePickedUp()
+    {
+        // close the calling activity when someone else has picked up the call.
+        userInfoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild("Ringing") && !dataSnapshot.hasChild("pickup"))
+                {
+                    startActivity(new Intent(CallingActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -83,6 +105,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
                 {
                     Log.d(TAG, "onDataChange: delete ringing reference.");
                     userInfoRef.child("Ringing").removeValue();
+                    userInfoRef.child("pickup").removeValue();
 
                 }
             }
@@ -105,6 +128,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+        startActivity(new Intent(CallingActivity.this,MainActivity.class));
         finish();
     }
 
@@ -118,8 +142,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
                 if (dataSnapshot.hasChild("Ringing"))
                 {
                     Log.d(TAG, "onDataChange: delete ringing reference.");
-                   // userInfoRef.child("Ringing").removeValue();
-                    userInfoRef.child("Ringing").child("pickup").setValue(true);
+                    userInfoRef.child("pickup").setValue(true);
 
                 }
             }
@@ -129,21 +152,10 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-        userBoxRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("Calling")) {
-                    //userBoxRef.child("Calling").child(mAuth.getUid()).removeValue();
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         startActivity(new Intent(CallingActivity.this, VideoChatActivity.class));
         finish();
 
     }
+
 }

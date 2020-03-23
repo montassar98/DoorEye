@@ -4,16 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,6 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public Boolean saved=false;
     public SharedPreferences mSharedPreferences;
     public SharedPreferences.Editor editor;
+    private TextView txtResend,txtPleaseEnter;
 
 
 
@@ -64,7 +72,13 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
         setContentView(R.layout.activity_registration);
+
+        txtPleaseEnter = (TextView) findViewById(R.id.txt_please_enter_verif);
 
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
@@ -86,9 +100,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 if ((btnContinue.getText().equals(getResources().getString(R.string.submit))) || isSent)
                 {
                     llPhone.setVisibility(View.GONE);
+                    findViewById(R.id.txt_any_sms).setVisibility(View.GONE);
                     String verificationCode = edtConfirmCode.getText().toString();
-                    if (verificationCode.equals(""))
+                    if (verificationCode.equals("")) {
                         Toast.makeText(RegistrationActivity.this, "Please write your verification code.", Toast.LENGTH_SHORT).show();
+                        edtConfirmCode.setError("missing code!");
+                    }
                     else{
                         loadingProgress.setTitle("Code Verification");
                         loadingProgress.setMessage("Please wait, while we are verification your code");
@@ -128,12 +145,17 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
                     llPhone.setVisibility(View.VISIBLE);
+                    findViewById(R.id.txt_any_sms).setVisibility(View.VISIBLE);
                 loadingProgress.dismiss();
                 Toast.makeText(RegistrationActivity.this, "invalid code.", Toast.LENGTH_SHORT).show();
                 btnContinue.setText(getResources().getString(R.string.continu));
                 edtConfirmCode.setVisibility(View.GONE);
+                findViewById(R.id.txt_enter_verif).setVisibility(View.GONE);
+                findViewById(R.id.txt_please_enter_verif).setVisibility(View.GONE);
+                findViewById(R.id.ll_resend).setVisibility(View.GONE);
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
@@ -141,9 +163,14 @@ public class RegistrationActivity extends AppCompatActivity {
                 mVerifcationId=s;
                 mResendToken = forceResendingToken;
                 llPhone.setVisibility(View.GONE);
+                findViewById(R.id.txt_any_sms).setVisibility(View.GONE);
                 isSent=true;
                 btnContinue.setText(getResources().getString(R.string.submit));
                 edtConfirmCode.setVisibility(View.VISIBLE);
+                findViewById(R.id.txt_enter_verif).setVisibility(View.VISIBLE);
+                findViewById(R.id.txt_please_enter_verif).setVisibility(View.VISIBLE);
+                txtPleaseEnter.setText("please enter the verification code sent to "+ccp.getFullNumberWithPlus());
+                findViewById(R.id.ll_resend).setVisibility(View.VISIBLE);
                 loadingProgress.dismiss();
 
             }

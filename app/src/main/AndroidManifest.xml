@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.montassarselmi.dooreye">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launch2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launch2_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".VideoChatActivity">
-        </activity>
-        <activity android:name=".CallingActivity" />
-        <activity android:name=".ConfigureActivity" />
-        <activity android:name=".RegistrationActivity">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".VideoChatActivity" />
+        <activity android:name=".CallingActivity" />
+        <activity android:name=".ConfigureActivity" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:theme="@style/AppTheme.TransparentTheme">
+
+        </activity>
         <activity android:name=".MainActivity" />
+
         <service
             android:name=".Services.ForegroundCallService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            tools:ignore="InnerclassSeparator" />
     </application>
 
 </manifest>

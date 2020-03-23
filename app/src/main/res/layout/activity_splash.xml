@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashActivity"
+    android:background="@drawable/splash_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/splash_logo2"
+        android:layout_marginBottom="60dp"
+        android:id="@+id/splash_logo"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linear_title"
+        android:layout_below="@id/splash_logo"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DoorEye"
+            android:textColor="@color/buttonsColor"
+            android:textStyle="bold"
+            android:textSize="50sp"
+            android:fontFamily="@font/lapica_demo"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bring Your Home Into Your Phone."
+            android:textColor="@color/buttonsColor"
+            android:textSize="20sp"
+            android:fontFamily="@font/kiano_trial"/>
+
+
+    </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

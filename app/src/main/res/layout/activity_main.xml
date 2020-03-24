@@ -319,7 +319,7 @@
                     android:textSize="18dp" />
 
                 <ImageView
-                    android:layout_width="45dp"
+                    android:layout_width="47dp"
                     android:layout_height="80dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"

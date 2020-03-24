@@ -192,7 +192,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             Intent intent;
                             if (mSharedPreferences.getBoolean("IS_SAVED",false))
                             {
-                                intent = new Intent(RegistrationActivity.this,MainActivity.class);
+                                intent = new Intent(RegistrationActivity.this,ConfigureActivity.class);
 
                             }else {
                                 intent = new Intent(RegistrationActivity.this,ConfigureActivity.class);

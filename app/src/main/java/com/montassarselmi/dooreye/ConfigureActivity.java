@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -26,12 +27,14 @@ import com.montassarselmi.dooreye.Model.User;
 
 public class ConfigureActivity extends AppCompatActivity {
 
+    private static final String TAG = ConfigureActivity.class.getSimpleName();
     private EditText edtFullName,edtEmail,edtBoxId;
     private Button btnConfirmConf;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference mRefBox;
-    private DatabaseReference mRefBoxUser,mRefUsers;
+    private DatabaseReference usersRef = database.getReference("Users");
+    private DatabaseReference  mRefBoxUser,mRefUsers, mRefBoxStatus;
     public SharedPreferences mSharedPreferences;
     public SharedPreferences.Editor editor;
 
@@ -51,6 +54,8 @@ public class ConfigureActivity extends AppCompatActivity {
         editor = mSharedPreferences.edit();
 
         mRefBox =database.getReference("BoxList/");
+
+        checkIfUserAvailable();
 
         btnConfirmConf.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,8 +103,16 @@ public class ConfigureActivity extends AppCompatActivity {
                         {
                             if (data.getKey().equals(boxId))
                             {
-                                Toast.makeText(ConfigureActivity.this, "onDataChange - ConfigureActivity", Toast.LENGTH_SHORT).show();
-                                User user = new User(fullName,phoneNumber,email,boxId);
+                                //Toast.makeText(ConfigureActivity.this, "onDataChange - ConfigureActivity", Toast.LENGTH_SHORT).show();
+                                mRefBoxStatus =database.getReference("BoxList/"+boxId);
+                                String status = "admin";
+                                Log.d(TAG, " data Ref: "+data.toString());
+                                if (data.child("users").hasChildren())
+                                {
+                                    status = "user";
+                                }
+
+                                User user = new User(fullName,phoneNumber,email,boxId,status);
                                 mRefBoxUser =database.getReference("BoxList/"+boxId+"/users");
                                 mRefBoxUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
                                 mRefUsers = database.getReference("Users/"+mAuth.getCurrentUser().getUid());
@@ -119,7 +132,7 @@ public class ConfigureActivity extends AppCompatActivity {
 
                     }
                 };
-                mRefBox.addValueEventListener(boxComparator);
+                mRefBox.addListenerForSingleValueEvent(boxComparator);
                 ChildEventListener childEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -158,5 +171,35 @@ public class ConfigureActivity extends AppCompatActivity {
 
     }
 
+    private void checkIfUserAvailable() {
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: uid="+mAuth.getCurrentUser().getUid());
+
+                if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
+                {
+//                    Toast.makeText(MainActivity.this, "find it", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "children ="+dataSnapshot.getValue(), Toast.LENGTH_LONG).show();
+                    //Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
+                    startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
+                    finish();
+
+                }else {
+                    Toast.makeText(ConfigureActivity.this, "nope", Toast.LENGTH_SHORT).show();
+                    editor.putBoolean("IS_SAVED",false);
+                    editor.apply();
+                    //startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
+                    //finish();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

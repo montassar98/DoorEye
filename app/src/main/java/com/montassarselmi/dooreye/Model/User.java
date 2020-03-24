@@ -6,15 +6,25 @@ public class User {
     private String phoneNumber;
     private String email;
     private String boxId;
+    private String status;
 
     public User() {
     }
 
-    public User(String fullName, String phoneNumber, String email, String boxId) {
+    public User(String fullName, String phoneNumber, String email, String boxId ,String status) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.boxId = boxId;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getFullName() {

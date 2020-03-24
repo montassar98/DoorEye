@@ -1,7 +1,8 @@
 package com.montassarselmi.dooreye;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.util.Log;
 
 import com.daimajia.swipe.util.Attributes;
 import com.montassarselmi.dooreye.Model.User;
+import com.montassarselmi.dooreye.Utils.DividerItemDecoration;
 import com.montassarselmi.dooreye.Utils.FamilyRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class FamilyActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_family);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Item Decorator:
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(ResourcesCompat.getDrawable(getResources(), R.drawable.divider, null)));
         // mRecyclerView.setItemAnimator(new FadeInLeftAnimator());
         mDataSet = new ArrayList<User>();
         loadData();
@@ -55,8 +57,8 @@ public class FamilyActivity extends AppCompatActivity {
     }
     // load initial data
     private void loadData() {
-            for (int i = 0; i <= 20; i++) {
-                mDataSet.add(new User("Hsin","+216 96 85 74 12","hsin@gmail.com","tatata"));
+            for (int i = 0; i <= 10; i++) {
+                mDataSet.add(new User("Hsin","+216 96 85 74 12","hsin@gmail.com","tatata",null));
             }
     }
 }

@@ -14,8 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.montassarselmi.dooreye.Services.ForegroundCallService;
+import com.montassarselmi.dooreye.Utils.FamilyRecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -263,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void onFamilyClicked() {
         Log.d(TAG, "onFamilyClicked");
         Toast.makeText(this, "onFamilyClicked", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, FamilyActivity.class));
     }
 
     private void onSettingsClicked() {

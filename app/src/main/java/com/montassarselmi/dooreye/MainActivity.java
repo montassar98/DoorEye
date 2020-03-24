@@ -281,5 +281,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAuth.signOut();
         startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
         finish();
+
     }
 }

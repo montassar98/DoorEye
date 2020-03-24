@@ -7,6 +7,7 @@
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextSecondary">#B1B0B0</color>
     <color name="buttonsColor">#EEE3F0</color>
+    <color name="blue">#00BCD4</color>
 
 
 </resources>

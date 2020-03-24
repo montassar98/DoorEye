@@ -87,7 +87,7 @@ public class ForegroundCallService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
+                .setContentTitle("Door Eye")
                 .setContentText(input)
                 .setSmallIcon(R.drawable.logo_call)
                 .setContentIntent(pendingIntent)

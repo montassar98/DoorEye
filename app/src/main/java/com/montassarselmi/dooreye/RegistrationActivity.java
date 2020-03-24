@@ -103,12 +103,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     findViewById(R.id.txt_any_sms).setVisibility(View.GONE);
                     String verificationCode = edtConfirmCode.getText().toString();
                     if (verificationCode.equals("")) {
-                        Toast.makeText(RegistrationActivity.this, "Please write your verification code.", Toast.LENGTH_SHORT).show();
-                        edtConfirmCode.setError("missing code!");
+                        Toast.makeText(RegistrationActivity.this, getResources().getString(R.string.write_verification_code), Toast.LENGTH_SHORT).show();
+                        edtConfirmCode.setError(getResources().getString(R.string.missing_code));
                     }
                     else{
-                        loadingProgress.setTitle("Code Verification");
-                        loadingProgress.setMessage("Please wait, while we are verification your code");
+                        loadingProgress.setTitle(getResources().getString(R.string.phone_number_verification));
+                        loadingProgress.setMessage(getResources().getString(R.string.wait_verification));
                         loadingProgress.setCanceledOnTouchOutside(false);
                         loadingProgress.show();
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerifcationId, verificationCode);
@@ -147,7 +147,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     llPhone.setVisibility(View.VISIBLE);
                     findViewById(R.id.txt_any_sms).setVisibility(View.VISIBLE);
                 loadingProgress.dismiss();
-                Toast.makeText(RegistrationActivity.this, "invalid code.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegistrationActivity.this, getResources().getString(R.string.invalid_code), Toast.LENGTH_SHORT).show();
                 btnContinue.setText(getResources().getString(R.string.continu));
                 edtConfirmCode.setVisibility(View.GONE);
                 findViewById(R.id.txt_enter_verif).setVisibility(View.GONE);
@@ -169,7 +169,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 edtConfirmCode.setVisibility(View.VISIBLE);
                 findViewById(R.id.txt_enter_verif).setVisibility(View.VISIBLE);
                 findViewById(R.id.txt_please_enter_verif).setVisibility(View.VISIBLE);
-                txtPleaseEnter.setText("please enter the verification code sent to "+ccp.getFullNumberWithPlus());
+                txtPleaseEnter.setText(getResources().getString(R.string.please_enter_code)+ccp.getFullNumberWithPlus());
                 findViewById(R.id.ll_resend).setVisibility(View.VISIBLE);
                 loadingProgress.dismiss();
 
@@ -219,12 +219,12 @@ public class RegistrationActivity extends AppCompatActivity {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(RegistrationActivity.this, "onChildAdded - REG", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(RegistrationActivity.this, "onChildAdded - REG", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(RegistrationActivity.this, "onChildChanged - REG", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(RegistrationActivity.this, "onChildChanged - REG", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -233,12 +233,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 editor.commit();
                 startActivity(new Intent(RegistrationActivity.this,ConfigureActivity.class));
 
-                Toast.makeText(RegistrationActivity.this, "onChildRemoved - REG:"+dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
+              //  Toast.makeText(RegistrationActivity.this, "onChildRemoved - REG:"+dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Toast.makeText(RegistrationActivity.this, "onChildMoved - REG", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(RegistrationActivity.this, "onChildMoved - REG", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -254,7 +254,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 for (DataSnapshot data : dataSnapshot.getChildren())
                 {
-                    Toast.makeText(RegistrationActivity.this, "onDataChange - REG", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(RegistrationActivity.this, "onDataChange - REG", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onDataChange: mAuth uid="+mAuth.getUid());
                     Log.d(TAG, "onDataChange: data key="+data.getKey());
                     if (data.getKey().equals(mAuth.getUid()))
@@ -290,7 +290,7 @@ public class RegistrationActivity extends AppCompatActivity {
             //Toast.makeText(this, "already connected."+user.getPhoneNumber(), Toast.LENGTH_LONG).show();
             Intent intent;
             isSaved();
-            Toast.makeText(this, ""+mSharedPreferences.getBoolean("IS_SAVED",false), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, ""+mSharedPreferences.getBoolean("IS_SAVED",false), Toast.LENGTH_SHORT).show();
             if (mSharedPreferences.getBoolean("IS_SAVED",false))
             {
                 intent = new Intent(this,MainActivity.class);

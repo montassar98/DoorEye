@@ -61,25 +61,30 @@ public class ConfigureActivity extends AppCompatActivity {
                 final String phoneNumber = mAuth.getCurrentUser().getPhoneNumber();
 
                 if (fullName.isEmpty()) {
-                    edtFullName.setError("error name");
+                    edtFullName.setError(getResources().getString(R.string.empty_fullname));
+                    edtFullName.requestFocus();
+                    return;
+                }
+                if (fullName.length()<4) {
+                    edtFullName.setError(getResources().getString(R.string.error_fullname));
                     edtFullName.requestFocus();
                     return;
                 }
 
                 if (email.isEmpty()) {
-                    edtEmail.setError("required email address");
+                    edtEmail.setError(getResources().getString(R.string.empty_email));
                     edtEmail.requestFocus();
                     return;
                 }
 
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    edtEmail.setError("error email");
+                    edtEmail.setError(getResources().getString(R.string.error_email));
                     edtEmail.requestFocus();
                     return;
                 }
 
                 if (boxId.isEmpty()) {
-                    edtBoxId.setError("error boxId");
+                    edtBoxId.setError(getResources().getString(R.string.empty_boxId));
                     edtBoxId.requestFocus();
                     return;
                 }
@@ -106,7 +111,7 @@ public class ConfigureActivity extends AppCompatActivity {
                             }
                         }
                         if (!isAvailable)
-                        edtBoxId.setError("There are no box with this id.");
+                        edtBoxId.setError(getResources().getString(R.string.error_boxId));
                     }
 
                     @Override
@@ -118,7 +123,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 ChildEventListener childEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Toast.makeText(ConfigureActivity.this, "onChildAdded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ConfigureActivity.this, "onChildAdded", Toast.LENGTH_SHORT).show();
                         editor.putBoolean("IS_SAVED",true);
                         editor.apply();
 
@@ -126,17 +131,17 @@ public class ConfigureActivity extends AppCompatActivity {
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Toast.makeText(ConfigureActivity.this, "onChildChanged", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ConfigureActivity.this, "onChildChanged", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                        Toast.makeText(ConfigureActivity.this, "onChildRemoved :"+dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(ConfigureActivity.this, "onChildRemoved :"+dataSnapshot.getValue().toString(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Toast.makeText(ConfigureActivity.this, "onChildMoved", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ConfigureActivity.this, "onChildMoved", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

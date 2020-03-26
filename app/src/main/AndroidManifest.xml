@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".FamilyActivity"></activity>
+        <activity android:name=".Titlesize"></activity>
+        <activity android:name=".FamilyActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +27,7 @@
         <activity android:name=".ConfigureActivity" />
         <activity
             android:name=".RegistrationActivity"
-            android:theme="@style/AppTheme.TransparentTheme"></activity>
+            android:theme="@style/AppTheme.TransparentTheme" />
         <activity android:name=".MainActivity" />
 
         <service

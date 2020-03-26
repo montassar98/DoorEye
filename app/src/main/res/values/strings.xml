@@ -29,4 +29,9 @@
     <string name="error_email">Please enter your real email</string>
     <string name="error_fullname">Please enter your real fullname</string>
     <string name="error_boxId">There is no box with this id</string>
+    <string name="members">Members</string>
+    <string name="requests">Requests</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

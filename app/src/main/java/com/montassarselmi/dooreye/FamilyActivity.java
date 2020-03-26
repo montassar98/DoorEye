@@ -1,64 +1,99 @@
 package com.montassarselmi.dooreye;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
-import com.daimajia.swipe.util.Attributes;
-import com.montassarselmi.dooreye.Model.User;
-import com.montassarselmi.dooreye.Utils.DividerItemDecoration;
-import com.montassarselmi.dooreye.Utils.FamilyRecyclerViewAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.montassarselmi.dooreye.Fragments.MembersFragment;
+import com.montassarselmi.dooreye.Fragments.RequestsFragment;
+
+import com.montassarselmi.dooreye.Utils.ViewPagerFragmentAdapter;
 
 import java.util.ArrayList;
 
+
+
 public class FamilyActivity extends AppCompatActivity {
 
-    private ArrayList<User> mDataSet;
-    private RecyclerView mRecyclerView;
+
+    ViewPagerFragmentAdapter myAdapter;
+    ArrayList<Fragment> arrayList = new ArrayList<>();
+    String[] tabNames = {"Members","Requests"};
+    int[] tabIcons = {R.drawable.ic_requests1,R.drawable.ic_requests1};
+    ViewPager2 myViewPager2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_family);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // Item Decorator:
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(ResourcesCompat.getDrawable(getResources(), R.drawable.divider, null)));
-        // mRecyclerView.setItemAnimator(new FadeInLeftAnimator());
-        mDataSet = new ArrayList<User>();
-        loadData();
-        //creating adapter object
-        FamilyRecyclerViewAdapter mAdapter = new FamilyRecyclerViewAdapter(this, mDataSet);
-        // Setting Mode to Single to reveal bottom View for one item in List
-        // Setting Mode to Mutliple to reveal bottom Views for multile items in List
-        ((FamilyRecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        changeStatusBarToWhite(FamilyActivity.this);
 
-        mRecyclerView.setAdapter(mAdapter);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar=getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setTitle("Family & Partners");
+        }
 
-        /* Scroll Listeners */
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        myViewPager2 = findViewById(R.id.viewpager);
+        if (myViewPager2 != null)
+        {
+            setUpViewPager(myViewPager2);
+        }
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        new TabLayoutMediator(tabLayout, myViewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.e("RecyclerView", "onScrollStateChanged");
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(null);
+                tab.setIcon(tabIcons[position]);
+                if (tab.isSelected())
+                {
+                    tab.setIcon(null);
+                    tab.setText(tabNames[position]);
+                }
             }
+        }).attach();
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+
 
     }
-    // load initial data
-    private void loadData() {
-            for (int i = 0; i <= 10; i++) {
-                mDataSet.add(new User("Hsin","+216 96 85 74 12","hsin@gmail.com","tatata",null));
-            }
+
+    public static void changeStatusBarToWhite(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            // edited here
+            activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
+
+        }
     }
+
+    private void setUpViewPager(ViewPager2 viewPager) {
+
+        arrayList.add(new MembersFragment());
+        arrayList.add(new RequestsFragment());
+
+        myAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager(), getLifecycle());
+        // set Orientation in your ViewPager2
+        viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+
+        viewPager.setAdapter(myAdapter);
+
+        viewPager.setPageTransformer(new MarginPageTransformer(1500));
+    }
+
+
 }

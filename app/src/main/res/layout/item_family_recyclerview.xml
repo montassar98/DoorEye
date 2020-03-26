@@ -10,7 +10,6 @@
     app:ignore="NamespaceTypo">
 
     <!--Bottom View For Right to Left-->
-
     <LinearLayout
         android:id="@+id/bottom_wrapper"
         android:layout_width="240dp"
@@ -74,10 +73,13 @@
         android:background="?android:selectableItemBackground"
         android:elevation="5dp"
         app:cardUseCompatPadding="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:padding="10dp">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             >
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -86,6 +88,7 @@
                 android:layout_height="56dp"
                 android:padding="5dp"
                 android:src="@drawable/profile"
+                android:layout_centerVertical="true"
                 app:civ_border_width="2dp"
                 app:civ_border_color="@android:color/transparent"/>
             <View

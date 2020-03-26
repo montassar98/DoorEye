@@ -78,7 +78,7 @@ public class MembersFragment extends Fragment {
      mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_family);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Item Decorator:
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(ResourcesCompat.getDrawable(getResources(), R.drawable.divider, null)));
+        //mRecyclerView.addItemDecoration(new DividerItemDecoration(ResourcesCompat.getDrawable(getResources(), R.drawable.divider, null)));
         //mRecyclerView.setItemAnimator(new FadeInLeftAnimator());
         mDataSet = new ArrayList<User>();
         loadData();
@@ -88,9 +88,9 @@ public class MembersFragment extends Fragment {
         // Setting Mode to Mutliple to reveal bottom Views for multile items in List
         ((FamilyRecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
 
-       // RecyclerViewMargin decoration = new RecyclerViewMargin(itemMargin, numColumns);
+        RecyclerViewMargin decoration = new RecyclerViewMargin(8, 10);
 
-        //mRecyclerView.addItemDecoration();
+        mRecyclerView.addItemDecoration(decoration);
 
         mRecyclerView.setAdapter(mAdapter);
 

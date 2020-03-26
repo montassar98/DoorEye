@@ -74,9 +74,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static void changeStatusBarToWhite(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN| View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+          //  activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN| View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             // edited here
-            activity.getWindow().setStatusBarColor(Color.rgb(245,245,245));
+            activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
 
         }
     }

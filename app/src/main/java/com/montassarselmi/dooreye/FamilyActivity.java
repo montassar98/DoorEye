@@ -33,7 +33,8 @@ public class FamilyActivity extends AppCompatActivity {
     ViewPagerFragmentAdapter myAdapter;
     ArrayList<Fragment> arrayList = new ArrayList<>();
     String[] tabNames = {"Members","Requests"};
-    int[] tabIcons = {R.drawable.ic_requests1,R.drawable.ic_requests1};
+    int[] tabIconsEnabled = {R.drawable.ic_members_enabled,R.drawable.ic_requests_enabled};
+    int[] tabIconsDisabled = {R.drawable.ic_members_disabled,R.drawable.ic_requests_disabled};
     ViewPager2 myViewPager2;
 
     @Override
@@ -47,7 +48,9 @@ public class FamilyActivity extends AppCompatActivity {
         final ActionBar actionBar=getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setTitle("Family & Partners");
+            actionBar.setTitle("");
+            actionBar.setLogo(R.drawable.ic_familytxt);
+            //actionBar.
         }
 
         myViewPager2 = findViewById(R.id.viewpager);
@@ -59,16 +62,43 @@ public class FamilyActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, myViewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(null);
-                tab.setIcon(tabIcons[position]);
-                if (tab.isSelected())
-                {
-                    tab.setIcon(null);
-                    tab.setText(tabNames[position]);
+                if (position ==0) {
+                    tab.setIcon(tabIconsEnabled[0]);
                 }
+                if (position==1)
+                tab.setIcon(tabIconsDisabled[position]);
+
             }
         }).attach();
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+              //  tab.setIcon(tabIconsEnabled[]);
+                switch (tab.getPosition())
+                {
+                    case 0: tab.setIcon(tabIconsEnabled[0]);
+                    break;
+                    case 1: tab.setIcon(tabIconsEnabled[1]);
+                        break;
+                }
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                switch (tab.getPosition())
+                {
+                    case 0: tab.setIcon(tabIconsDisabled[0]);
+                        break;
+                    case 1: tab.setIcon(tabIconsDisabled[1]);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
     }

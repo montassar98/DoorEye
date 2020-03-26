@@ -17,6 +17,7 @@ import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.R;
 import com.montassarselmi.dooreye.Utils.DividerItemDecoration;
 import com.montassarselmi.dooreye.Utils.FamilyRecyclerViewAdapter;
+import com.montassarselmi.dooreye.Utils.RecyclerViewMargin;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,10 @@ public class MembersFragment extends Fragment {
         // Setting Mode to Single to reveal bottom View for one item in List
         // Setting Mode to Mutliple to reveal bottom Views for multile items in List
         ((FamilyRecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
+
+       // RecyclerViewMargin decoration = new RecyclerViewMargin(itemMargin, numColumns);
+
+        //mRecyclerView.addItemDecoration();
 
         mRecyclerView.setAdapter(mAdapter);
 

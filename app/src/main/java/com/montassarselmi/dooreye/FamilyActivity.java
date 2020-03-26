@@ -21,6 +21,7 @@ import com.montassarselmi.dooreye.Fragments.MembersFragment;
 import com.montassarselmi.dooreye.Fragments.RequestsFragment;
 
 import com.montassarselmi.dooreye.Utils.ViewPagerFragmentAdapter;
+import com.montassarselmi.dooreye.Utils.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 
@@ -92,7 +93,8 @@ public class FamilyActivity extends AppCompatActivity {
 
         viewPager.setAdapter(myAdapter);
 
-        viewPager.setPageTransformer(new MarginPageTransformer(1500));
+        //viewPager.setPageTransformer(new MarginPageTransformer(1500));
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
     }
 
 

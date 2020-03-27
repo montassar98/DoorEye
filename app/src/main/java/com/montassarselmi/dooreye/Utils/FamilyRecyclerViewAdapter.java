@@ -40,6 +40,11 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         final User item = usersList.get(i);
         simpleViewHolder.txtUserName.setText(item.getFullName());
         simpleViewHolder.txtUserPhone.setText(item.getPhoneNumber());
+        simpleViewHolder.txtUserEmail.setText(item.getEmail());
+        if (item.getStatus()!= null && item.getStatus().equals("admin"))
+        {
+            simpleViewHolder.txtAdmin.setVisibility(View.VISIBLE);
+        }
 
         simpleViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
 
@@ -86,20 +91,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                 Toast.makeText(mContext, "onClick: "+item.getFullName(), Toast.LENGTH_SHORT).show();
             }
         });
-        simpleViewHolder.btnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Toast.makeText(v.getContext(), "Clicked on Map " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        simpleViewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(view.getContext(), "Clicked on Share " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
         simpleViewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,21 +135,20 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         SwipeLayout swipeLayout;
         TextView txtUserName;
         TextView txtUserPhone;
+        TextView txtUserEmail;
         TextView tvDelete;
         TextView tvEdit;
-        TextView tvShare;
-        ImageButton btnLocation;
+        TextView txtAdmin;
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             txtUserName = (TextView) itemView.findViewById(R.id.txt_user_name);
             txtUserPhone = (TextView) itemView.findViewById(R.id.txt_user_phone);
+            txtUserEmail = (TextView) itemView.findViewById(R.id.txt_user_email);
             tvDelete = (TextView) itemView.findViewById(R.id.tvDelete);
             tvEdit = (TextView) itemView.findViewById(R.id.tvEdit);
-            tvShare = (TextView) itemView.findViewById(R.id.tvShare);
-            btnLocation = (ImageButton) itemView.findViewById(R.id.btnLocation);
-
+            txtAdmin = (TextView) itemView.findViewById(R.id.txt_admin);
 
         }
     }

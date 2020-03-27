@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="150dp"
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/swipe"
     swipe:leftEdgeSwipeOffset="0dp"
-    swipe:rightEdgeSwipeOffset="0dp"
     app:ignore="NamespaceTypo">
 
     <!--Bottom View For Right to Left-->
     <LinearLayout
-        android:id="@+id/bottom_wrapper"
-        android:layout_width="240dp"
+        android:id="@+id/bottom_wrapper1"
+        android:layout_width="160dp"
         android:layout_height="match_parent"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/tvEdit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#0076a5"
+            android:background="#c0c0c0"
             android:gravity="center"
-            android:text="Edit"
-            android:textColor="#fff" />
-
-        <TextView
-            android:id="@+id/tvShare"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#003c54"
-            android:gravity="center"
-            android:text="Share"
+            android:text="@string/edit"
             android:textColor="#fff" />
 
         <TextView
@@ -41,17 +30,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#0076a5"
+            android:background="#E82E2E"
             android:gravity="center"
-            android:text="Delete"
+            android:text="@string/delete"
             android:textColor="#fff" />
     </LinearLayout>
 
 
     <!-- Another Bottom View For Left to Right -->
-
-    <LinearLayout
-        android:id="@+id/bottom_wrapper1"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/bottom_wrapper"/>
+    <!--    <LinearLayout
+        android:id="@+id/bottom_wrapper"
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:weightSum="1">
@@ -65,11 +58,17 @@
             android:gravity="center"
             android:src="@drawable/ic_contact_us" />
     </LinearLayout>
-
+-->
     <!-- Top View,  Row itemView of RecyclerView -->
-    <androidx.cardview.widget.CardView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
+        android:gravity="center_horizontal">
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+
         android:background="?android:selectableItemBackground"
         android:elevation="5dp"
         app:cardUseCompatPadding="true"
@@ -88,25 +87,18 @@
                 android:layout_height="56dp"
                 android:padding="5dp"
                 android:src="@drawable/profile"
-                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
                 app:civ_border_width="2dp"
                 app:civ_border_color="@android:color/transparent"/>
-            <View
-                android:layout_width="3dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/profile_image"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:id="@+id/view_supprator"
-                android:background="@drawable/bg_view"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:orientation="vertical"
-                android:gravity="center_vertical"
-                android:layout_toEndOf="@id/view_supprator">
+                android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -119,18 +111,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+216 96 858 415"
-                    android:textSize="20sp"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-
+                    android:textSize="18sp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/common_google_signin_btn_text_light_focused"
                     android:id="@+id/txt_user_phone"
                     android:fontFamily="@font/roboto_regular"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hsin@gmail.com"
+                    android:layout_marginTop="3dp"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:id="@+id/txt_user_email"/>
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/admin"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:textColor="#ffd700"
+                android:textSize="12sp"
+                android:id="@+id/txt_admin"
+                android:visibility="gone"
+                android:fontFamily="@font/roboto_bold"
+                android:textStyle="bold"/>
         </RelativeLayout>
 
 
 
     </androidx.cardview.widget.CardView>
-
+    </RelativeLayout>
 
 
 </com.daimajia.swipe.SwipeLayout>

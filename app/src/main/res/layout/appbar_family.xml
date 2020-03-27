@@ -7,19 +7,18 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
 
     >
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:layout_height="84dp"
             android:background="#6495ED"
-            >
-        </androidx.appcompat.widget.Toolbar>
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#6495ED"
-            />
+            android:layout_height="37dp"
+            android:background="#6495ED" />
 </com.google.android.material.appbar.AppBarLayout>

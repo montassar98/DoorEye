@@ -209,7 +209,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_history" />
@@ -244,7 +244,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_front_door" />
@@ -286,7 +286,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_family" />
@@ -320,7 +320,8 @@
 
                 <ImageView
                     android:layout_width="47dp"
-                    android:layout_height="80dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/settings" />
@@ -363,7 +364,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_contact_us" />
@@ -397,7 +398,7 @@
 
                 <ImageView
                     android:layout_width="50dp"
-                    android:layout_height="80dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/logout1" />

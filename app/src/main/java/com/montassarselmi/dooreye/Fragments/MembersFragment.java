@@ -1,7 +1,10 @@
 package com.montassarselmi.dooreye.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.daimajia.swipe.util.Attributes;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.R;
 import com.montassarselmi.dooreye.Utils.DividerItemDecoration;
@@ -31,24 +39,17 @@ public class MembersFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "MembersFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+
+
     public MembersFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MembersFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static MembersFragment newInstance(String param1, String param2) {
         MembersFragment fragment = new MembersFragment();
         Bundle args = new Bundle();
@@ -69,26 +70,45 @@ public class MembersFragment extends Fragment {
 
     private ArrayList<User> mDataSet;
     private RecyclerView mRecyclerView;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor editor;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference mBoxUsersRef;
+    private String boxId;
+    private FamilyRecyclerViewAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_members, container, false);
-     mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_family);
+        mSharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
+        boxId = mSharedPreferences.getString("BOX_ID","NULL");
+        Log.d(TAG, "BOX_ID: "+boxId);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_family);
+        mDataSet = new ArrayList<User>();
+        loadData();
+        initRecyclerView();
+
+
+
+        return view;
+    }
+
+    //initiate Recycler View
+    private  void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Item Decorator:
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(ResourcesCompat.getDrawable(getResources(), R.drawable.divider, null)));
         //mRecyclerView.setItemAnimator(new FadeInLeftAnimator());
-        mDataSet = new ArrayList<User>();
-        loadData();
         //creating adapter object
-        FamilyRecyclerViewAdapter mAdapter = new FamilyRecyclerViewAdapter(getContext(), mDataSet);
+        mAdapter = new FamilyRecyclerViewAdapter(getContext(), mDataSet);
         // Setting Mode to Single to reveal bottom View for one item in List
         // Setting Mode to Mutliple to reveal bottom Views for multile items in List
         ((FamilyRecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
 
-        RecyclerViewMargin decoration = new RecyclerViewMargin(8, 10);
+        RecyclerViewMargin decoration = new RecyclerViewMargin(16, 10);
 
         mRecyclerView.addItemDecoration(decoration);
 
@@ -107,14 +127,36 @@ public class MembersFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
-        return view;
     }
 
     // load initial data
     private void loadData() {
+        /*mDataSet.add(new User("Mohsen","+216 96 85 74 12","hsin@gmail.com","tatata","admin"));
         for (int i = 0; i <= 10; i++) {
             mDataSet.add(new User("Hsin","+216 96 85 74 12","hsin@gmail.com","tatata",null));
-        }
+        }*/
+        mBoxUsersRef = database.getReference("BoxList").child(boxId).child("users");
+        mBoxUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "" + dataSnapshot.toString());
+                    User user;
+                    user = data.getValue(User.class);
+                    if (user.getStatus() != null && user.getStatus().equals("admin"))
+                    {mDataSet.add(0, user);}
+                    else mDataSet.add(user);
+
+                }
+                Log.d(TAG, ""+mDataSet.toString());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

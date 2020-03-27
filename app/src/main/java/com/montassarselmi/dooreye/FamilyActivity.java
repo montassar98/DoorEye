@@ -50,6 +50,12 @@ public class FamilyActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setCustomView(R.layout.titlesize);
+            findViewById(R.id.img_back_arrow).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
 
             //actionBar.setLogo(R.drawable.ic_familytxt);
             //actionBar.

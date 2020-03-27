@@ -36,4 +36,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="uset_have_call">you have a call</string>
     <string name="family_partner"><![CDATA[Family & Partners]]></string>
+    <string name="admin">ADMIN</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

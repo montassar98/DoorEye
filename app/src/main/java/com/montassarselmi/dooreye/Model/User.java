@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String boxId;
     private String status;
+    private String profileImage;
 
     public User() {
     }
@@ -17,6 +18,17 @@ public class User {
         this.email = email;
         this.boxId = boxId;
         this.status = status;
+    }
+    public User(String profileImage, String fullName, String email){
+        this.profileImage = profileImage;
+        this.fullName = fullName;
+        this.email = email;
+    }
+
+    public User(String fullName, String email){
+        this.profileImage = profileImage;
+        this.fullName = fullName;
+        this.email = email;
     }
 
     public String getStatus() {
@@ -57,5 +69,13 @@ public class User {
 
     public void setBoxId(String boxId) {
         this.boxId = boxId;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

@@ -14,12 +14,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.montassarselmi.dooreye.Fragments.MembersFragment;
 import com.montassarselmi.dooreye.Fragments.RequestsFragment;
 
+import com.montassarselmi.dooreye.Utils.FamilyRecyclerViewAdapter;
 import com.montassarselmi.dooreye.Utils.ViewPagerFragmentAdapter;
 import com.montassarselmi.dooreye.Utils.ZoomOutPageTransformer;
 
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 
 
 
-public class FamilyActivity extends AppCompatActivity {
+public class FamilyActivity extends AppCompatActivity  {
 
 
     ViewPagerFragmentAdapter myAdapter;

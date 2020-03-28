@@ -1,11 +1,13 @@
 package com.montassarselmi.dooreye.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,12 +26,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.montassarselmi.dooreye.EditActivity;
 import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.R;
 
 import java.util.ArrayList;
 import com.montassarselmi.dooreye.MainActivity;
 public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecyclerViewAdapter.SimpleViewHolder> {
+
+
 
     private Context mContext;
     private ArrayList<User> usersList;
@@ -41,10 +46,12 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private String boxId;
+    private int position;
 
     public FamilyRecyclerViewAdapter(Context context, ArrayList<User> objects) {
         this.mContext = context;
         this.usersList = objects;
+
     }
 
     @Override
@@ -61,6 +68,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         boxId = mSharedPreferences.getString("BOX_ID","Null");
         pNumber=mAuth.getCurrentUser().getPhoneNumber();
         final User item = usersList.get(i);
+        position = i;
         simpleViewHolder.txtUserName.setText(item.getFullName());
         simpleViewHolder.txtUserPhone.setText(item.getPhoneNumber());
         simpleViewHolder.txtUserEmail.setText(item.getEmail());
@@ -120,11 +128,28 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         });
 
 
+
         simpleViewHolder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
+                Log.d(TAG, "onClick: Edit");
+                mRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child("BoxList").child(boxId).child("users")
+                                .child(mAuth.getUid()).child("phoneNumber").getValue().equals(item.getPhoneNumber())) {
+                            Intent intent = new Intent(mContext, EditActivity.class);
+                            intent.putExtra("EMAIL",item.getEmail());
+                            intent.putExtra("FULL_NAME",item.getFullName());
+                            view.getContext().startActivity(intent);
+                        }else
+                            Toast.makeText(mContext, mContext.getResources().getText(R.string.you_cant_modify), Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                Toast.makeText(view.getContext(), "Clicked on Edit  " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -148,6 +173,8 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                         appleSnapshot.getRef().removeValue();
+                                        Toast.makeText(mContext, "Deleted " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
+
                                     }
                                 }
 
@@ -156,7 +183,8 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
 
                                 }
                             });
-                        }
+                        }else Toast.makeText(mContext, mContext.getResources().getText(R.string.you_cant_delete), Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
@@ -165,7 +193,6 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                     }
                 });
 
-                Toast.makeText(view.getContext(), "Deleted " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -183,6 +210,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
     public int getSwipeLayoutResourceId(int position) {
         return R.id.swipe;
     }
+
 
     //  ViewHolder Class
 
@@ -210,4 +238,5 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
 
         }
     }
+
 }

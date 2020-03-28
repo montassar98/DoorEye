@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditActivity">
+    <include layout="@layout/appbar_edit" android:id="@+id/appbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appbar"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:background="#fff"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/profile"
+            android:elevation="5dp"
+            android:id="@+id/img_profile_edit"
+            android:clickable="true"
+            android:focusable="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:inputType="textPersonName"
+            android:id="@+id/edt_full_name_edit"
+            android:hint="Your Name"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textAlignment="center"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColorHint="@color/ColorTextGris"
+            android:textColor="@color/common_google_signin_btn_text_light_focused"
+            android:importantForAutofill="no"
+             />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:inputType="textEmailAddress"
+            android:id="@+id/edt_email_edit"
+            android:hint="Your Email"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColorHint="@color/ColorTextGris"
+            android:textColor="@color/common_google_signin_btn_text_light_focused"
+            android:importantForAutofill="no"
+            />
+        <!--   <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/submit"
+               android:id="@+id/btn_submit_edit"/>
+         -->  <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+               android:id="@+id/btn_submit_edit"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+              android:layout_marginTop="20dp"
+               app:spinning_bar_width="4dp"
+               android:text="@string/submit"
+               android:elevation="5dp"
+                android:background="@drawable/btn_submit_background"
+               app:spinning_bar_color="@color/colorPrimaryDark"
+               android:textColor="@color/colorPrimaryDark"
+               app:spinning_bar_padding="6dp"/>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -136,6 +137,37 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
          final String profileImage = getFileToByte(imageBitmap);
         Log.d(TAG, "image to string\n "+profileImage);
+        final String fullName = edtName.getText().toString().trim();
+        final String email = edtEmail.getText().toString().trim();
+
+        if (fullName.length()>15) {
+            edtName.setError(getResources().getString(R.string.error_fullname));
+            edtName.requestFocus();
+            return;
+        }
+
+        if (fullName.isEmpty()) {
+            edtName.setError(getResources().getString(R.string.empty_fullname));
+            edtName.requestFocus();
+            return;
+        }
+        if (fullName.length()<3) {
+            edtName.setError(getResources().getString(R.string.error_fullname));
+            edtName.requestFocus();
+            return;
+        }
+
+        if (email.isEmpty()) {
+            edtEmail.setError(getResources().getString(R.string.empty_email));
+            edtEmail.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError(getResources().getString(R.string.error_email));
+            edtEmail.requestFocus();
+            return;
+        }
         mRefUser = database.getReference("BoxList").child(boxId).child("users");
         mRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -148,14 +180,18 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                     if (user != null && user.getPhoneNumber().equals(mAuth.getCurrentUser().getPhoneNumber())) {
                         user.setFullName(edtName.getText().toString());
                         user.setEmail(edtEmail.getText().toString());
-                        if (!profileImage.isEmpty())
+                        if (profileImage != null)
                         {
                             user.setProfileImage(profileImage);
                         }
                         mRefUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
                         btnSubmit.dispose();
+                        Intent intent=new Intent(EditActivity.this,FamilyActivity.class);
+                        startActivity(intent);
                         finish();
+
                     }
+
                 }
             }
 

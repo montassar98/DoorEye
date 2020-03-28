@@ -71,7 +71,12 @@ public class ConfigureActivity extends AppCompatActivity {
                     edtFullName.requestFocus();
                     return;
                 }
-                if (fullName.length()<4) {
+                if (fullName.length()<3) {
+                    edtFullName.setError(getResources().getString(R.string.error_fullname));
+                    edtFullName.requestFocus();
+                    return;
+                }
+                if (fullName.length()>15) {
                     edtFullName.setError(getResources().getString(R.string.error_fullname));
                     edtFullName.requestFocus();
                     return;

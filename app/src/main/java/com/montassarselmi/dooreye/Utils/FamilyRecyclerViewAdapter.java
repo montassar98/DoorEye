@@ -3,6 +3,9 @@ package com.montassarselmi.dooreye.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +35,9 @@ import com.montassarselmi.dooreye.R;
 
 import java.util.ArrayList;
 import com.montassarselmi.dooreye.MainActivity;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecyclerViewAdapter.SimpleViewHolder> {
 
 
@@ -69,9 +75,16 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         pNumber=mAuth.getCurrentUser().getPhoneNumber();
         final User item = usersList.get(i);
         position = i;
+        String base64String = item.getProfileImage();
+        if(base64String != null) {
+            byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            simpleViewHolder.imgProfileImage.setImageBitmap(decodedByte);
+        }
         simpleViewHolder.txtUserName.setText(item.getFullName());
         simpleViewHolder.txtUserPhone.setText(item.getPhoneNumber());
         simpleViewHolder.txtUserEmail.setText(item.getEmail());
+
         if (item.getStatus()!= null && item.getStatus().equals("admin"))
         {
             simpleViewHolder.txtAdmin.setVisibility(View.VISIBLE);
@@ -216,6 +229,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
         SwipeLayout swipeLayout;
+        ImageView imgProfileImage;
         TextView txtUserName;
         TextView txtUserPhone;
         TextView txtUserEmail;
@@ -226,6 +240,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
+            imgProfileImage = (CircleImageView) itemView.findViewById(R.id.profile_image);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
             txtUserName = (TextView) itemView.findViewById(R.id.txt_user_name);
             txtUserPhone = (TextView) itemView.findViewById(R.id.txt_user_phone);

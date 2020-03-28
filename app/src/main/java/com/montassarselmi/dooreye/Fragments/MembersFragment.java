@@ -145,8 +145,16 @@ public class MembersFragment extends Fragment {
                     User user;
                     user = data.getValue(User.class);
                     if (user.getStatus() != null && user.getStatus().equals("admin"))
-                    {mDataSet.add(0, user);}
-                    else mDataSet.add(user);
+                    {
+                        mDataSet.add(0, user);
+
+
+                    }
+                    else
+                    {
+                        mDataSet.add(user);
+
+                    }
 
                 }
                 Log.d(TAG, ""+mDataSet.toString());

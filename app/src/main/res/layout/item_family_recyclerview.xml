@@ -93,12 +93,14 @@
                 app:civ_border_width="2dp"
                 app:civ_border_color="@android:color/transparent"/>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:orientation="vertical"
                 android:gravity="center">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,6 +128,7 @@
                     android:id="@+id/txt_user_email"/>
             </LinearLayout>
             <TextView
+                android:id="@+id/txt_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/admin"
@@ -133,10 +136,23 @@
                 android:layout_marginEnd="10dp"
                 android:textColor="#ffd700"
                 android:textSize="12sp"
-                android:id="@+id/txt_admin"
                 android:visibility="gone"
                 android:fontFamily="@font/roboto_bold"
                 android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txt_current_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="#cd7f32"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:fontFamily="@font/roboto_bold"
+                android:textStyle="bold"
+                android:text="@string/current_user" />
         </RelativeLayout>
 
 

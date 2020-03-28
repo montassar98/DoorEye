@@ -33,8 +33,8 @@ public class ConfigureActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference mRefBox;
-    private DatabaseReference usersRef = database.getReference("Users");
-    private DatabaseReference  mRefBoxUser,mRefUsers, mRefBoxStatus;
+    private DatabaseReference usersRef ;
+    private DatabaseReference  mRefBoxUser, mRefBoxStatus;
     public SharedPreferences mSharedPreferences;
     public SharedPreferences.Editor editor;
 
@@ -54,6 +54,7 @@ public class ConfigureActivity extends AppCompatActivity {
         editor = mSharedPreferences.edit();
 
         mRefBox =database.getReference("BoxList/");
+        usersRef = database.getReference("BoxList/"+findBoxId()+"/users/");
 
         checkIfUserAvailable();
 
@@ -103,6 +104,8 @@ public class ConfigureActivity extends AppCompatActivity {
                         {
                             if (data.getKey().equals(boxId))
                             {
+                                editor.putString("BOX_ID", boxId);
+                                editor.apply();
                                 //Toast.makeText(ConfigureActivity.this, "onDataChange - ConfigureActivity", Toast.LENGTH_SHORT).show();
                                 mRefBoxStatus =database.getReference("BoxList/"+boxId);
                                 String status = "admin";
@@ -115,8 +118,7 @@ public class ConfigureActivity extends AppCompatActivity {
                                 User user = new User(fullName,phoneNumber,email,boxId,status);
                                 mRefBoxUser =database.getReference("BoxList/"+boxId+"/users");
                                 mRefBoxUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
-                                mRefUsers = database.getReference("Users/"+mAuth.getCurrentUser().getUid());
-                                mRefUsers.setValue(user);
+
                                 startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
                                 isAvailable=true;
 
@@ -170,7 +172,11 @@ public class ConfigureActivity extends AppCompatActivity {
         });
 
     }
-
+    private String findBoxId(){
+        String boxId="";
+        boxId = mSharedPreferences.getString("BOX_ID","Null");
+        return boxId;
+    }
     private void checkIfUserAvailable() {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

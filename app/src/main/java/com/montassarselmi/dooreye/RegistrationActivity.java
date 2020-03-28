@@ -83,8 +83,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         mAuth = FirebaseAuth.getInstance();
-        userRef = database.getReference("Users/");
-        boxUserRef= database.getReference("BoxList/");
+        userRef = database.getReference("BoxList/"+findBoxId()+"/users/");
         loadingProgress = new ProgressDialog(this);
 
         edtPhone = (EditText) findViewById(R.id.edt_phone);
@@ -176,6 +175,11 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
+    }
+    private String findBoxId(){
+        String boxId="";
+        boxId = mSharedPreferences.getString("BOX_ID","Null");
+        return boxId;
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {

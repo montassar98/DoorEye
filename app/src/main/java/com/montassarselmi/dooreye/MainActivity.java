@@ -32,12 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference usersRef = database.getReference("Users");
+    private DatabaseReference usersRef;
     private FirebaseAuth mAuth;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
-    private DatabaseReference boxIdRef,ringingRef;
-    private  DatabaseReference myRef = database.getReference("door");
     private CardView cvEventHistory,cvCheckFrontDoor,cvFamily,cvSettings,cvContactUs,cvLogout;
 
     @Override
@@ -50,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAuth = FirebaseAuth.getInstance();
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
-        boxIdRef = database.getReference("Users/"+mAuth.getUid()+"/");
         //-------------------------------------------------------
         cvCheckFrontDoor = (CardView) findViewById(R.id.cv_front_door);
         cvContactUs = (CardView) findViewById(R.id.cv_contact_us);
@@ -65,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cvSettings.setOnClickListener(this);
         cvLogout.setOnClickListener(this);
         //--------------------------------------------------------
-
+        usersRef = database.getReference("BoxList/"+findBoxId()+"/users");
         checkIfUserAvailable();
         checkForCalls();
 
@@ -81,8 +78,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
-
 
     private void checkIfUserAvailable() {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -130,35 +125,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String findBoxId(){
         String boxId="";
-        boxIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("boxId")) {
-                    String boxId = dataSnapshot.child("boxId").getValue().toString();
-                    Log.d(TAG, "onDataChange: " + boxId);
-                    editor.putString("BOX_ID", boxId);
-                    editor.apply();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         boxId = mSharedPreferences.getString("BOX_ID","Null");
         return boxId;
     }
 
     private void checkForCalls() {
-        ringingRef = database.getReference("BoxList/"+findBoxId()+"/users/"+mAuth.getUid());
-        ringingRef.addValueEventListener(new ValueEventListener() {
+        usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: data "+ dataSnapshot.getValue());
-                if (dataSnapshot.hasChild("Ringing") && dataSnapshot.hasChild("pickup"))
+                if (dataSnapshot.child(mAuth.getUid()).hasChild("Ringing") && dataSnapshot.child(mAuth.getUid()).hasChild("pickup"))
                 {
-                        if (dataSnapshot.child("pickup").getValue().equals(false)) {
+                        if (dataSnapshot.child(mAuth.getUid()).child("pickup").getValue().equals(false)) {
                             Log.d(TAG, "onDataChange: user have a call");
                             Toast.makeText(MainActivity.this, getResources().getString(R.string.uset_have_call), Toast.LENGTH_LONG).show();
                             startActivity(new Intent(MainActivity.this, CallingActivity.class));

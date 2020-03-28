@@ -136,7 +136,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                 mRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.child("Users").child(mAuth.getUid()).child("status").getValue().toString().equals("admin")) {
+                        if (dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getUid()).child("status").getValue().toString().equals("admin")) {
                             mItemManger.removeShownLayouts(simpleViewHolder.swipeLayout);
                             usersList.remove(i);
                             notifyItemRemoved(i);
@@ -156,21 +156,6 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
 
                                 }
                             });
-                            Query mUserQuery1 = mRefUser.child("Users").orderByChild("fullName").equalTo(simpleViewHolder.txtUserName.getText().toString());
-                            mUserQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                        appleSnapshot.getRef().removeValue();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
                         }
                     }
 

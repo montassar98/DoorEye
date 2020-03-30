@@ -197,7 +197,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
 
                                 }
                             });
-                        }else Toast.makeText(mContext, mContext.getResources().getText(R.string.you_cant_delete), Toast.LENGTH_SHORT).show();
+                    }else Toast.makeText(mContext, mContext.getResources().getText(R.string.you_cant_delete), Toast.LENGTH_SHORT).show();
 
                     }
 

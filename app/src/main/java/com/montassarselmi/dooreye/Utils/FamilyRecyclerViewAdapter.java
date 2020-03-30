@@ -79,7 +79,9 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         final User item = usersList.get(i);
         if (item.getProfileImage() != null)
         {
+            Log.d(TAG, "onBindViewHolder: ");
             Picasso.get().load(item.getProfileImage()).into(simpleViewHolder.imgProfileImage);
+
         }
         simpleViewHolder.txtUserName.setText(item.getFullName());
         simpleViewHolder.txtUserPhone.setText(item.getPhoneNumber());

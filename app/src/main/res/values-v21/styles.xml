@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Customize your theme here. -->
 
     <style name="AppTheme.TransparentTheme">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

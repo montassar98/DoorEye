@@ -143,6 +143,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         if (fullName.length()>15) {
             edtName.setError(getResources().getString(R.string.error_fullname));
             edtName.requestFocus();
+            btnSubmit.dispose();
             return;
         }
 

@@ -247,7 +247,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.d(TAG, "onCancelled: ");
             }
         };
 

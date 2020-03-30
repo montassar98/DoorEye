@@ -154,6 +154,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                             Intent intent = new Intent(mContext, EditActivity.class);
                             intent.putExtra("EMAIL",item.getEmail());
                             intent.putExtra("FULL_NAME",item.getFullName());
+                            Log.d(TAG, "onDataChange: hello");
                             view.getContext().startActivity(intent);
                         }else
                             Toast.makeText(mContext, mContext.getResources().getText(R.string.you_cant_modify), Toast.LENGTH_SHORT).show();

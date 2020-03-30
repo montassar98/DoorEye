@@ -32,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.montassarselmi.dooreye.Model.User;
 
 import java.io.ByteArrayOutputStream;
@@ -60,6 +62,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private CircularProgressButton btnSubmit;
     //private Button btnSubmit;
     private EditText edtName,edtEmail;
+    private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,7 +126,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.btn_submit_edit :
 
-                submitModification();
+                //submitModification();
                 break;
             case R.id.img_profile_edit:
                 changePhoto();
@@ -133,7 +136,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private void submitModification() {
         Log.d(TAG, "submitModification ");
-        btnSubmit.startAnimation();
 
          final String profileImage = getFileToByte(imageBitmap);
         Log.d(TAG, "image to string\n "+profileImage);
@@ -170,6 +172,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             edtEmail.requestFocus();
             return;
         }
+        btnSubmit.startAnimation();
+
         mRefUser = database.getReference("BoxList").child(boxId).child("users");
         mRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

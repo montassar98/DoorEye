@@ -132,10 +132,6 @@ public class MembersFragment extends Fragment {
 
     // load initial data
     private void loadData() {
-        /*mDataSet.add(new User("Mohsen","+216 96 85 74 12","hsin@gmail.com","tatata","admin"));
-        for (int i = 0; i <= 10; i++) {
-            mDataSet.add(new User("Hsin","+216 96 85 74 12","hsin@gmail.com","tatata",null));
-        }*/
         mBoxUsersRef = database.getReference("BoxList").child(boxId).child("users");
         mBoxUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

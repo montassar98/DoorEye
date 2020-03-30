@@ -19,5 +19,5 @@
         android:textStyle="bold"
         android:text="@string/edit"
         android:textColor="@color/ColorTextGris"
-        android:textSize="20sp"/>
+        android:textSize="21sp"/>
 </LinearLayout>

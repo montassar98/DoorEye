@@ -149,6 +149,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
         if (fullName.isEmpty()) {
             edtName.setError(getResources().getString(R.string.empty_fullname));
+            btnSubmit.dispose();
             edtName.requestFocus();
             return;
         }

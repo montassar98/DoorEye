@@ -43,6 +43,6 @@
     <string name="choose_photo">Choose Photo?</string>
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
-    <string name="you_cant_modify">you can\'t modify this User.</string>
-    <string name="you_cant_delete">you can\'t delete this User.</string>
+    <string name="you_cant_modify">sorry you can\'t modify this User.</string>
+    <string name="you_cant_delete">sorry you can\'t delete this User.</string>
 </resources>

@@ -143,6 +143,7 @@ public class ConfigureActivity extends AppCompatActivity {
                 ChildEventListener childEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        Log.d(TAG, "onChildAdded: ");
                         //Toast.makeText(ConfigureActivity.this, "onChildAdded", Toast.LENGTH_SHORT).show();
                         editor.putBoolean("IS_SAVED",true);
                         editor.apply();

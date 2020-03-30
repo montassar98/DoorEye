@@ -152,10 +152,8 @@ public class MembersFragment extends Fragment {
 
                     }
                     else
-                    {
                         mDataSet.add(user);
 
-                    }
 
                 }
                 Log.d(TAG, ""+mDataSet.toString());

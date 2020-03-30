@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
-       //TODO stopService();
+        stopService();
 
 
     }
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
-       //TODO startService();
+        startService();
         Log.d(TAG, "onStop: ");
 
     }

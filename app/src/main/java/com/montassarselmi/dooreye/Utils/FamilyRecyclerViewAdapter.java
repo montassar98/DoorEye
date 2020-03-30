@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +35,10 @@ import com.montassarselmi.dooreye.EditActivity;
 import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import com.montassarselmi.dooreye.MainActivity;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,7 +56,6 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private String boxId;
-    private int position;
 
     public FamilyRecyclerViewAdapter(Context context, ArrayList<User> objects) {
         this.mContext = context;
@@ -74,12 +77,9 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         boxId = mSharedPreferences.getString("BOX_ID","Null");
         pNumber=mAuth.getCurrentUser().getPhoneNumber();
         final User item = usersList.get(i);
-        position = i;
-        String base64String = item.getProfileImage();
-        if(base64String != null) {
-            byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            simpleViewHolder.imgProfileImage.setImageBitmap(decodedByte);
+        if (item.getProfileImage() != null)
+        {
+            Picasso.get().load(item.getProfileImage()).into(simpleViewHolder.imgProfileImage);
         }
         simpleViewHolder.txtUserName.setText(item.getFullName());
         simpleViewHolder.txtUserPhone.setText(item.getPhoneNumber());

@@ -45,4 +45,5 @@
     <string name="camera">Camera</string>
     <string name="you_cant_modify">sorry you can\'t modify this User.</string>
     <string name="you_cant_delete">sorry you can\'t delete this User.</string>
+    <string name="fail_upload_image">Failed uploading image, Please try again.</string>
 </resources>

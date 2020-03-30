@@ -25,7 +25,12 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,11 +38,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.montassarselmi.dooreye.Model.User;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,6 +72,11 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     //private Button btnSubmit;
     private EditText edtName,edtEmail;
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+    private boolean isImagePicked = false;
+    private boolean isBitmap;
+    private Uri selectedImage;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +140,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.btn_submit_edit :
 
-                //submitModification();
+                submitModification();
                 break;
             case R.id.img_profile_edit:
                 changePhoto();
@@ -136,22 +150,19 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private void submitModification() {
         Log.d(TAG, "submitModification ");
-
-         final String profileImage = getFileToByte(imageBitmap);
-        Log.d(TAG, "image to string\n "+profileImage);
         final String fullName = edtName.getText().toString().trim();
         final String email = edtEmail.getText().toString().trim();
 
         if (fullName.length()>15) {
             edtName.setError(getResources().getString(R.string.error_fullname));
             edtName.requestFocus();
-            btnSubmit.dispose();
+
             return;
         }
 
         if (fullName.isEmpty()) {
             edtName.setError(getResources().getString(R.string.empty_fullname));
-            btnSubmit.dispose();
+
             edtName.requestFocus();
             return;
         }
@@ -181,20 +192,60 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 for (DataSnapshot data : dataSnapshot.getChildren())
                 {
                     Log.d(TAG, "" + dataSnapshot.toString());
-                    User user;
+                    final User user;
                     user = data.getValue(User.class);
                     if (user != null && user.getPhoneNumber().equals(mAuth.getCurrentUser().getPhoneNumber())) {
                         user.setFullName(edtName.getText().toString());
                         user.setEmail(edtEmail.getText().toString());
-                        if (profileImage != null)
+
+                        //check if user select a new photo
+                        if (isImagePicked)
                         {
-                            user.setProfileImage(profileImage);
+                            final StorageReference ref = mStorageRef.child("profileImages/"+mAuth.getUid());
+                            //check if image selected from camera or gallery
+                            if (!isBitmap)
+                            {
+
+                                try {
+                                    imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                                } catch (IOException e) {
+                                    Log.d(TAG, "error on reformat uri to bitmap");
+                                }
+                            }
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+                            byte[] bitmapData = baos.toByteArray();
+                            UploadTask uploadTask = ref.putBytes(bitmapData);
+                            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Log.d(TAG, "image uri: "+uri.toString());
+                                            user.setProfileImage(uri.toString());
+                                            mRefUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
+                                            btnSubmit.dispose();
+                                            finish();
+
+                                        }
+                                    });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(EditActivity.this, getResources().getString(R.string.fail_upload_image), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                         }
-                        mRefUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
-                        btnSubmit.dispose();
-                        Intent intent=new Intent(EditActivity.this,FamilyActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (!isImagePicked) {
+                            mRefUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
+                            btnSubmit.dispose();
+                            finish();
+                        }
+                        Log.d(TAG, "onDataChange user added :"+user.getProfileImage() );
+
 
                     }
 
@@ -209,21 +260,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-    public static String getFileToByte(Bitmap bitmap){
-        Bitmap bmp = bitmap;
-        ByteArrayOutputStream bos = null;
-        byte[] bt = null;
-        String encodeString = null;
-        try{
-            bos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-            bt = bos.toByteArray();
-            encodeString = Base64.encodeToString(bt, Base64.DEFAULT);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return encodeString;
-    }
+
 
     private void changePhoto() {
         Log.d(TAG, "changePhoto ");
@@ -273,6 +310,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         Bundle extras = data.getExtras();
                         imageBitmap = (Bitmap) extras.get("data");
                         imgProfile.setImageBitmap(imageBitmap);
+                        isImagePicked = true;
+                        isBitmap = true;
                     }else imgProfile.setImageDrawable(getDrawable(R.drawable.profile));
                 }
                 break;
@@ -281,14 +320,10 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     Log.d(TAG, "onActivityResult: approved From Gallery");
                     if (data != null) {
-                        Uri selectedImage = data.getData();
-                        try {
-                            imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        imgProfile.setImageBitmap(imageBitmap);
+                        selectedImage = data.getData();
+                        imgProfile.setImageURI(selectedImage);
+                        isImagePicked = true;
+                        isBitmap = false;
                     }else imgProfile.setImageDrawable(getDrawable(R.drawable.profile));
                 }
                 break;

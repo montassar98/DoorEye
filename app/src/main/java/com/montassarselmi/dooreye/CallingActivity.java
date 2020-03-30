@@ -40,7 +40,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calling);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
+        Log.d(TAG, "onCreate: ");
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         imgPickUpCall = (ImageView) findViewById(R.id.img_pickup);

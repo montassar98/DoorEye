@@ -1,5 +1,7 @@
 package com.montassarselmi.dooreye.Model;
 
+import android.net.Uri;
+
 public class User {
 
     private String fullName;
@@ -26,7 +28,6 @@ public class User {
     }
 
     public User(String fullName, String email){
-        this.profileImage = profileImage;
         this.fullName = fullName;
         this.email = email;
     }

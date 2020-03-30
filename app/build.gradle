@@ -54,5 +54,9 @@ dependencies {
 
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+
+
 
 }

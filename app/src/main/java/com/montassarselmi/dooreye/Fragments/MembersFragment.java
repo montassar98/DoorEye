@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
@@ -77,6 +78,7 @@ public class MembersFragment extends Fragment {
     private DatabaseReference mBoxUsersRef;
     private String boxId;
     private FamilyRecyclerViewAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,7 +89,10 @@ public class MembersFragment extends Fragment {
         editor = mSharedPreferences.edit();
         boxId = mSharedPreferences.getString("BOX_ID","NULL");
         Log.d(TAG, "BOX_ID: "+boxId);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_cyclic);
+        mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_family);
+        mRecyclerView.setVisibility(View.GONE);
         mDataSet = new ArrayList<User>();
         loadData();
         initRecyclerView();
@@ -152,8 +157,10 @@ public class MembersFragment extends Fragment {
 
 
                 }
-                Log.d(TAG, ""+mDataSet.toString());
+                Log.d(TAG, ""+mDataSet.get(0).getProfileImage());
                 mAdapter.notifyDataSetChanged();
+                mProgressBar.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override

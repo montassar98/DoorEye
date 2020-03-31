@@ -3,25 +3,15 @@ package com.montassarselmi.dooreye.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,12 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.montassarselmi.dooreye.EditActivity;
 import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.R;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import com.montassarselmi.dooreye.MainActivity;
 import com.squareup.picasso.Picasso;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecyclerViewAdapter.SimpleViewHolder> {

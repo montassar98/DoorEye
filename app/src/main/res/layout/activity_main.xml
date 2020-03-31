@@ -78,13 +78,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="38dp"
                         android:layout_height="38dp"
-                        android:id="@+id/user_image"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/splash_logo" />
+                        android:src="@drawable/splash_logo"
+                        android:id="@+id/user_image"/>
+
+
 
                 </RelativeLayout>
 

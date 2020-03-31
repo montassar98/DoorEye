@@ -191,9 +191,6 @@ public class ConfigureActivity extends AppCompatActivity {
 
                 if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
                 {
-//                    Toast.makeText(MainActivity.this, "find it", Toast.LENGTH_SHORT).show();
-                    // Toast.makeText(MainActivity.this, "children ="+dataSnapshot.getValue(), Toast.LENGTH_LONG).show();
-                    //Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
                     startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
                     finish();
 
@@ -201,8 +198,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     Toast.makeText(ConfigureActivity.this, "nope", Toast.LENGTH_SHORT).show();
                     editor.putBoolean("IS_SAVED",false);
                     editor.apply();
-                    //startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
-                    //finish();
+
                 }
 
             }

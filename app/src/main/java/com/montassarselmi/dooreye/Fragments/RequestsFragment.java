@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.daimajia.swipe.util.Attributes;
 import com.google.firebase.auth.FirebaseAuth;
@@ -88,6 +89,7 @@ public class RequestsFragment extends Fragment {
     private String boxId;
     private RequestRecyclerViewAdapter mAdapter;
     private ProgressBar mProgressBar;
+    private TextView txtNoRequests;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,6 +105,8 @@ public class RequestsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_requests);
         mRecyclerView.setVisibility(View.GONE);
+        txtNoRequests = (TextView) view.findViewById(R.id.txt_no_requests);
+        txtNoRequests.setVisibility(View.GONE);
         mDataSet = new ArrayList<User>();
         loadData();
         initRecyclerView();
@@ -168,7 +172,9 @@ public class RequestsFragment extends Fragment {
                 }
                 mAdapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
+                if (mDataSet.size() > 0)
                 mRecyclerView.setVisibility(View.VISIBLE);
+                else txtNoRequests.setVisibility(View.VISIBLE);
             }
 
             @Override

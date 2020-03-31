@@ -170,7 +170,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                             notifyItemRemoved(i);
                             notifyItemRangeChanged(i, usersList.size());
                             mItemManger.closeAllItems();
-                            Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("fullName").equalTo(simpleViewHolder.txtUserName.getText().toString());
+                            Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber").equalTo(simpleViewHolder.txtUserPhone.getText().toString());
                             mUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

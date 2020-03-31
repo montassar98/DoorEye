@@ -50,4 +50,8 @@
     <string name="refuse">Refuse</string>
     <string name="you_cant_refuse">Sorry you can\'t refuse this User.</string>
     <string name="you_cant_accept">Sorry you can\'t accept this User.</string>
+    <string name="there_are_no_requests_yet">There are No Requests Yet.</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="message">Message</string>
 </resources>

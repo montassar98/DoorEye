@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.montassarselmi.dooreye.EditActivity;
+import com.montassarselmi.dooreye.Fragments.MembersFragment;
 import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.R;
 import com.squareup.picasso.Picasso;
@@ -167,12 +168,13 @@ public class RequestRecyclerViewAdapter extends RecyclerSwipeAdapter<com.montass
                                 notifyItemRemoved(i);
                                 notifyItemRangeChanged(i, usersList.size());
                                 mItemManger.closeAllItems();
-                                Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("fullName").equalTo(simpleViewHolder.txtUserName.getText().toString());
+                                Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber").equalTo(simpleViewHolder.txtUserPhone.getText().toString());
                                 mUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                            mRefUser.child(mAuth.getUid()).child("status").setValue("user");
+                                            Log.d(TAG, "accepted "+appleSnapshot.toString());
+                                            appleSnapshot.getRef().child("status").setValue("user");
                                             Toast.makeText(mContext, "Accepted " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -209,7 +211,7 @@ public class RequestRecyclerViewAdapter extends RecyclerSwipeAdapter<com.montass
                                 notifyItemRemoved(i);
                                 notifyItemRangeChanged(i, usersList.size());
                                 mItemManger.closeAllItems();
-                                Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("fullName").equalTo(simpleViewHolder.txtUserName.getText().toString());
+                                Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber").equalTo(simpleViewHolder.txtUserPhone.getText().toString());
                                 mUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

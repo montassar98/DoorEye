@@ -43,10 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
-    private RelativeLayout visbleCheck,visibleEvent,visbleSetting;
     private CardView cvEventHistory,cvCheckFrontDoor,cvFamily,cvSettings,cvContactUs,cvLogout;
     private TextView userName;
-    private ImageView imgUser;
+    private CircleImageView imgUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +64,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cvFamily = (CardView) findViewById(R.id.cv_family);
         cvSettings= (CardView) findViewById(R.id.cv_settings);
         cvLogout= (CardView) findViewById(R.id.cv_logout);
-        visbleCheck= (RelativeLayout) findViewById(R.id.visible_check);
-        visibleEvent= (RelativeLayout) findViewById(R.id.visible_event);
-        visbleSetting= (RelativeLayout) findViewById(R.id.visible_setting);
         cvCheckFrontDoor.setOnClickListener(this);
         cvContactUs.setOnClickListener(this);
         cvEventHistory.setOnClickListener(this);
         cvFamily.setOnClickListener(this);
         cvSettings.setOnClickListener(this);
         cvLogout.setOnClickListener(this);
+        //get current user info
+        userName = (TextView) findViewById(R.id.txt_user_name);
+        imgUser = (CircleImageView) findViewById(R.id.user_image) ;
         //--------------------------------------------------------
         usersRef = database.getReference("BoxList/"+findBoxId()+"/users");
         checkIfUserAvailable();
         checkForCalls();
 
-        //get current user info
-        userName = (TextView) findViewById(R.id.txt_user_name);
-        imgUser = (ImageView) findViewById(R.id.user_image) ;
-        User user;
+
         getCurrentUserInfo();
 
         //check users visibility
@@ -97,9 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(mAuth.getUid()).child("status").getValue().toString().equals("waiting")) {
-                    visbleCheck.setVisibility(View.GONE);
-                    visibleEvent.setVisibility(View.GONE);
-                    visbleSetting.setVisibility(View.GONE);
 
                 }
             }
@@ -143,22 +136,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkIfUserAvailable() {
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: uid="+mAuth.getCurrentUser().getUid());
 
-                if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
+                if (!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
                 {
-//                    Toast.makeText(MainActivity.this, "find it", Toast.LENGTH_SHORT).show();
-                   // Toast.makeText(MainActivity.this, "children ="+dataSnapshot.getValue(), Toast.LENGTH_LONG).show();
-                    //Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
-
-                }else {
                     Toast.makeText(MainActivity.this, "nope", Toast.LENGTH_SHORT).show();
                     editor.putBoolean("IS_SAVED",false);
                     editor.apply();
                     startActivity(new Intent(MainActivity.this,ConfigureActivity.class));
+                    finish();
+                }
+                if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("status").getValue().equals("waiting")){
+                    startActivity(new Intent(MainActivity.this, WaitingActivity.class));
                     finish();
                 }
 
@@ -197,8 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: data "+ dataSnapshot.getValue());
-                if (dataSnapshot.child(mAuth.getUid()).hasChild("Ringing") && dataSnapshot.child(mAuth.getUid()).hasChild("pickup"))
-                {
+                    if (dataSnapshot.child(mAuth.getUid()).hasChild("Ringing") && dataSnapshot.child(mAuth.getUid()).hasChild("pickup")) {
                         if (dataSnapshot.child(mAuth.getUid()).child("pickup").getValue().equals(false)) {
                             Log.d(TAG, " user have a call");
                             Toast.makeText(MainActivity.this, getResources().getString(R.string.uset_have_call), Toast.LENGTH_LONG).show();
@@ -207,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
 
 
-                }else Log.d(TAG, "onDataChange: there is no call yet.");
+                    } else Log.d(TAG, "onDataChange: there is no call yet.");
 
             }
 
@@ -317,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void onContactUsClicked() {
         Log.d(TAG, "onContactUsClicked ");
         Toast.makeText(this, "onContactUsClicked ", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, ContactUsActivity.class));
     }
 
     private void onLogoutClicked() {

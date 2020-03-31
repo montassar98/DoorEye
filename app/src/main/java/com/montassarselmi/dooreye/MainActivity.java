@@ -14,6 +14,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.Services.ForegroundCallService;
 import com.montassarselmi.dooreye.Utils.FamilyRecyclerViewAdapter;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,7 +43,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
+    private RelativeLayout visbleCheck,visibleEvent,visbleSetting;
     private CardView cvEventHistory,cvCheckFrontDoor,cvFamily,cvSettings,cvContactUs,cvLogout;
+    private TextView userName;
+    private ImageView imgUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cvFamily = (CardView) findViewById(R.id.cv_family);
         cvSettings= (CardView) findViewById(R.id.cv_settings);
         cvLogout= (CardView) findViewById(R.id.cv_logout);
+        visbleCheck= (RelativeLayout) findViewById(R.id.visible_check);
+        visibleEvent= (RelativeLayout) findViewById(R.id.visible_event);
+        visbleSetting= (RelativeLayout) findViewById(R.id.visible_setting);
         cvCheckFrontDoor.setOnClickListener(this);
         cvContactUs.setOnClickListener(this);
         cvEventHistory.setOnClickListener(this);
@@ -66,7 +79,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         checkIfUserAvailable();
         checkForCalls();
 
+        //get current user info
+        userName = (TextView) findViewById(R.id.txt_user_name);
+        imgUser = (ImageView) findViewById(R.id.user_image) ;
+        User user;
+        getCurrentUserInfo();
 
+        //check users visibility
+        checkUserVisibility();
+
+
+
+    }
+
+    private void checkUserVisibility() {
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(mAuth.getUid()).child("status").getValue().toString().equals("waiting")) {
+                    visbleCheck.setVisibility(View.GONE);
+                    visibleEvent.setVisibility(View.GONE);
+                    visbleSetting.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getCurrentUserInfo() {
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
+                {
+                    userName.setText(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("fullName").getValue().toString());
+                    if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild("profileImage"))
+                    {
+                        Picasso.get().load(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("profileImage").getValue().toString()).into(imgUser);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static void changeStatusBarToWhite(Activity activity) {
@@ -248,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void onSettingsClicked() {
         Log.d(TAG, "onSettingsClicked ");
         Toast.makeText(this, "onSettingsClicked ", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(MainActivity.this, EditActivity.class));
+        //startActivity(new Intent(MainActivity.this, EditActivity.class));
     }
 
     private void onContactUsClicked() {

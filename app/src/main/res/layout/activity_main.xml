@@ -82,6 +82,7 @@
                     <ImageView
                         android:layout_width="38dp"
                         android:layout_height="38dp"
+                        android:id="@+id/user_image"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/splash_logo" />
 
@@ -197,6 +198,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/visible_event"
                 android:padding="8dp">
 
                 <TextView
@@ -232,6 +234,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/visible_check"
                 android:padding="8dp">
 
                 <TextView
@@ -308,6 +311,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/visible_setting"
                 android:padding="8dp">
 
                 <TextView

@@ -43,7 +43,11 @@
     <string name="choose_photo">Choose Photo?</string>
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
-    <string name="you_cant_modify">sorry you can\'t modify this User.</string>
-    <string name="you_cant_delete">sorry you can\'t delete this User.</string>
+    <string name="you_cant_modify">Sorry you can\'t modify this User.</string>
+    <string name="you_cant_delete">Sorry you can\'t delete this User.</string>
     <string name="fail_upload_image">Failed uploading image, Please try again.</string>
+    <string name="accept">Accept</string>
+    <string name="refuse">Refuse</string>
+    <string name="you_cant_refuse">Sorry you can\'t refuse this User.</string>
+    <string name="you_cant_accept">Sorry you can\'t accept this User.</string>
 </resources>

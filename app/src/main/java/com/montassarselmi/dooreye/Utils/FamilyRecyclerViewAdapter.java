@@ -150,7 +150,8 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.child("BoxList").child(boxId).child("users")
-                                .child(mAuth.getUid()).child("phoneNumber").getValue().equals(item.getPhoneNumber())) {
+                                .child(mAuth.getUid()).child("phoneNumber").getValue().equals(item.getPhoneNumber()) ||
+                                dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getUid()).child("status").getValue().toString().equals("admin")) {
                             Intent intent = new Intent(mContext, EditActivity.class);
                             intent.putExtra("EMAIL",item.getEmail());
                             intent.putExtra("FULL_NAME",item.getFullName());

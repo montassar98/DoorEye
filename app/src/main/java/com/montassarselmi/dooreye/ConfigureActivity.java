@@ -117,7 +117,7 @@ public class ConfigureActivity extends AppCompatActivity {
                                 Log.d(TAG, " data Ref: "+data.toString());
                                 if (data.child("users").hasChildren())
                                 {
-                                    status = "user";
+                                    status = "waiting";
                                 }
 
                                 User user = new User(fullName,phoneNumber,email,boxId,status);

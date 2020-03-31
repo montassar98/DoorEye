@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".Utils.RequestRecyclerViewAdapter"></activity>
+        <activity android:name=".TestActivity" />
         <activity android:name=".EditActivity" />
         <activity android:name=".FamilyActivity" />
         <activity android:name=".SplashActivity">

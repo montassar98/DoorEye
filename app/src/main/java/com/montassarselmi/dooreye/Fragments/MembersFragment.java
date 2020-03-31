@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -77,6 +78,8 @@ public class MembersFragment extends Fragment {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference mBoxUsersRef;
     private String boxId;
+    private FirebaseAuth mAuth;
+
     private FamilyRecyclerViewAdapter mAdapter;
     private ProgressBar mProgressBar;
 
@@ -89,6 +92,7 @@ public class MembersFragment extends Fragment {
         editor = mSharedPreferences.edit();
         boxId = mSharedPreferences.getString("BOX_ID","NULL");
         Log.d(TAG, "BOX_ID: "+boxId);
+        mAuth = FirebaseAuth.getInstance();
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_cyclic);
         mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_family);
@@ -141,23 +145,24 @@ public class MembersFragment extends Fragment {
         mBoxUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     Log.d(TAG, "" + dataSnapshot.toString());
                     User user;
                     user = data.getValue(User.class);
-                    if (user.getStatus() != null && user.getStatus().equals("admin"))
+                    if (dataSnapshot.child(mAuth.getUid()).child("status").getValue().equals("admin")
+                            || dataSnapshot.child(mAuth.getUid()).child("status").getValue().equals("user"))
                     {
-                        mDataSet.add(0, user);
-
-
+                        if (user.getStatus() != null) {
+                            if (user.getStatus().equals("admin"))
+                                mDataSet.add(0, user);
+                            if (user.getStatus().equals("user"))
+                                mDataSet.add(user);
+                        }
                     }
-                    else
-                        mDataSet.add(user);
 
 
                 }
-                Log.d(TAG, ""+mDataSet.get(0).getProfileImage());
+              //  Log.d(TAG, ""+mDataSet.get(0).getProfileImage());
                 mAdapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);

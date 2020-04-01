@@ -26,6 +26,7 @@
     <string name="empty_fullname">Please enter your name here</string>
     <string name="empty_email">Please enter your mail here</string>
     <string name="empty_boxId">Please enter your box id here</string>
+    <string name="empty_message">Please enter your message here</string>
     <string name="error_email">Please enter your real email</string>
     <string name="error_fullname">Please enter your real fullname</string>
     <string name="error_boxId">There is no box with this id</string>
@@ -54,4 +55,6 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="message">Message</string>
+    <string name="send_mail">send mail...</string>
+    <string name="error_mail_sending">There is no email client installed.</string>
 </resources>

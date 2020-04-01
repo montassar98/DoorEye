@@ -165,17 +165,17 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getUid()).child("status").getValue().toString().equals("admin")) {
-                            mItemManger.removeShownLayouts(simpleViewHolder.swipeLayout);
-                            usersList.remove(i);
-                            notifyItemRemoved(i);
-                            notifyItemRangeChanged(i, usersList.size());
-                            mItemManger.closeAllItems();
                             Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber").equalTo(simpleViewHolder.txtUserPhone.getText().toString());
                             mUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                         appleSnapshot.getRef().removeValue();
+                                        mItemManger.removeShownLayouts(simpleViewHolder.swipeLayout);
+                                        usersList.remove(i);
+                                        notifyItemRemoved(i);
+                                        notifyItemRangeChanged(i, usersList.size());
+                                        mItemManger.closeAllItems();
                                         Toast.makeText(mContext, "Deleted " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
 
                                     }

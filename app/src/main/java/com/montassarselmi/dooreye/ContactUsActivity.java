@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -52,19 +53,27 @@ public class ContactUsActivity extends AppCompatActivity {
         String email = edtEmail.getText().toString().trim();
         String message = edtMessage.getText().toString().trim();
         if (name.isEmpty()){
-            edtName.setError("Name Required");
+            edtName.setError(getResources().getString(R.string.empty_fullname));
+            edtName.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError(getResources().getString(R.string.error_email));
+            edtEmail.requestFocus();
             return;
         }
         if (email.isEmpty()){
-            edtEmail.setError("Email Required");
+            edtEmail.setError(getResources().getString(R.string.empty_email));
+            edtEmail.requestFocus();
             return;
         }
         if (message.isEmpty()){
-            edtMessage.setError("Message Required");
+            edtEmail.setError(getResources().getString(R.string.empty_message));
+            edtMessage.requestFocus();
             return;
         }
 
-        String[] TO = {"dooreye98@gmail.com", "hkouma2011@gmail.com", "montassarselmi372@gmail.com"};
+        String[] TO = {"dooreye98@gmail.com"};
         //String[] CC = {"xyz@gmail.com"};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
@@ -76,12 +85,12 @@ public class ContactUsActivity extends AppCompatActivity {
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "DoorEye User: "+ name);
         emailIntent.putExtra(Intent.EXTRA_TEXT, message);
         try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.send_mail)));
             finish();
             Log.i(TAG, "email sent");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(ContactUsActivity.this,
-                    "There is no email client installed.", Toast.LENGTH_SHORT).show();
+                    getResources().getString(R.string.error_mail_sending), Toast.LENGTH_SHORT).show();
         }
 
 

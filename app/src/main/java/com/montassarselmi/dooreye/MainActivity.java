@@ -75,34 +75,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imgUser = (CircleImageView) findViewById(R.id.user_image) ;
         //--------------------------------------------------------
         usersRef = database.getReference("BoxList/"+findBoxId()+"/users");
+        getCurrentUserInfo();
         checkIfUserAvailable();
         checkForCalls();
 
-
-        getCurrentUserInfo();
-
-        //check users visibility
-        checkUserVisibility();
-
-
-
     }
 
-    private void checkUserVisibility() {
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(mAuth.getUid()).child("status").getValue().toString().equals("waiting")) {
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private void getCurrentUserInfo() {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -291,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void onCheckFrontDoorClicked() {
         Log.d(TAG, "onCheckFrontDoorClicked");
         Toast.makeText(this, "onCheckFrontDoorClicked", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, CheckFrontDoorActivity.class));
     }
 
     private void onFamilyClicked() {

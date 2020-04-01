@@ -53,9 +53,9 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""))
+        userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
-        userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""));
+        userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
 
         checkIfSomeonePickedUp();
     }

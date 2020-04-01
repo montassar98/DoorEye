@@ -149,18 +149,13 @@ public class MembersFragment extends Fragment {
                     Log.d(TAG, "" + dataSnapshot.toString());
                     User user;
                     user = data.getValue(User.class);
-                    if (dataSnapshot.child(mAuth.getUid()).child("status").getValue().equals("admin")
-                            || dataSnapshot.child(mAuth.getUid()).child("status").getValue().equals("user"))
-                    {
-                        if (user.getStatus() != null) {
-                            if (user.getStatus().equals("admin"))
-                                mDataSet.add(0, user);
-                            if (user.getStatus().equals("user"))
-                                mDataSet.add(user);
-                        }
+
+                    if (user.getStatus() != null) {
+                        if (user.getStatus().equals("admin"))
+                        {mDataSet.add(0, user);}
+                        if (user.getStatus().equals("user"))
+                        {       mDataSet.add(user);}
                     }
-
-
                 }
               //  Log.d(TAG, ""+mDataSet.get(0).getProfileImage());
                 mAdapter.notifyDataSetChanged();

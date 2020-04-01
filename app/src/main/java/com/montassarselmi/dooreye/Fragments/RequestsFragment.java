@@ -164,7 +164,7 @@ public class RequestsFragment extends Fragment {
                     User user;
                     user = data.getValue(User.class);
                         if (user.getStatus() != null && user.getStatus().equals("waiting")) {
-                                mDataSet.add(user);
+                            mDataSet.add(user);
 
                     }
 

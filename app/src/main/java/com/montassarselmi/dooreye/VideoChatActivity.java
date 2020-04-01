@@ -76,9 +76,9 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         editor = mSharedPreferences.edit();
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""))
+        userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
-        userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID",""));
+        userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
 
 
         requestPermissions();
@@ -247,6 +247,11 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
                     userInfoRef.child("pickup").removeValue();
 
                 }
+                if (dataSnapshot.hasChild("checking"))
+                {
+                    Log.d(LOG_TAG, "onDataChange: delete checking reference.");
+                    userInfoRef.child("checking").removeValue();
+                }
             }
 
             @Override
@@ -267,6 +272,5 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
 
             }
         });
-        finish();
     }
 }

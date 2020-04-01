@@ -95,9 +95,14 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         String roomId= mSharedPreferences.getString("BOX_ID","0");
         //int roomId = mSharedPreferences.getInt("ROOM_ID",100000);
         Log.d(LOG_TAG, "roomId: "+roomId);
-        Toast.makeText(this, ""+roomId, Toast.LENGTH_LONG).show();
+        String url ="https://dooreye.herokuapp.com";
+        if(mSharedPreferences.getBoolean("CHECKING", false)){
+            url = "https://dooreyebox.herokuapp.com";
+            editor.putBoolean("CHECKING", false);
+            editor.apply();
+        }
         reqQueue.add(new JsonObjectRequest(Request.Method.GET,
-                "https://dooreye.herokuapp.com" + "/room/:"+roomId,
+                url + "/room/:"+roomId,
                 null, new Response.Listener<JSONObject>() {
 
             @Override

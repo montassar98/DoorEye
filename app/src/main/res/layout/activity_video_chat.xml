@@ -12,7 +12,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/background_dark"
             android:id="@+id/subscriber_container">
 
             <FrameLayout
@@ -21,7 +21,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="30dp"
                 android:id="@+id/publisher_container"
-                android:background="@android:color/holo_blue_dark"/>
+                android:background="@android:color/holo_red_light"/>
         </FrameLayout>
 
 

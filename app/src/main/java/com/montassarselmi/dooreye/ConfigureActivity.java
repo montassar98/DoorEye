@@ -123,9 +123,9 @@ public class ConfigureActivity extends AppCompatActivity {
                                 User user = new User(fullName,phoneNumber,email,boxId,status);
                                 mRefBoxUser =database.getReference("BoxList/"+boxId+"/users");
                                 mRefBoxUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
-
-                                startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
                                 isAvailable=true;
+                                startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
+                                finish();
 
                                 return;
                             }

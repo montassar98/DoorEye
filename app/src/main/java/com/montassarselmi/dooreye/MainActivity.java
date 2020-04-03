@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.montassarselmi.dooreye.Model.EventHistory;
 import com.montassarselmi.dooreye.Services.ForegroundCallService;
 
 import com.squareup.picasso.Picasso;
@@ -262,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void onEventHistoryClicked() {
         Log.d(TAG, "onEventHistoryClicked ");
         Toast.makeText(this, "onEventHistoryClicked", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, EventHistoryActivity.class));
     }
 
     private void onCheckFrontDoorClicked() {

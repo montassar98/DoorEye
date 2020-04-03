@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_all"
+        android:icon="@drawable/ic_recents"
+        android:title="@string/all"/>
+    <item
+        android:id="@+id/tab_rings"
+        android:icon="@drawable/ic_rings"
+        android:title="@string/rings"/>
+    <item
+        android:id="@+id/tab_motions"
+        android:icon="@drawable/ic_motions"
+        android:title="@string/motions"/>
+    <item
+        android:id="@+id/tab_live"
+        android:icon="@drawable/ic_live_bottom"
+        android:title="@string/live"/>
+</menu>

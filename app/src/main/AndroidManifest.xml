@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".CheckFrontDoorActivity"></activity>
+        <activity android:name=".EventHistoryActivity"></activity>
+        <activity android:name=".CheckFrontDoorActivity" />
         <activity
             android:name=".ContactUsActivity"
             android:theme="@style/AppTheme.TransparentTheme" />

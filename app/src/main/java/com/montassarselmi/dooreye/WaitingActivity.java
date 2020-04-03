@@ -53,9 +53,11 @@ public class WaitingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: uid="+mAuth.getCurrentUser().getUid());
+                Log.d(TAG, "waiting...");
 
-                if (!dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("status").equals("waiting"))
+                if (!dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("status").getValue().equals("waiting"))
                 {
+                    Log.d(TAG, dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("status").getValue().toString());
                     startActivity(new Intent(WaitingActivity.this,MainActivity.class));
                     finish();
                 }

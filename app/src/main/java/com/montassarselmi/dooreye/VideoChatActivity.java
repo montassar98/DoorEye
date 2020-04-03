@@ -92,8 +92,8 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
 
     public void fetchSessionConnectionData() {
         RequestQueue reqQueue = Volley.newRequestQueue(this);
-        String roomId= mSharedPreferences.getString("BOX_ID","0");
-        //int roomId = mSharedPreferences.getInt("ROOM_ID",100000);
+        String roomId= mSharedPreferences.getString("BOX_ID","Null");
+
         Log.d(LOG_TAG, "roomId: "+roomId);
         String url ="https://dooreye.herokuapp.com";
         if(mSharedPreferences.getBoolean("CHECKING", false)){

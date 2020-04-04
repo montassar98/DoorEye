@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences.Editor editor;
     private CardView cvEventHistory,cvCheckFrontDoor,cvFamily,cvSettings,cvContactUs,cvLogout;
     private TextView userName;
-    private CircleImageView imgUser;
+    private ImageView imgUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cvLogout.setOnClickListener(this);
         //get current user info
         userName = (TextView) findViewById(R.id.txt_user_name);
-        imgUser = (CircleImageView) findViewById(R.id.user_image) ;
+        imgUser = (ImageView) findViewById(R.id.user_image) ;
         //--------------------------------------------------------
         usersRef = database.getReference("BoxList/"+findBoxId()+"/users");
         getCurrentUserInfo();

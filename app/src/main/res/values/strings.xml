@@ -57,8 +57,8 @@
     <string name="message">Message</string>
     <string name="send_mail">send mail...</string>
     <string name="error_mail_sending">There is no email client installed.</string>
-    <string name="all">All</string>
     <string name="rings">Rings</string>
     <string name="motions">Motions</string>
-    <string name="live">Live</string>
+    <string name="live">Door Checks</string>
+    <string name="all">All</string>
 </resources>

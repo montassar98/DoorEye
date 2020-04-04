@@ -53,9 +53,6 @@ public class FamilyActivity extends AppCompatActivity  {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setCustomView(R.layout.titlesize);
-
-            //actionBar.setLogo(R.drawable.ic_familytxt);
-            //actionBar.
         }
 
         myViewPager2 = findViewById(R.id.viewpager);

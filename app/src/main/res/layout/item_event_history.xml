@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    android:elevation="4dp"
+    app:cardCornerRadius="20dp"
     android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="70dp"
         android:src="@drawable/ic_live"
-        android:padding="15dp"
+        android:padding="20dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:id="@+id/img_state"/>
@@ -16,9 +22,18 @@
         android:layout_height="70dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:padding="15dp"
+        android:padding="20dp"
         android:src="@drawable/ic_expand"
         android:id="@+id/img_expand"/>
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="70dp"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:padding="20dp"
+        android:src="@drawable/ic_expand_off"
+        android:id="@+id/img_expand_off"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -47,6 +62,16 @@
             android:textSize="18sp"
             android:textColor="@color/common_google_signin_btn_text_light"
             android:text="Live - "/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textStyle="bold"
+                android:id="@+id/dash"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:textColor="@color/common_google_signin_btn_text_light"
+                android:text=" - "/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,6 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:visibility="gone"
+        android:id="@+id/rl_expand"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/img_state">
@@ -77,8 +103,10 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:src="@drawable/profile"
-            android:id="@+id/img_visitor"/>
+            android:id="@+id/img_visitor"
+            android:layout_marginBottom="5dp"/>
 
     </RelativeLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

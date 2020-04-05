@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main"
     tools:context=".VideoChatActivity">
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -35,4 +37,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
         android:id="@+id/btn_end_video_call"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_live_bottom"
+        android:id="@+id/image_view"/>
 </RelativeLayout>

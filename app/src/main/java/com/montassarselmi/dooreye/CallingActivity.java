@@ -62,7 +62,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
-        dateFormat = new SimpleDateFormat("HH:mm 'le' dd/MM/yyyy");
+        dateFormat = new SimpleDateFormat("HH:mm - dd/MM/yyyy");
         //get current date time with Date()
         date = new Date();
         time = dateFormat.format(date);

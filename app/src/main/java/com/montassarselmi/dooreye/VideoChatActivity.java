@@ -1,6 +1,7 @@
 package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -16,21 +17,35 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.montassarselmi.dooreye.Model.Live;
+import com.montassarselmi.dooreye.Model.Ring;
+import com.montassarselmi.dooreye.Utils.Screenshot;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
 import com.opentok.android.Session;
 
+import android.os.Environment;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -41,6 +56,14 @@ import android.widget.Toast;
 
 import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -60,8 +83,15 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private FirebaseDatabase database;
-    private DatabaseReference userInfoRef,userBoxRef;
+    private DatabaseReference userInfoRef,userBoxRef, boxHistoryRef;
     private FirebaseAuth mAuth;
+    private boolean isLive = false;
+    private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+
+
+    private ImageView imageView;
+    private View main;
+
 
 
     @Override
@@ -75,11 +105,14 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         mAuth = FirebaseAuth.getInstance();
+        imageView = findViewById(R.id.image_view);
+        imageView.setImageDrawable(getDrawable(R.drawable.profile));
+        main = findViewById(R.id.main);
         database = FirebaseDatabase.getInstance();
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
-
+        boxHistoryRef = database.getReference("BoxList/"+mSharedPreferences.getString("BOX_ID","Null")+"/history/");
 
         requestPermissions();
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
@@ -90,6 +123,17 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         if (mSubscriber !=null){mSubscriber.destroy();}
     }
 
+
+    private void addLiveHistory()
+    {
+        Log.d(LOG_TAG, "adding to the history...");
+        // send to the history
+        Random random = new Random();
+        int id = random.nextInt(99999-10000)+10000;
+        Date currentTime = Calendar.getInstance().getTime();
+        Live live = new Live(id, currentTime.toString(),mAuth.getCurrentUser().getPhoneNumber());
+        boxHistoryRef.child("live").child(String.valueOf(id)).setValue(live);
+    }
     public void fetchSessionConnectionData() {
         RequestQueue reqQueue = Volley.newRequestQueue(this);
         String roomId= mSharedPreferences.getString("BOX_ID","Null");
@@ -100,6 +144,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             url = "https://dooreyebox.herokuapp.com";
             editor.putBoolean("CHECKING", false);
             editor.apply();
+            isLive = true;
         }
         reqQueue.add(new JsonObjectRequest(Request.Method.GET,
                 url + "/room/:"+roomId,
@@ -139,7 +184,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     }
     @AfterPermissionGranted(RC_VIDEO_APP_PERM)
     private void requestPermissions() {
-        String[] perms = { Manifest.permission.INTERNET, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO };
+        String[] perms = { Manifest.permission.INTERNET, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // initialize view objects from your layout
             mPublisherViewContainer = (FrameLayout) findViewById(R.id.publisher_container);
@@ -182,7 +227,52 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             mSubscriber = new Subscriber.Builder(this, stream).build();
             mSession.subscribe(mSubscriber);
             mSubscriberViewContainer.addView(mSubscriber.getView());
+            if (isLive)
+                addLiveHistory();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    takeScreenshot();
+                }
+            },25000);
+
         }
+    }
+
+    private void takeScreenshot() {
+        Log.d(LOG_TAG, "Taking screenshot... ");
+        final StorageReference ref = mStorageRef.child("screenshots/rings/"+mAuth.getUid());
+        Bitmap b = Screenshot.takeScreenshotOfRootView(imageView);
+
+        imageView.setImageBitmap(b);
+        main.setBackgroundColor(Color.parseColor("#999999"));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+        byte[] bitmapData = baos.toByteArray();
+        UploadTask uploadTask = ref.putBytes(bitmapData);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d(LOG_TAG, "image uri: "+uri.toString());
+                        Random random = new Random();
+                        int id = random.nextInt(99999-10000)+10000;
+                        Date currentTime = Calendar.getInstance().getTime();
+                        Ring ring = new Ring(id, currentTime.toString(),mAuth.getCurrentUser().getPhoneNumber(), uri.toString());
+                        boxHistoryRef.child("rings").child(String.valueOf(id)).setValue(ring);
+
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(VideoChatActivity.this, "failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

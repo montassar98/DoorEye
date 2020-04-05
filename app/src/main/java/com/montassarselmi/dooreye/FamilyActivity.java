@@ -5,24 +5,19 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.montassarselmi.dooreye.Fragments.MembersFragment;
 import com.montassarselmi.dooreye.Fragments.RequestsFragment;
 
-import com.montassarselmi.dooreye.Utils.FamilyRecyclerViewAdapter;
 import com.montassarselmi.dooreye.Utils.ViewPagerFragmentAdapter;
 import com.montassarselmi.dooreye.Utils.ZoomOutPageTransformer;
 
@@ -52,7 +47,13 @@ public class FamilyActivity extends AppCompatActivity  {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            getSupportActionBar().setCustomView(R.layout.titlesize);
+            getSupportActionBar().setCustomView(R.layout.appbar_family);
+            findViewById(R.id.img_back_arrow_edit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
         }
 
         myViewPager2 = findViewById(R.id.viewpager);

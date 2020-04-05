@@ -12,6 +12,7 @@
         android:layout_marginEnd="8dp"
         android:id="@+id/img_back_arrow_edit"/>
     <TextView
+        android:layout_marginLeft="10dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

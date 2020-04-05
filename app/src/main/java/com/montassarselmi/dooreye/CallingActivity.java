@@ -23,6 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CallingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG="CallingActivity";
@@ -34,7 +38,9 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
-
+    private DateFormat dateFormat;
+    private Date date;
+    private String time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +62,10 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
-
+        dateFormat = new SimpleDateFormat("HH:mm 'le' dd/MM/yyyy");
+        //get current date time with Date()
+        date = new Date();
+        time = dateFormat.format(date);
         checkIfSomeonePickedUp();
     }
 
@@ -143,6 +152,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
                 {
                     Log.d(TAG, "onDataChange: delete ringing reference.");
                     userInfoRef.child("pickup").setValue(true);
+
 
                 }
             }

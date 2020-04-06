@@ -228,51 +228,52 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             mSession.subscribe(mSubscriber);
             mSubscriberViewContainer.addView(mSubscriber.getView());
             if (isLive)
-                addLiveHistory();
+            {   addLiveHistory();}
+            takeScreenshot();
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    takeScreenshot();
-                }
-            },25000);
 
         }
     }
 
     private void takeScreenshot() {
-        Log.d(LOG_TAG, "Taking screenshot... ");
-        final StorageReference ref = mStorageRef.child("screenshots/rings/"+mAuth.getUid());
-        Bitmap b = Screenshot.takeScreenshotOfRootView(imageView);
-
-        imageView.setImageBitmap(b);
-        main.setBackgroundColor(Color.parseColor("#999999"));
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.JPEG, 30, baos);
-        byte[] bitmapData = baos.toByteArray();
-        UploadTask uploadTask = ref.putBytes(bitmapData);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Log.d(LOG_TAG, "image uri: "+uri.toString());
-                        Random random = new Random();
-                        int id = random.nextInt(99999-10000)+10000;
-                        Date currentTime = Calendar.getInstance().getTime();
-                        Ring ring = new Ring(id, currentTime.toString(),mAuth.getCurrentUser().getPhoneNumber(), uri.toString());
-                        boxHistoryRef.child("rings").child(String.valueOf(id)).setValue(ring);
+            public void run() {
+                Log.d(LOG_TAG, "Taking screenshot... ");
+                final StorageReference ref = mStorageRef.child("screenshots/rings/"+mAuth.getUid());
+                Bitmap b = Screenshot.takeScreenshotOfRootView(imageView);
 
+                imageView.setImageBitmap(b);
+                main.setBackgroundColor(Color.parseColor("#999999"));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                b.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+                byte[] bitmapData = baos.toByteArray();
+                UploadTask uploadTask = ref.putBytes(bitmapData);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.d(LOG_TAG, "image uri: "+uri.toString());
+                                Random random = new Random();
+                                int id = random.nextInt(99999-10000)+10000;
+                                Date currentTime = Calendar.getInstance().getTime();
+                                Ring ring = new Ring(id, currentTime.toString(),mAuth.getCurrentUser().getPhoneNumber(), uri.toString());
+                                boxHistoryRef.child("rings").child(String.valueOf(id)).setValue(ring);
+
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(VideoChatActivity.this, "failed", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(VideoChatActivity.this, "failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+            },20000);
+
     }
 
     @Override

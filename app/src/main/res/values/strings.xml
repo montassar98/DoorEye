@@ -62,4 +62,5 @@
     <string name="live">Door Checks</string>
     <string name="all">All</string>
     <string name="event_history">Event History</string>
+    <string name="date_format">HH:mm  dd/MM/yyyy</string>
 </resources>

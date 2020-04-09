@@ -91,7 +91,6 @@ public class MembersFragment extends Fragment {
         mSharedPreferences = getContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         boxId = mSharedPreferences.getString("BOX_ID","NULL");
-        Log.d(TAG, "BOX_ID: "+boxId);
         mAuth = FirebaseAuth.getInstance();
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_cyclic);
         mProgressBar.setVisibility(View.VISIBLE);

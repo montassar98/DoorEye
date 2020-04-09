@@ -37,7 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.montassarselmi.dooreye.Model.Live;
 import com.montassarselmi.dooreye.Model.Ring;
-import com.montassarselmi.dooreye.Utils.Screenshot;
+
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
@@ -136,9 +136,12 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         // send to the history
         Random random = new Random();
         int id = random.nextInt(99999-10000)+10000;
-        Date currentTime = Calendar.getInstance().getTime();
-        Live live = new Live(id, currentTime.toString(),mAuth.getCurrentUser().getPhoneNumber());
-        boxHistoryRef.child("live").child(String.valueOf(id)).setValue(live);
+        DateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));
+        //get current date time with Date()
+        Date date = new Date();
+        String time = dateFormat.format(date);
+        Live live = new Live(id, time,mAuth.getCurrentUser().getPhoneNumber());
+        boxHistoryRef.child("live").child(time).setValue(live);
     }
     public void fetchSessionConnectionData() {
         RequestQueue reqQueue = Volley.newRequestQueue(this);
@@ -234,8 +237,10 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             mSession.subscribe(mSubscriber);
             mSubscriberViewContainer.addView(mSubscriber.getView());
             if (isLive)
-            {   addLiveHistory();}
-            //takeScreenshot();
+            {
+                addLiveHistory();
+                isLive = false;
+            }
             createRingHistory();
 
         }
@@ -259,7 +264,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(LOG_TAG, "instant image path \n"+dataSnapshot.getValue());
                 VideoChatActivity.this.ring.setVisitorImage(dataSnapshot.getValue().toString());
-                boxHistoryRef.child("rings").child(String.valueOf(VideoChatActivity.this.ring.getId()))
+                boxHistoryRef.child("rings").child(String.valueOf(VideoChatActivity.this.ring.getEventTime()))
                         .setValue(VideoChatActivity.this.ring);
             }
 
@@ -270,46 +275,6 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         });
     }
 
-    private void takeScreenshot() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(LOG_TAG, "Taking screenshot... ");
-                final StorageReference ref = mStorageRef.child("screenshots/rings/"+mAuth.getUid());
-                Bitmap b = Screenshot.takeScreenshotOfRootView(imageView);
-
-                imageView.setImageBitmap(b);
-                main.setBackgroundColor(Color.parseColor("#999999"));
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                b.compress(Bitmap.CompressFormat.JPEG, 30, baos);
-                byte[] bitmapData = baos.toByteArray();
-                UploadTask uploadTask = ref.putBytes(bitmapData);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Log.d(LOG_TAG, "image uri: "+uri.toString());
-                                Random random = new Random();
-                                int id = random.nextInt(99999-10000)+10000;
-                                Date currentTime = Calendar.getInstance().getTime();
-                                Ring ring = new Ring(id, currentTime.toString(),mAuth.getCurrentUser().getPhoneNumber(), uri.toString());
-                                boxHistoryRef.child("rings").child(String.valueOf(id)).setValue(ring);
-
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(VideoChatActivity.this, "failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            },20000);
-
-    }
 
     @Override
     public void onStreamDropped(Session session, Stream stream) {

@@ -13,7 +13,7 @@ public class EventHistory {
     private String responder;
     private String visitorImage;
 
-    public EventHistory(int id, String eventTime, int icon, String status, @Nullable String responder, @Nullable String visitorImage) {
+    public EventHistory(@Nullable int id,@Nullable String eventTime,@Nullable int icon,@Nullable String status, @Nullable String responder, @Nullable String visitorImage) {
         this.id = id;
         this.eventTime = eventTime;
         this.icon = icon;

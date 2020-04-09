@@ -84,9 +84,9 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     private SharedPreferences.Editor editor;
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef,userBoxRef, boxHistoryRef;
-    private FirebaseAuth mAuth;
-    private boolean isLive = false;
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+    private FirebaseAuth mAuth;
+    private boolean isLive;
 
 
     private ImageView imageView;
@@ -104,20 +104,21 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         setContentView(R.layout.activity_video_chat);
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
-        mAuth = FirebaseAuth.getInstance();
         imageView = findViewById(R.id.image_view);
         imageView.setImageDrawable(getDrawable(R.drawable.profile));
         main = findViewById(R.id.main);
+        mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        boxHistoryRef = database.getReference("BoxList/"+mSharedPreferences.getString("BOX_ID","Null")+"/history/");
+
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
-        boxHistoryRef = database.getReference("BoxList/"+mSharedPreferences.getString("BOX_ID","Null")+"/history/");
 
         requestPermissions();
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
         mSubscriberViewContainer = (FrameLayout)findViewById(R.id.subscriber_container);
-
+        isLive = false;
         findViewById(R.id.btn_end_video_call).setOnClickListener(this);
         if (mPublisher !=null){mPublisher.destroy();}
         if (mSubscriber !=null){mSubscriber.destroy();}

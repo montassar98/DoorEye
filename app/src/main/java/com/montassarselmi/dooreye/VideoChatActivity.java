@@ -60,6 +60,8 @@ import com.opentok.android.Subscriber;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -84,13 +86,16 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     private SharedPreferences.Editor editor;
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef,userBoxRef, boxHistoryRef;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    private boolean isLive = false;
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-    private FirebaseAuth mAuth;
-    private boolean isLive;
+    private DatabaseReference instantImagePathRef;
 
 
     private ImageView imageView;
     private View main;
+    private  Ring ring;
 
 
 
@@ -104,21 +109,21 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         setContentView(R.layout.activity_video_chat);
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
+        mAuth = FirebaseAuth.getInstance();
         imageView = findViewById(R.id.image_view);
         imageView.setImageDrawable(getDrawable(R.drawable.profile));
         main = findViewById(R.id.main);
-        mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        boxHistoryRef = database.getReference("BoxList/"+mSharedPreferences.getString("BOX_ID","Null")+"/history/");
-
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
-
+        boxHistoryRef = database.getReference("BoxList/"+mSharedPreferences.getString("BOX_ID","Null")+"/history/");
+        instantImagePathRef = database.getReference().child("BoxList")
+                .child(mSharedPreferences.getString("BOX_ID","Null")).child("history").child("instantImagePath");
         requestPermissions();
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
         mSubscriberViewContainer = (FrameLayout)findViewById(R.id.subscriber_container);
-        isLive = false;
+
         findViewById(R.id.btn_end_video_call).setOnClickListener(this);
         if (mPublisher !=null){mPublisher.destroy();}
         if (mSubscriber !=null){mSubscriber.destroy();}
@@ -230,10 +235,39 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             mSubscriberViewContainer.addView(mSubscriber.getView());
             if (isLive)
             {   addLiveHistory();}
-            takeScreenshot();
-
+            //takeScreenshot();
+            createRingHistory();
 
         }
+    }
+
+    private void createRingHistory() {
+        Log.d(LOG_TAG, "createRingHistory");
+        ring = new Ring();
+        Random random = new Random();
+        int id = random.nextInt(99999-10000)+10000;
+        DateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));
+        //get current date time with Date()
+        Date date = new Date();
+        String time = dateFormat.format(date);
+        ring.setId(id);
+        ring.setEventTime(time);
+        ring.setStatus("Ring");
+        ring.setResponder(mAuth.getCurrentUser().getPhoneNumber());
+        instantImagePathRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(LOG_TAG, "instant image path \n"+dataSnapshot.getValue());
+                VideoChatActivity.this.ring.setVisitorImage(dataSnapshot.getValue().toString());
+                boxHistoryRef.child("rings").child(String.valueOf(VideoChatActivity.this.ring.getId()))
+                        .setValue(VideoChatActivity.this.ring);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void takeScreenshot() {

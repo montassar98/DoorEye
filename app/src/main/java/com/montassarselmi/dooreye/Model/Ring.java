@@ -8,6 +8,9 @@ import com.montassarselmi.dooreye.R;
 public class Ring extends EventHistory {
 
 
+    public Ring(){
+        super();
+    }
     public Ring(int id, String time, String responder, String visitorImage)
     {
         super(id,time, R.drawable.ic_ring, "Ring",responder, visitorImage);

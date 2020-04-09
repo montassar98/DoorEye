@@ -4,27 +4,61 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Nullable;
 
+import com.montassarselmi.dooreye.R;
+
 public class EventHistory {
 
     private int id;
     private String eventTime;
-    private int icon;
+    private  int icon;
     private String status;
     private String responder;
     private String visitorImage;
 
-    public EventHistory(@Nullable int id,@Nullable String eventTime,@Nullable int icon,@Nullable String status, @Nullable String responder, @Nullable String visitorImage) {
+    public EventHistory( int id, String eventTime, String status, @Nullable String responder, @Nullable String visitorImage) {
         this.id = id;
         this.eventTime = eventTime;
-        this.icon = icon;
         this.status = status;
         if (responder != null)
             this.responder = responder;
         if (visitorImage != null)
             this.visitorImage = visitorImage;
+        switch (status)
+        {
+            case "Ring":
+                icon = R.drawable.ic_ring;
+                break;
+            case "Motion":
+                icon = R.drawable.ic_motion;
+                break;
+            case "Door Check":
+                icon = R.drawable.ic_live;
+                break;
+        }
     }
 
     public EventHistory() {
+
+    }
+
+    public void setupIcon(String status)
+    {
+        switch (status)
+        {
+            case "Ring":
+                icon = R.drawable.ic_ring;
+                break;
+            case "Motion":
+                icon = R.drawable.ic_motion;
+                break;
+            case "Door Check":
+                icon = R.drawable.ic_live;
+                break;
+        }
+    }
+
+    public int getIcon() {
+        return icon;
     }
 
     public int getId() {
@@ -43,13 +77,7 @@ public class EventHistory {
         this.eventTime = eventTime;
     }
 
-    public int getIcon() {
-        return icon;
-    }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
-    }
 
     public String getStatus() {
         return status;
@@ -75,5 +103,17 @@ public class EventHistory {
     public void setVisitorImage(String visitorImage) {
         if (visitorImage != null)
             this.visitorImage = visitorImage;
+    }
+
+    @Override
+    public String toString() {
+        return "EventHistory{" +
+                "id=" + id +
+                ", eventTime='" + eventTime + '\'' +
+                ", icon=" + icon +
+                ", status='" + status + '\'' +
+                ", responder='" + responder + '\'' +
+                ", visitorImage='" + visitorImage + '\'' +
+                '}';
     }
 }

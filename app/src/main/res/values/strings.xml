@@ -62,7 +62,7 @@
     <string name="live">Door Checks</string>
     <string name="all">All</string>
     <string name="event_history">Event History</string>
-    <string name="date_format">HH:mm the dd/MM/yyyy</string>
+    <string name="date_format">dd-MM-yyyy HH:mm</string>
     <string name="there_are_no_lives_yet">There are No Door Checks Yet</string>
     <string name="there_are_no_rings_yet">There are No Rings Yet</string>
     <string name="there_are_no_motions_yet">There are No Motions Yet</string>

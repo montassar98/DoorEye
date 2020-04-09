@@ -27,10 +27,12 @@ import com.montassarselmi.dooreye.Model.Live;
 import com.montassarselmi.dooreye.Model.Motion;
 import com.montassarselmi.dooreye.Model.Ring;
 import com.montassarselmi.dooreye.R;
+import com.montassarselmi.dooreye.Utils.CustomComparator;
 import com.montassarselmi.dooreye.Utils.RecyclerViewAllHistoryAdapter;
 import com.montassarselmi.dooreye.Utils.RecyclerViewMargin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class MotionsFragment extends Fragment {
@@ -92,14 +94,17 @@ public class MotionsFragment extends Fragment {
         mBoxHistory.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("motion")) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Log.d(TAG, "" + dataSnapshot.toString());
-                        EventHistory motion;
-                        motion = data.child("motion").getValue(EventHistory.class);
+                if (dataSnapshot.hasChild("motions")) {
+                    for (DataSnapshot data : dataSnapshot.child("motions").getChildren()) {
+                        Log.d(TAG, "" + dataSnapshot.child("motions").toString());
+                        Motion motion;
+                        motion = data.getValue(Motion.class);
+                        motion.setupIcon(motion.getStatus());
                         mDataSet.add(motion);
                     }
                 }
+                Collections.sort(mDataSet, new CustomComparator());
+                Collections.reverse(mDataSet);
                 mAdapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
                 if (mDataSet.size() > 0)

@@ -104,6 +104,7 @@
             android:layout_alignParentBottom="true"
             android:src="@drawable/profile"
             android:id="@+id/img_visitor"
+            android:rotation="270"
             android:layout_marginBottom="5dp"/>
 
     </RelativeLayout>

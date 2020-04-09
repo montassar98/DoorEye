@@ -36,7 +36,7 @@ public class RecyclerViewAllHistoryAdapter extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull final mViewHolder holder, final int position) {
         final EventHistory item = eventHistories.get(position);
-
+        int icon = item.getIcon();
         holder.imgState.setImageDrawable(mContext.getDrawable(item.getIcon()));
         holder.rlExpand.setVisibility(View.GONE);
         holder.txtTime.setText(item.getEventTime());

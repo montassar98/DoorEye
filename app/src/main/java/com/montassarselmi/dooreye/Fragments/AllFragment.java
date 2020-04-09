@@ -27,10 +27,17 @@ import com.montassarselmi.dooreye.Model.Live;
 import com.montassarselmi.dooreye.Model.Motion;
 import com.montassarselmi.dooreye.Model.Ring;
 import com.montassarselmi.dooreye.R;
+import com.montassarselmi.dooreye.Utils.CustomComparator;
 import com.montassarselmi.dooreye.Utils.RecyclerViewAllHistoryAdapter;
 import com.montassarselmi.dooreye.Utils.RecyclerViewMargin;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class AllFragment extends Fragment {
     private ArrayList<EventHistory> mDataSet;
@@ -91,31 +98,37 @@ public class AllFragment extends Fragment {
         mBoxHistory.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("motion")) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                if (dataSnapshot.hasChild("motions")) {
+                    for (DataSnapshot data : dataSnapshot.child("motions").getChildren()) {
                         Log.d(TAG, "" + dataSnapshot.toString());
                         EventHistory motion;
-                        motion = data.child("motion").getValue(EventHistory.class);
-
+                        motion = data.getValue(EventHistory.class);
+                        motion.setupIcon(motion.getStatus());
                         mDataSet.add(motion);
                     }
                 }
                 if (dataSnapshot.hasChild("rings")) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Log.d(TAG, "" + dataSnapshot.toString());
-                        EventHistory ring;
-                        ring = data.child("rings").getValue(EventHistory.class);
+                    for (DataSnapshot data : dataSnapshot.child("rings").getChildren()) {
+                        Log.d(TAG, "" + dataSnapshot.child("rings").toString());
+                        Ring ring ;
+                        ring = data.getValue(Ring.class);
+                        ring.setupIcon(ring.getStatus());
                         mDataSet.add(ring);
+                        Log.d(TAG, "ring : "+ring.toString());
                     }
                 }
                 if (dataSnapshot.hasChild("live")) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    for (DataSnapshot data : dataSnapshot.child("live").getChildren()) {
                         Log.d(TAG, "" + dataSnapshot.toString());
                         EventHistory live;
-                        live = data.child("live").getValue(EventHistory.class);
+                        live = data.getValue(EventHistory.class);
+                        live.setupIcon(live.getStatus());
                         mDataSet.add(live);
                     }
                 }
+                Collections.sort(mDataSet, new CustomComparator());
+                Collections.reverse(mDataSet);
                 mAdapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
                 if (mDataSet.size() > 0)

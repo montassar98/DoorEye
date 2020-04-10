@@ -51,7 +51,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.opentok.android.Stream;
@@ -93,9 +92,9 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     private DatabaseReference instantImagePathRef;
 
 
-    private ImageView imageView;
     private View main;
     private  Ring ring;
+    private String name;
 
 
 
@@ -110,8 +109,6 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         mAuth = FirebaseAuth.getInstance();
-        imageView = findViewById(R.id.image_view);
-        imageView.setImageDrawable(getDrawable(R.drawable.profile));
         main = findViewById(R.id.main);
         database = FirebaseDatabase.getInstance();
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
@@ -123,6 +120,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         requestPermissions();
         mPublisherViewContainer = (FrameLayout)findViewById(R.id.publisher_container);
         mSubscriberViewContainer = (FrameLayout)findViewById(R.id.subscriber_container);
+        name = mSharedPreferences.getString("USERNAME", "Null");
 
         findViewById(R.id.btn_end_video_call).setOnClickListener(this);
         if (mPublisher !=null){mPublisher.destroy();}
@@ -140,7 +138,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         //get current date time with Date()
         Date date = new Date();
         String time = dateFormat.format(date);
-        Live live = new Live(id, time,mAuth.getCurrentUser().getPhoneNumber());
+        Live live = new Live(id, time,name);
         boxHistoryRef.child("live").child(time).setValue(live);
     }
     public void fetchSessionConnectionData() {
@@ -239,8 +237,8 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             if (isLive)
             {
                 addLiveHistory();
-                isLive = false;
             }
+            else
             createRingHistory();
 
         }
@@ -258,7 +256,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         ring.setId(id);
         ring.setEventTime(time);
         ring.setStatus("Ring");
-        ring.setResponder(mAuth.getCurrentUser().getPhoneNumber());
+        ring.setResponder(name);
         instantImagePathRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -266,6 +264,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
                 VideoChatActivity.this.ring.setVisitorImage(dataSnapshot.getValue().toString());
                 boxHistoryRef.child("rings").child(String.valueOf(VideoChatActivity.this.ring.getEventTime()))
                         .setValue(VideoChatActivity.this.ring);
+                instantImagePathRef.removeValue();
             }
 
             @Override

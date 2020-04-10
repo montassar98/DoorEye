@@ -57,13 +57,18 @@ public class ContactUsActivity extends AppCompatActivity {
             edtName.requestFocus();
             return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            edtEmail.setError(getResources().getString(R.string.error_email));
-            edtEmail.requestFocus();
+        if (name.length()<3) {
+            edtName.setError(getResources().getString(R.string.error_fullname));
+            edtName.requestFocus();
             return;
         }
         if (email.isEmpty()){
             edtEmail.setError(getResources().getString(R.string.empty_email));
+            edtEmail.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError(getResources().getString(R.string.error_email));
             edtEmail.requestFocus();
             return;
         }

@@ -88,7 +88,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
                 {
-                    userName.setText(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("fullName").getValue().toString());
+                    String name = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("fullName").getValue().toString();
+                    editor.putString("USERNAME",name);
+                    editor.apply();
+                    userName.setText(name);
                     if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild("profileImage"))
                     {
                         Picasso.get().load(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("profileImage").getValue().toString()).into(imgUser);

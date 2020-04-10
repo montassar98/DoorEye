@@ -67,4 +67,5 @@
     <string name="there_are_no_rings_yet">There are No Rings Yet</string>
     <string name="there_are_no_motions_yet">There are No Motions Yet</string>
     <string name="there_are_no_events_yet">There are No Events Yet</string>
+    <string name="no_responder">Missed responder</string>
 </resources>

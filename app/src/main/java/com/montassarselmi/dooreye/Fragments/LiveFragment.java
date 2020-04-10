@@ -87,9 +87,14 @@ public class LiveFragment extends Fragment {
         return view;
     }
 
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new RecyclerViewAllHistoryAdapter(getContext(), mDataSet);
+
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     private void loadData() {
-        for (int i=0; i<10; i++)
-        {
             mBoxHistory.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -117,11 +122,5 @@ public class LiveFragment extends Fragment {
             });
 
         }
-    }
-    private void initRecyclerView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new RecyclerViewAllHistoryAdapter(getContext(), mDataSet);
 
-        mRecyclerView.setAdapter(mAdapter);
-    }
 }

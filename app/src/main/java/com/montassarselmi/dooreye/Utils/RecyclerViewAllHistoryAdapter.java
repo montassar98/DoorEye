@@ -41,7 +41,10 @@ public class RecyclerViewAllHistoryAdapter extends RecyclerView.Adapter<Recycler
         holder.rlExpand.setVisibility(View.GONE);
         holder.txtTime.setText(item.getEventTime());
         if (item.getResponder() != null) {
-            holder.txtResponder.setText(item.getResponder());
+            if (item.getResponder().equals("No one"))
+                holder.txtResponder.setText(mContext.getResources().getString(R.string.no_responder));
+            else
+                holder.txtResponder.setText(item.getResponder());
             holder.txtDash.setVisibility(View.VISIBLE);
         }
         else {

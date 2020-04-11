@@ -13,34 +13,27 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class CallingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG="CallingActivity";
 
-    private ImageView imgEndCall, imgPickUpCall;
+    private ImageView imgEndCall, imgPickUpCall,imgVisitor;
     private Animation animCall;
     private FirebaseDatabase database;
-    private DatabaseReference userInfoRef,userBoxRef;
+    private DatabaseReference userInfoRef,userBoxRef,instantImagePathRef;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
-    private DateFormat dateFormat;
-    private Date date;
-    private String time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +44,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         editor = mSharedPreferences.edit();
         imgPickUpCall = (ImageView) findViewById(R.id.img_pickup);
         imgEndCall = (ImageView) findViewById(R.id.img_end_call);
+        imgVisitor = (ImageView) findViewById(R.id.img_visit);
         imgPickUpCall.setOnClickListener(this);
         imgEndCall.setOnClickListener(this);
         animCall = AnimationUtils.loadAnimation(this,R.anim.anim_ringing);
@@ -59,14 +53,31 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        instantImagePathRef = database.getReference().child("BoxList")
+                .child(mSharedPreferences.getString("BOX_ID","Null")).child("history");
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
-        dateFormat = new SimpleDateFormat("HH:mm - dd/MM/yyyy");
-        //get current date time with Date()
-        date = new Date();
-        time = dateFormat.format(date);
+        checkVisitorImage();
         checkIfSomeonePickedUp();
+    }
+
+    private void checkVisitorImage() {
+        instantImagePathRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("instantImagePath"))
+                {
+                    imgVisitor.setVisibility(View.VISIBLE);
+                    Picasso.get().load(dataSnapshot.child("instantImagePath").getValue().toString()).into(imgVisitor);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void checkIfSomeonePickedUp()
@@ -137,6 +148,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+        imgVisitor.setVisibility(View.GONE);
         startActivity(new Intent(CallingActivity.this,MainActivity.class));
         finish();
     }
@@ -162,7 +174,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-
+        imgVisitor.setVisibility(View.GONE);
         startActivity(new Intent(CallingActivity.this, VideoChatActivity.class));
         finish();
 

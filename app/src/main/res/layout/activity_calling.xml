@@ -8,15 +8,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="2.5"
         android:background="@drawable/back_call">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/logo_call"
             android:layout_centerHorizontal="true"
             android:id="@+id/img_logo_call"
             android:layout_marginTop="40dp"/>
+
+        <ImageView
+            android:id="@+id/img_visit"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="40dp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/img_logo_call"
+            android:src="@drawable/ic_members_enabled" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +36,7 @@
             android:textSize="45sp"
             android:text="@string/home"
             android:layout_marginTop="40dp"
-            android:layout_below="@id/img_logo_call"
+            android:layout_below="@id/img_visit"
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
     <RelativeLayout

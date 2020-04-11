@@ -18,15 +18,15 @@
             android:id="@+id/img_logo_call"
             android:layout_marginTop="30dp"/>
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_visit"
-            android:layout_width="300dp"
-            android:layout_height="290dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_marginTop="20dp"
             android:rotation="270"
             android:visibility="gone"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/img_logo_call"
+            android:layout_centerVertical="true"
             android:src="@drawable/profile" />
 
         <TextView
@@ -36,8 +36,8 @@
             android:textStyle="bold"
             android:textSize="45sp"
             android:text="@string/home"
-            android:layout_marginTop="40dp"
-            android:layout_below="@id/img_visit"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
     <RelativeLayout

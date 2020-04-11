@@ -22,12 +22,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class CallingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG="CallingActivity";
 
-    private ImageView imgEndCall, imgPickUpCall,imgVisitor;
+    private ImageView imgEndCall, imgPickUpCall;
+    private CircleImageView imgVisitor;
     private Animation animCall;
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef,userBoxRef,instantImagePathRef;
@@ -44,7 +47,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         editor = mSharedPreferences.edit();
         imgPickUpCall = (ImageView) findViewById(R.id.img_pickup);
         imgEndCall = (ImageView) findViewById(R.id.img_end_call);
-        imgVisitor = (ImageView) findViewById(R.id.img_visit);
+        imgVisitor = (CircleImageView) findViewById(R.id.img_visit);
         imgPickUpCall.setOnClickListener(this);
         imgEndCall.setOnClickListener(this);
         animCall = AnimationUtils.loadAnimation(this,R.anim.anim_ringing);

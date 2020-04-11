@@ -16,17 +16,17 @@
             android:src="@drawable/logo_call"
             android:layout_centerHorizontal="true"
             android:id="@+id/img_logo_call"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="20dp"/>
 
         <ImageView
             android:id="@+id/img_visit"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="40dp"
-            android:visibility="gone"
+            android:layout_width="300dp"
+            android:layout_height="290dp"
+            android:layout_marginTop="20dp"
+            android:rotation="270"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/img_logo_call"
-            android:src="@drawable/ic_members_enabled" />
+            android:src="@drawable/profile" />
 
         <TextView
             android:layout_width="wrap_content"

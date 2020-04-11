@@ -16,7 +16,7 @@
             android:src="@drawable/logo_call"
             android:layout_centerHorizontal="true"
             android:id="@+id/img_logo_call"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="30dp"/>
 
         <ImageView
             android:id="@+id/img_visit"
@@ -24,6 +24,7 @@
             android:layout_height="290dp"
             android:layout_marginTop="20dp"
             android:rotation="270"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/img_logo_call"
             android:src="@drawable/profile" />

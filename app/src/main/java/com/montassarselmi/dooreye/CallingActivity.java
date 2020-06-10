@@ -30,7 +30,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
     private final String TAG="CallingActivity";
 
     private ImageView imgEndCall, imgPickUpCall;
-    private CircleImageView imgVisitor;
+    private ImageView imgVisitor;
     private Animation animCall;
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef,userBoxRef,instantImagePathRef;
@@ -47,7 +47,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         editor = mSharedPreferences.edit();
         imgPickUpCall = (ImageView) findViewById(R.id.img_pickup);
         imgEndCall = (ImageView) findViewById(R.id.img_end_call);
-        imgVisitor = (CircleImageView) findViewById(R.id.img_visit);
+        imgVisitor = (ImageView) findViewById(R.id.img_visit);
         imgPickUpCall.setOnClickListener(this);
         imgEndCall.setOnClickListener(this);
         animCall = AnimationUtils.loadAnimation(this,R.anim.anim_ringing);

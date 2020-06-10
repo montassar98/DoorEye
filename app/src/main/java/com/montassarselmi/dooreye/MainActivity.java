@@ -86,15 +86,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
-                {
-                    String name = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("fullName").getValue().toString();
-                    editor.putString("USERNAME",name);
-                    editor.apply();
-                    userName.setText(name);
-                    if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild("profileImage"))
-                    {
-                        Picasso.get().load(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("profileImage").getValue().toString()).into(imgUser);
+                if (mAuth.getCurrentUser().getUid() != null) {
+                    if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())) {
+                        String name = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("fullName").getValue().toString();
+                        editor.putString("USERNAME", name);
+                        editor.apply();
+                        userName.setText(name);
+                        if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild("profileImage")) {
+                            Picasso.get().load(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("profileImage").getValue().toString()).into(imgUser);
+                        }
                     }
                 }
             }
@@ -117,22 +117,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkIfUserAvailable() {
+
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: uid="+mAuth.getCurrentUser().getUid());
+                if (mAuth.getCurrentUser().getUid() != null) {
+                    Log.d(TAG, "onDataChange: uid=" + mAuth.getCurrentUser().getUid());
 
-                if (!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
-                {
-                    Toast.makeText(MainActivity.this, "nope", Toast.LENGTH_SHORT).show();
-                    editor.putBoolean("IS_SAVED",false);
-                    editor.apply();
-                    startActivity(new Intent(MainActivity.this,ConfigureActivity.class));
-                    finish();
-                }
-                if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("status").getValue().equals("waiting")){
-                    startActivity(new Intent(MainActivity.this, WaitingActivity.class));
-                    finish();
+                    if (!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())) {
+                        Toast.makeText(MainActivity.this, "nope", Toast.LENGTH_SHORT).show();
+                        editor.putBoolean("IS_SAVED", false);
+                        editor.apply();
+                        startActivity(new Intent(MainActivity.this, ConfigureActivity.class));
+                        finish();
+                    }
+                    if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                        Log.d(TAG, "onDataChange: has child "+dataSnapshot.toString());
+                        if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("status").getValue().equals("waiting")) {
+                            startActivity(new Intent(MainActivity.this, WaitingActivity.class));
+                            finish();
+                        }
+                    }
                 }
 
             }
@@ -162,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String findBoxId(){
         String boxId="";
         boxId = mSharedPreferences.getString("BOX_ID","Null");
+        Log.d(TAG, "findBoxId: "+boxId);
         return boxId;
     }
 

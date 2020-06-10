@@ -68,4 +68,8 @@
     <string name="there_are_no_motions_yet">There are No Motions Yet</string>
     <string name="there_are_no_events_yet">There are No Events Yet</string>
     <string name="no_responder">Missed responder</string>
+    <string name="confirm">Confirm</string>
+    <string name="box_id">Box Id</string>
+    <string name="full_name">Full Name</string>
+    <string name="register">Register</string>
 </resources>

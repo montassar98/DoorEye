@@ -1,36 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     tools:context=".ConfigureActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/regular_logo"
+        android:contentDescription="TODO" />
+    <RelativeLayout
+        android:layout_width="210dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/img_register_back">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/register"
+            android:textSize="35sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/roboto_italic"
+            />
+    </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="wrap_content">
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Full Name"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_edt_register"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/RegisterTextColor"
+        android:layout_marginStart="20dp"
+        android:hint="@string/full_name"
+        android:paddingStart="30dp"
         android:inputType="textPersonName"
         android:id="@+id/edt_full_name"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
+        android:layout_height="60dp"
+        android:hint="@string/email"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/RegisterTextColor"
         android:inputType="textEmailAddress"
+        android:background="@drawable/bg_edt_register"
+        android:paddingStart="30dp"
         android:id="@+id/edt_email"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Box Id"
+        android:layout_height="60dp"
+        android:hint="@string/box_id"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/RegisterTextColor"
+        android:background="@drawable/bg_edt_register"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         android:inputType="textVisiblePassword"
+        android:paddingStart="30dp"
         android:id="@+id/edt_box_id"/>
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm"
+        android:layout_height="60dp"
+        android:text="@string/confirm"
+        android:background="@drawable/btn_confirm_reg"
+        android:layout_marginTop="25dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/white"
         android:id="@+id/btn_confirm_configure"/>
-
-</LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -34,7 +34,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference mRefBox;
     private DatabaseReference usersRef ;
-    private DatabaseReference  mRefBoxUser, mRefBoxStatus;
+    private DatabaseReference  mRefBoxUser,mRefBoxStatus, mRefUsers;
     public SharedPreferences mSharedPreferences;
     public SharedPreferences.Editor editor;
 
@@ -124,6 +124,8 @@ public class ConfigureActivity extends AppCompatActivity {
                                 mRefBoxUser =database.getReference("BoxList/"+boxId+"/users");
                                 mRefBoxUser.child(mAuth.getCurrentUser().getUid()).setValue(user);
                                 isAvailable=true;
+                                mRefUsers = database.getReference().child("Users");
+                                mRefUsers.child(mAuth.getCurrentUser().getUid()).setValue(user);
                                 startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
                                 finish();
 
@@ -184,13 +186,17 @@ public class ConfigureActivity extends AppCompatActivity {
         return boxId;
     }
     private void checkIfUserAvailable() {
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference mUsersRef = database.getReference().child("Users");
+        mUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: uid="+mAuth.getCurrentUser().getUid());
+                Log.d(TAG, "onDataChange: uid="+dataSnapshot.getChildrenCount());
 
                 if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid()))
                 {
+                    editor.putString("BOX_ID", dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("boxId").getValue().toString());
+                    editor.apply();
                     startActivity(new Intent(ConfigureActivity.this,MainActivity.class));
                     finish();
 

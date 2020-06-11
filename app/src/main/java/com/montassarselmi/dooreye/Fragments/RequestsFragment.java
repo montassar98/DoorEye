@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,20 +23,22 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.montassarselmi.dooreye.Model.User;
 import com.montassarselmi.dooreye.R;
 import com.montassarselmi.dooreye.Utils.RecyclerViewMargin;
-import com.montassarselmi.dooreye.Utils.RequestRecyclerViewAdapter;
+import com.montassarselmi.dooreye.Utils.RequestsRVAdapter;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RequestsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RequestsFragment extends Fragment {
+public class RequestsFragment extends Fragment implements RequestsRVAdapter.onRequestClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -85,9 +88,9 @@ public class RequestsFragment extends Fragment {
     private String pNumber;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference mBoxUsersRef;
+    private DatabaseReference mBoxUsersRef,mRefUser = database.getReference();
     private String boxId;
-    private RequestRecyclerViewAdapter mAdapter;
+    private RequestsRVAdapter mRvAdapter;
     private ProgressBar mProgressBar;
     private TextView txtNoRequests;
 
@@ -109,8 +112,8 @@ public class RequestsFragment extends Fragment {
         txtNoRequests.setVisibility(View.GONE);
         mDataSet = new ArrayList<User>();
         loadData();
-        initRecyclerView();
-
+        //initRecyclerView();
+        iniRV();
 
 
         return view;
@@ -120,37 +123,16 @@ public class RequestsFragment extends Fragment {
         return mDataSet.size(); // Where mDataSet is the list of your items
     }
     //initiate Recycler View
-    private  void initRecyclerView() {
+    private void iniRV(){
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // Item Decorator:
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(ResourcesCompat.getDrawable(getResources(), R.drawable.divider, null)));
-        //mRecyclerView.setItemAnimator(new FadeInLeftAnimator());
-        //creating adapter object
-        mAdapter = new RequestRecyclerViewAdapter(getContext(), mDataSet);
-        // Setting Mode to Single to reveal bottom View for one item in List
-        // Setting Mode to Mutliple to reveal bottom Views for multile items in List
-        ((RequestRecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
-
+        mRvAdapter = new RequestsRVAdapter(getContext(), mDataSet);
         RecyclerViewMargin decoration = new RecyclerViewMargin(16, 10);
-
         mRecyclerView.addItemDecoration(decoration);
+        mRecyclerView.setAdapter(mRvAdapter);
+        mRvAdapter.setClickListener(this);
 
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.e("RecyclerView", "onScrollStateChanged");
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
     }
+
 
     // load initial data
     private void loadData() {
@@ -165,12 +147,13 @@ public class RequestsFragment extends Fragment {
                     user = data.getValue(User.class);
                         if (user.getStatus() != null && user.getStatus().equals("waiting")) {
                             mDataSet.add(user);
+                            Log.d(TAG,"DataSet "+ user.toString());
 
                     }
 
 
                 }
-                mAdapter.notifyDataSetChanged();
+                mRvAdapter.notifyDataSetChanged();
                 mProgressBar.setVisibility(View.GONE);
                 if (mDataSet.size() > 0)
                 mRecyclerView.setVisibility(View.VISIBLE);
@@ -185,5 +168,95 @@ public class RequestsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onAccept(final View view, final int position) {
+        Log.d(TAG, "onAccept: ");
+        mRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getCurrentUser().getUid()).child("status").getValue().toString().equals("admin")) {
+                    Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber").equalTo(mDataSet.get(position).getPhoneNumber());
+                    mUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                appleSnapshot.getRef().child("status").setValue("user");
+                                mDataSet.remove(position);
+                                mRecyclerView.removeView(view);
+                                mRvAdapter.notifyDataSetChanged();
+                                Toast.makeText(getContext(), "Accepted.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }else Toast.makeText(getContext(), getContext().getResources().getText(R.string.you_cant_accept), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onDecline(View view, final int position) {
+        Log.d(TAG, "onDecline: ");
+
+        mRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getUid()).child("status").getValue().toString().equals("admin")) {
+                    Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber").equalTo(mDataSet.get(position).getPhoneNumber());
+                    mUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                appleSnapshot.getRef().removeValue();
+                                mDataSet.remove(position);
+                                mRvAdapter.notifyDataSetChanged();
+                                Toast.makeText(getContext(), "Declined.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }else Toast.makeText(getContext(), getContext().getResources().getText(R.string.you_cant_refuse), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Query mUserQuery1 = mRefUser.child("Users").orderByChild("phoneNumber").equalTo(mDataSet.get(position).getPhoneNumber());
+
+        mUserQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                    appleSnapshot.getRef().removeValue();
+                    Toast.makeText(getContext(), "Deleted.", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }

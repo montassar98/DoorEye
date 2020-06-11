@@ -67,6 +67,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
         {
             Log.d(TAG, "onBindViewHolder: ");
             Picasso.get().load(item.getProfileImage()).into(simpleViewHolder.imgProfileImage);
+            simpleViewHolder.imgProfileImage.setRotation(90);
 
         }
         simpleViewHolder.txtUserName.setText(item.getFullName());
@@ -138,8 +139,7 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.child("BoxList").child(boxId).child("users")
-                                .child(mAuth.getUid()).child("phoneNumber").getValue().equals(item.getPhoneNumber()) ||
-                                dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getUid()).child("status").getValue().toString().equals("admin")) {
+                                .child(mAuth.getUid()).child("phoneNumber").getValue().equals(item.getPhoneNumber()) ) {
                             Intent intent = new Intent(mContext, EditActivity.class);
                             intent.putExtra("EMAIL",item.getEmail());
                             intent.putExtra("FULL_NAME",item.getFullName());
@@ -186,7 +186,25 @@ public class FamilyRecyclerViewAdapter extends RecyclerSwipeAdapter<FamilyRecycl
 
                                 }
                             });
-                    }else Toast.makeText(mContext, mContext.getResources().getText(R.string.you_cant_delete), Toast.LENGTH_SHORT).show();
+                            Query mUserQuery1 = mRefUser.child("Users").orderByChild("phoneNumber").equalTo(simpleViewHolder.txtUserPhone.getText().toString());
+
+                            mUserQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                                        appleSnapshot.getRef().removeValue();
+                                        Toast.makeText(mContext, "Deleted " + simpleViewHolder.txtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }else Toast.makeText(mContext, mContext.getResources().getText(R.string.you_cant_delete), Toast.LENGTH_SHORT).show();
 
                     }
 

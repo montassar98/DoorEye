@@ -2,7 +2,6 @@ package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,45 +11,37 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.montassarselmi.dooreye.Model.User;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
-import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.montassarselmi.dooreye.FamilyActivity.changeStatusBarToWhite;
@@ -89,7 +80,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         boxId = mSharedPreferences.getString("BOX_ID","Null");
-        final ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
             actionBar.setDisplayHomeAsUpEnabled(false);
@@ -106,13 +97,34 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             initUi();
             btnSubmit.setOnClickListener(this);
             imgProfile.setOnClickListener(this);
+            checkPhotoAvailable();
+
 
         }
+    }
+    private void checkPhotoAvailable(){
+        Log.d(TAG, "checkPhotoAvailable: ");
+        Query imgCheckerQuery = database.getReference().child("BoxList").child(boxId).child("users")
+                .child(mAuth.getCurrentUser().getUid());
+        imgCheckerQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("profileImage")){
+                    Log.d(TAG, "checkPhotoAvailable: has an old image. ");
+                    String oldImgPath = dataSnapshot.child("profileImage").getValue().toString();
+                    Picasso.get().load(oldImgPath).into(imgProfile);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initUi() {
         btnSubmit =(CircularProgressButton) findViewById(R.id.btn_submit_edit);
-       // btnSubmit =(Button) findViewById(R.id.btn_submit_edit);
         edtEmail = (EditText) findViewById(R.id.edt_email_edit);
         edtName = (EditText) findViewById(R.id.edt_full_name_edit);
         imgProfile = (ImageView) findViewById(R.id.img_profile_edit);
@@ -331,6 +343,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+
 
 
 }

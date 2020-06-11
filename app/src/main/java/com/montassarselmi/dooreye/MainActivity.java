@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity{
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private TextView userName;
-    private ImageView imgUser;
+    private CircleImageView imgUser;
+    public static String boxId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +57,13 @@ public class MainActivity extends AppCompatActivity{
         //-------------------------------------------------------
         //get current user info
         userName = (TextView) findViewById(R.id.txt_user_name);
-        imgUser = (ImageView) findViewById(R.id.user_image) ;
+        imgUser = (CircleImageView) findViewById(R.id.user_image) ;
         //--------------------------------------------------------
         usersRef = database.getReference("BoxList/"+findBoxId()+"/users");
         getCurrentUserInfo();
         checkIfUserAvailable();
         checkForCalls();
+        boxId = findBoxId();
 
     }
 
@@ -77,7 +79,9 @@ public class MainActivity extends AppCompatActivity{
                         editor.apply();
                         userName.setText(name);
                         if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild("profileImage")) {
-                            Picasso.get().load(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("profileImage").getValue().toString()).into(imgUser);
+                            Picasso.get().load(dataSnapshot.child(mAuth.getCurrentUser()
+                                    .getUid()).child("profileImage").getValue().toString()).into(imgUser);
+                            imgUser.setRotation(90f);
                         }
                     }
                 }
@@ -146,9 +150,10 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
+
     }
 
-    private String findBoxId(){
+    public String findBoxId(){
         String boxId="";
         boxId = mSharedPreferences.getString("BOX_ID","Null");
         Log.d(TAG, "findBoxId: "+boxId);
@@ -206,6 +211,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "onRestart: ");
+        Intent refresh = new Intent(this, MainActivity.class);
+        startActivity(refresh);//Start the same Activity
+        finish(); //finish Activity.
     }
 
     @Override

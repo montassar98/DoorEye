@@ -25,6 +25,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,7 +68,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private DatabaseReference mRefUser=database.getReference();
     private  Bitmap imageBitmap;
-    private CircleImageView imgProfile;
+    private ImageView imgProfile;
     private CircularProgressButton btnSubmit;
     //private Button btnSubmit;
     private EditText edtName,edtEmail;
@@ -80,7 +81,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_edit_profile);
         changeStatusBarToWhite(EditActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_edit);
         setSupportActionBar(toolbar);
@@ -94,6 +95,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setTitle("Edit");
+
             getSupportActionBar().setCustomView(R.layout.appbar_edit_layout);
             findViewById(R.id.img_back_arrow_edit).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,7 +115,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
        // btnSubmit =(Button) findViewById(R.id.btn_submit_edit);
         edtEmail = (EditText) findViewById(R.id.edt_email_edit);
         edtName = (EditText) findViewById(R.id.edt_full_name_edit);
-        imgProfile = (CircleImageView) findViewById(R.id.img_profile_edit);
+        imgProfile = (ImageView) findViewById(R.id.img_profile_edit);
         edtName.setText(getIntent().getStringExtra("FULL_NAME"));
         edtEmail.setText(getIntent().getStringExtra("EMAIL"));
     }

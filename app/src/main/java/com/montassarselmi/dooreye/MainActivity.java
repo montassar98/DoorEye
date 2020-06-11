@@ -32,18 +32,14 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity{
 
     private final String TAG ="MainActivity";
-    private final String CALLING_TAG ="Calling listener";
-
-
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference usersRef;
     private FirebaseAuth mAuth;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
-    private CardView cvEventHistory,cvCheckFrontDoor,cvFamily,cvSettings,cvContactUs,cvLogout;
     private TextView userName;
     private ImageView imgUser;
 
@@ -58,18 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         //-------------------------------------------------------
-        cvCheckFrontDoor = (CardView) findViewById(R.id.cv_front_door);
-        cvContactUs = (CardView) findViewById(R.id.cv_contact_us);
-        cvEventHistory= (CardView) findViewById(R.id.cv_history);
-        cvFamily = (CardView) findViewById(R.id.cv_family);
-        cvSettings= (CardView) findViewById(R.id.cv_settings);
-        cvLogout= (CardView) findViewById(R.id.cv_logout);
-        cvCheckFrontDoor.setOnClickListener(this);
-        cvContactUs.setOnClickListener(this);
-        cvEventHistory.setOnClickListener(this);
-        cvFamily.setOnClickListener(this);
-        cvSettings.setOnClickListener(this);
-        cvLogout.setOnClickListener(this);
         //get current user info
         userName = (TextView) findViewById(R.id.txt_user_name);
         imgUser = (ImageView) findViewById(R.id.user_image) ;
@@ -244,63 +228,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stopService(serviceIntent);
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id)
-        {
-            case R.id.cv_history:
-                onEventHistoryClicked();
-                break;
-            case R.id.cv_front_door:
-                onCheckFrontDoorClicked();
-                break;
-            case R.id.cv_family:
-                onFamilyClicked();
-                break;
-            case R.id.cv_settings:
-                onSettingsClicked();
-                break;
-            case R.id.cv_contact_us:
-                onContactUsClicked();
-                break;
-            case R.id.cv_logout:
-                onLogoutClicked();
-                break;
-        }
-    }
-
-    private void onEventHistoryClicked() {
+    public void onEventHistoryClicked(View view) {
         Log.d(TAG, "onEventHistoryClicked ");
         Toast.makeText(this, "onEventHistoryClicked", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, EventHistoryActivity.class));
     }
 
-    private void onCheckFrontDoorClicked() {
+    public void onCheckFrontDoorClicked(View view) {
         Log.d(TAG, "onCheckFrontDoorClicked");
         Toast.makeText(this, "onCheckFrontDoorClicked", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, CheckFrontDoorActivity.class));
     }
 
-    private void onFamilyClicked() {
+    public void onFamilyClicked(View view) {
         Log.d(TAG, "onFamilyClicked");
         Toast.makeText(this, "onFamilyClicked", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, FamilyActivity.class));
     }
 
-    private void onSettingsClicked() {
+    public void onSettingsClicked(View view) {
         Log.d(TAG, "onSettingsClicked ");
         Toast.makeText(this, "onSettingsClicked ", Toast.LENGTH_SHORT).show();
         //startActivity(new Intent(MainActivity.this, EditActivity.class));
     }
 
-    private void onContactUsClicked() {
+    public void onContactUsClicked(View view) {
         Log.d(TAG, "onContactUsClicked ");
         Toast.makeText(this, "onContactUsClicked ", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, ContactUsActivity.class));
     }
 
-    private void onLogoutClicked() {
+    public void onLogoutClicked(View view) {
         Log.d(TAG, "onLogoutClicked");
         Toast.makeText(this, "onLogoutClicked", Toast.LENGTH_SHORT).show();
         mAuth.signOut();

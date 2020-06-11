@@ -10,14 +10,17 @@
         android:src="@drawable/ic_arrow_back"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
-        android:id="@+id/img_back_arrow_edit"/>
+        android:id="@+id/img_back_arrow_edit"
+        android:contentDescription="@string/back_button" />
     <TextView
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="30dp"
         android:layout_height="wrap_content"
         android:id="@+id/action_bar_title"
         android:textStyle="bold"
+        android:gravity="center_horizontal"
         android:text="@string/edit"
         android:textColor="@color/ColorTextGris"
         android:textSize="20sp"/>

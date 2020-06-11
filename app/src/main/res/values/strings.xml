@@ -38,7 +38,7 @@
     <string name="uset_have_call">you have a call</string>
     <string name="family_partner"><![CDATA[Family & Partners]]></string>
     <string name="admin">ADMIN</string>
-    <string name="edit">Edit</string>
+    <string name="edit">Edit Profile</string>
     <string name="delete">Delete</string>
     <string name="current_user">YOU</string>
     <string name="choose_photo">Choose Photo?</string>
@@ -72,4 +72,5 @@
     <string name="box_id">Box Id</string>
     <string name="full_name">Full Name</string>
     <string name="register">Register</string>
+    <string name="back_button">back button</string>
 </resources>

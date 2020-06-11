@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.montassarselmi.dooreye.Model.User;
 
+import static com.montassarselmi.dooreye.MainActivity.changeStatusBarToWhite;
+
 public class ConfigureActivity extends AppCompatActivity {
 
     private static final String TAG = ConfigureActivity.class.getSimpleName();
@@ -43,6 +45,7 @@ public class ConfigureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure);
+        changeStatusBarToWhite(this);
 
         edtBoxId = (EditText) findViewById(R.id.edt_box_id);
         edtFullName = (EditText) findViewById(R.id.edt_full_name);

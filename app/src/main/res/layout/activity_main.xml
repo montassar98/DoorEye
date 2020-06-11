@@ -193,6 +193,7 @@
             android:layout_weight="1"
             android:id="@+id/cv_history"
             app:cardCornerRadius="8dp"
+            android:onClick="onEventHistoryClicked"
             app:cardUseCompatPadding="true"
             app:cardElevation="2dp">
 
@@ -226,6 +227,7 @@
             android:layout_height="120dp"
             android:layout_marginLeft="18dp"
             android:layout_weight="1"
+            android:onClick="onCheckFrontDoorClicked"
             android:id="@+id/cv_front_door"
             app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true"
@@ -270,6 +272,7 @@
             android:layout_width="160dp"
             android:layout_height="120dp"
             android:layout_weight="1"
+            android:onClick="onFamilyClicked"
             app:cardCornerRadius="8dp"
             android:id="@+id/cv_family"
             app:cardUseCompatPadding="true"
@@ -305,6 +308,7 @@
             android:layout_marginLeft="18dp"
             android:layout_weight="1"
             app:cardCornerRadius="8dp"
+            android:onClick="onSettingsClicked"
             android:id="@+id/cv_settings"
             app:cardUseCompatPadding="true"
             app:cardElevation="2dp">
@@ -351,6 +355,7 @@
             android:layout_weight="1"
             app:cardCornerRadius="8dp"
             android:id="@+id/cv_contact_us"
+            android:onClick="onContactUsClicked"
             app:cardUseCompatPadding="true"
             app:cardElevation="2dp">
 
@@ -386,6 +391,7 @@
             android:id="@+id/cv_logout"
             app:cardUseCompatPadding="true"
             app:cardCornerRadius="8dp"
+            android:onClick="onLogoutClicked"
             app:cardElevation="2dp">
 
             <RelativeLayout

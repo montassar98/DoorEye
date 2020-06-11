@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +55,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button btnContinue;
     private String  phoneNumber="";
     private Boolean isSent =false;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks,mcallbacks;
+
     private FirebaseAuth mAuth;
     private String mVerifcationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -64,7 +68,10 @@ public class RegistrationActivity extends AppCompatActivity {
     public Boolean saved=false;
     public SharedPreferences mSharedPreferences;
     public SharedPreferences.Editor editor;
-    private TextView txtResend,txtPleaseEnter;
+    private TextView txtResend,txtPleaseEnter,txtContactUs,mTextField;
+    private ImageView imgBack;
+
+
 
 
 
@@ -79,6 +86,10 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         txtPleaseEnter = (TextView) findViewById(R.id.txt_please_enter_verif);
+        txtResend = (TextView) findViewById(R.id.txt_resend);
+        txtContactUs = (TextView) findViewById(R.id.txt_contact_us_click);
+        mTextField = (TextView) findViewById(R.id.text_time_wait);
+        imgBack = (ImageView) findViewById(R.id.img_back);
 
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
@@ -92,11 +103,16 @@ public class RegistrationActivity extends AppCompatActivity {
         ccp = (CountryCodePicker) findViewById(R.id.countryCodeHolder);
         ccp.registerCarrierNumberEditText(edtPhone);
         llPhone =(LinearLayout) findViewById(R.id.ll_phone);
-
+        txtContactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegistrationActivity.this, ContactUsActivity.class));
+            }
+        });
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((btnContinue.getText().equals(getResources().getString(R.string.submit))) || isSent)
+                if ((btnContinue.getText().equals(getResources().getString(R.string.submit))) || isSent )
                 {
                     llPhone.setVisibility(View.GONE);
                     findViewById(R.id.txt_any_sms).setVisibility(View.GONE);
@@ -129,7 +145,18 @@ public class RegistrationActivity extends AppCompatActivity {
                                 RegistrationActivity.this,
                                 callbacks
                         );
+                        txtResend.setVisibility(View.GONE);
+                        new CountDownTimer(11000,1000){
+                            public void onTick(long millisUntilFinished) {
+                                mTextField.setVisibility(View.VISIBLE);
+                                mTextField.setText(getResources().getString(R.string.seconds_remaining)+ millisUntilFinished / 1000);
+                            }
 
+                            public void onFinish() {
+                                mTextField.setVisibility(View.GONE);
+                                txtResend.setVisibility(View.VISIBLE);
+                            }
+                        }.start();
                     }
                 }
             }
@@ -154,11 +181,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 findViewById(R.id.ll_resend).setVisibility(View.GONE);
             }
 
+
             @SuppressLint("SetTextI18n")
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
-
                 mVerifcationId=s;
                 mResendToken = forceResendingToken;
                 llPhone.setVisibility(View.GONE);
@@ -166,6 +193,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 isSent=true;
                 btnContinue.setText(getResources().getString(R.string.submit));
                 edtConfirmCode.setVisibility(View.VISIBLE);
+                imgBack.setVisibility(View.VISIBLE);
                 findViewById(R.id.txt_enter_verif).setVisibility(View.VISIBLE);
                 findViewById(R.id.txt_please_enter_verif).setVisibility(View.VISIBLE);
                 txtPleaseEnter.setText(getResources().getString(R.string.please_enter_code)+ccp.getFullNumberWithPlus());
@@ -175,6 +203,78 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
+
+        mcallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                loadingProgress.dismiss();
+
+
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                loadingProgress.dismiss();
+
+
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+                mVerifcationId=s;
+                mResendToken = forceResendingToken;
+                isSent=true;
+                loadingProgress.dismiss();
+
+
+            }
+        };
+
+        txtResend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if (!isSent) {
+                    phoneNumber = ccp.getFullNumberWithPlus();
+                    loadingProgress.setTitle(getResources().getString(R.string.resend_code_verification));
+                    loadingProgress.setMessage(getResources().getString(R.string.wait_resend_verification));
+                    loadingProgress.setCanceledOnTouchOutside(false);
+                    loadingProgress.show();
+                    resendVerificationCode(phoneNumber,mResendToken);
+                    txtResend.setVisibility(View.GONE);
+                    new CountDownTimer(11000,1000){
+                        public void onTick(long millisUntilFinished) {
+                            mTextField.setVisibility(View.VISIBLE);
+                            mTextField.setText(getResources().getString(R.string.seconds_remaining)+ millisUntilFinished / 1000);
+                        }
+
+                        public void onFinish() {
+                            mTextField.setVisibility(View.GONE);
+                            txtResend.setVisibility(View.VISIBLE);
+                        }
+                    }.start();
+                }
+            //}
+        });
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegistrationActivity.this, RegistrationActivity.class));
+                finish();
+
+            }
+        });
+    }
+    public void resendVerificationCode(String phone,PhoneAuthProvider.ForceResendingToken token)
+    {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phone,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                mcallbacks,         // OnVerificationStateChangedCallbacks
+                token);             // ForceResendingToken from callbacks
     }
     private String findBoxId(){
         String boxId="";

@@ -4,18 +4,20 @@
     <string name="enter_your_code_here">Your Code</string>
     <string name="continu">continue</string>
     <string name="phone_number_verification">Phone Number Verification</string>
+    <string name="resend_code_verification">Resend Phone Number Verification Code</string>
     <string name="missing_code">missing code!</string>
     <string name="invalid_code">invalid code!</string>
     <string name="write_verification_code">Please write your verification code</string>
     <string name="wait_verification">Please wait, while we are verifying your phone number</string>
-    <string name="please_enter_code">please enter the verification code sent to</string>
+    <string name="wait_resend_verification">Please wait, while we are resend the code to your phone number</string>
+    <string name="please_enter_code">"please enter the code sent to "</string>
 
     <string name="submit">submit</string>
     <string name="home">Home</string>
     <string name="permissions_not_granted">This app needs access to your camera and mic to make video calls</string>
     <string name="an_sms_may_be_sent_to_your_phone">An SMS may be sent to your phone.</string>
-    <string name="resend">Resend</string>
-    <string name="don_t_get_the_code">Don\'t get the code?</string>
+    <string name="resend">"Resend"</string>
+    <string name="don_t_get_the_code">"Don\'t get the code? "  </string>
     <string name="enter_verification_code">Enter Verification Code</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
@@ -73,4 +75,7 @@
     <string name="full_name">Full Name</string>
     <string name="register">Register</string>
     <string name="back_button">back button</string>
+    <string name="contact_us_register">Contact Us</string>
+    <string name="seconds_remaining">"seconds remaining to resend code: "</string>
+    <string name="done">done!</string>
 </resources>

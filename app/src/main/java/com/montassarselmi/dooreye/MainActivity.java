@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity{
     public static String boxId;
     private NoInternetDialog noInternetDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

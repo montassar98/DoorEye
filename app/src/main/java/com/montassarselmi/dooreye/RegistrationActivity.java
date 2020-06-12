@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +45,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
 import com.montassarselmi.dooreye.Model.User;
 
+import org.imaginativeworld.oopsnointernet.ConnectionCallback;
+import org.imaginativeworld.oopsnointernet.NoInternetDialog;
+
 import java.util.concurrent.TimeUnit;
+
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -70,6 +75,8 @@ public class RegistrationActivity extends AppCompatActivity {
     public SharedPreferences.Editor editor;
     private TextView txtResend,txtPleaseEnter,txtContactUs,mTextField;
     private ImageView imgBack;
+
+
 
 
 
@@ -242,10 +249,10 @@ public class RegistrationActivity extends AppCompatActivity {
                     loadingProgress.show();
                     resendVerificationCode(phoneNumber,mResendToken);
                     txtResend.setVisibility(View.GONE);
-                    new CountDownTimer(11000,1000){
+                    new CountDownTimer(60000,1000){
                         public void onTick(long millisUntilFinished) {
                             mTextField.setVisibility(View.VISIBLE);
-                            mTextField.setText(getResources().getString(R.string.seconds_remaining)+ millisUntilFinished / 1000);
+                            mTextField.setText( millisUntilFinished / 1000 + getResources().getString(R.string.seconds_remaining));
                         }
 
                         public void onFinish() {
@@ -406,8 +413,17 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 }

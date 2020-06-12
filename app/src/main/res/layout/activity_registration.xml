@@ -118,12 +118,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/buttonsColor"
-                    android:textSize="15sp"
-                    android:text="@string/don_t_get_the_code"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/buttonsColor"
                     android:textStyle="bold"
                     android:clickable="true"
                     android:id="@+id/txt_resend"
@@ -157,6 +151,7 @@
             android:layout_height="wrap_content"
             android:text="@string/continu"
             android:id="@+id/btn_continue"
+            android:textSize="12sp"
             android:background="@drawable/btn_continu"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"/>

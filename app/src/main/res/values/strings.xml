@@ -8,14 +8,13 @@
     <string name="invalid_code">invalid code!</string>
     <string name="write_verification_code">Please write your verification code</string>
     <string name="wait_verification">Please wait, while we are verifying your phone number</string>
-    <string name="please_enter_code">please enter the verification code sent to</string>
+    <string name="please_enter_code">"please enter the verification code sent to "</string>
 
     <string name="submit">submit</string>
     <string name="home">Home</string>
     <string name="permissions_not_granted">This app needs access to your camera and mic to make video calls</string>
     <string name="an_sms_may_be_sent_to_your_phone">An SMS may be sent to your phone.</string>
     <string name="resend">Resend</string>
-    <string name="don_t_get_the_code">Don\'t get the code?</string>
     <string name="enter_verification_code">Enter Verification Code</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
@@ -73,4 +72,17 @@
     <string name="full_name">Full Name</string>
     <string name="register">Register</string>
     <string name="back_button">back button</string>
+    <string name="contact_us_register">Contact Us</string>
+    <string name="resend_code_verification">Resend Phone Number Verification Code</string>
+    <string name="wait_resend_verification">Please wait, while we are resending your verification Code</string>
+    <string name="seconds_remaining">" Seconds Remaining to Resend your Code"</string>
+    <string name="no_internet">No Internet</string>
+    <string name="check_your_internet">Check your Internet connection and try again</string>
+    <string name="please_turn_on">Please turn on</string>
+    <string name="wifi">Wifi</string>
+    <string name="mobile_data">Mobile data</string>
+    <string name="turned_on_airplane_mod">You have turned on the airplane mode.</string>
+    <string name="please_turn_off">Please turn off</string>
+    <string name="airplane_mode">Airplane mode</string>
+    <string name="decline">Decline</string>
 </resources>

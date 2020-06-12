@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import org.imaginativeworld.oopsnointernet.ConnectionCallback;
 import org.imaginativeworld.oopsnointernet.NoInternetDialog;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class MainActivity extends AppCompatActivity{
 
@@ -152,34 +154,7 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-    private void initNoInternetDialog(){
-        // No Internet Dialog
-        NoInternetDialog.Builder builder1 = new NoInternetDialog.Builder(this);
 
-        builder1.setConnectionCallback(new ConnectionCallback() { // Optional
-            @Override
-            public void hasActiveConnection(boolean hasActiveConnection) {
-                // ...
-            }
-        });
-        builder1.setCancelable(false); // Optional
-        builder1.setNoInternetConnectionTitle(getResources().getString(R.string.no_internet)); // Optional
-        builder1.setNoInternetConnectionMessage(getResources().getString(R.string.check_your_internet)); // Optional
-        builder1.setShowInternetOnButtons(true); // Optional
-        builder1.setPleaseTurnOnText(getResources().getString(R.string.please_turn_on)); // Optional
-        builder1.setWifiOnButtonText(getResources().getString(R.string.wifi)); // Optional
-        builder1.setMobileDataOnButtonText(getResources().getString(R.string.mobile_data)); // Optional
-
-        builder1.setOnAirplaneModeTitle(getResources().getString(R.string.no_internet)); // Optional
-        builder1.setOnAirplaneModeMessage(getResources().getString(R.string.turned_on_airplane_mod)); // Optional
-        builder1.setPleaseTurnOffText(getResources().getString(R.string.please_turn_off)); // Optional
-        builder1.setAirplaneModeOffButtonText(getResources().getString(R.string.airplane_mode)); // Optional
-        builder1.setShowAirplaneModeOffButtons(true); // Optional
-
-        noInternetDialog = builder1.build();
-
-
-    }
 
     @Override
     protected void onResume() {
@@ -249,6 +224,34 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+    public  void initNoInternetDialog(){
+        // No Internet Dialog
+        NoInternetDialog.Builder builder1 = new NoInternetDialog.Builder(this);
+
+        builder1.setConnectionCallback(new ConnectionCallback() { // Optional
+            @Override
+            public void hasActiveConnection(boolean hasActiveConnection) {
+                // ...
+            }
+        });
+        builder1.setCancelable(false); // Optional
+        builder1.setNoInternetConnectionTitle(getResources().getString(R.string.no_internet)); // Optional
+        builder1.setNoInternetConnectionMessage(getResources().getString(R.string.check_your_internet)); // Optional
+        builder1.setShowInternetOnButtons(true); // Optional
+        builder1.setPleaseTurnOnText(getResources().getString(R.string.please_turn_on)); // Optional
+        builder1.setWifiOnButtonText(getResources().getString(R.string.wifi)); // Optional
+        builder1.setMobileDataOnButtonText(getResources().getString(R.string.mobile_data)); // Optional
+
+        builder1.setOnAirplaneModeTitle(getResources().getString(R.string.no_internet)); // Optional
+        builder1.setOnAirplaneModeMessage(getResources().getString(R.string.turned_on_airplane_mod)); // Optional
+        builder1.setPleaseTurnOffText(getResources().getString(R.string.please_turn_off)); // Optional
+        builder1.setAirplaneModeOffButtonText(getResources().getString(R.string.airplane_mode)); // Optional
+        builder1.setShowAirplaneModeOffButtons(true); // Optional
+
+        noInternetDialog = builder1.build();
+
+
+    }
 
     @Override
     protected void onRestart() {

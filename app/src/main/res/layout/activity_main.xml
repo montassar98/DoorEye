@@ -109,15 +109,16 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/switch_notification"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Receive Notifications"
-                    android:layout_marginRight="5dp"
                     android:textColor="#ffff"
                     android:textSize="18dp" />
 
@@ -131,7 +132,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -139,6 +140,7 @@
                     android:layout_toLeftOf="@id/switch_calls"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Receive Calls"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
                     android:textColor="#ffff"
                     android:textSize="18dp" />

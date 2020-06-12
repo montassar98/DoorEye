@@ -76,6 +76,6 @@
     <string name="register">Register</string>
     <string name="back_button">back button</string>
     <string name="contact_us_register">Contact Us</string>
-    <string name="seconds_remaining">"seconds remaining to resend code: "</string>
+    <string name="seconds_remaining">" Seconds remaining to resend code"</string>
     <string name="done">done!</string>
 </resources>

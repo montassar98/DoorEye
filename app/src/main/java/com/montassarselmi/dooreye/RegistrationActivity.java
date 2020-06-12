@@ -137,7 +137,6 @@ public class RegistrationActivity extends AppCompatActivity {
                         loadingProgress.setMessage(getResources().getString(R.string.wait_verification));
                         loadingProgress.setCanceledOnTouchOutside(false);
                         loadingProgress.show();
-
                         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                                 phoneNumber,
                                 60,
@@ -146,10 +145,10 @@ public class RegistrationActivity extends AppCompatActivity {
                                 callbacks
                         );
                         txtResend.setVisibility(View.GONE);
-                        new CountDownTimer(11000,1000){
+                        new CountDownTimer(60000,1000){
                             public void onTick(long millisUntilFinished) {
                                 mTextField.setVisibility(View.VISIBLE);
-                                mTextField.setText(getResources().getString(R.string.seconds_remaining)+ millisUntilFinished / 1000);
+                                mTextField.setText( millisUntilFinished / 1000+getResources().getString(R.string.seconds_remaining));
                             }
 
                             public void onFinish() {

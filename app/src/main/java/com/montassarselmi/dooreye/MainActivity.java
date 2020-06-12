@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (mAuth.getCurrentUser().getUid() != null) {
                     Log.d(TAG, "onDataChange: uid=" + mAuth.getCurrentUser().getUid());
-
                     if (!dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                         Toast.makeText(MainActivity.this, "nope", Toast.LENGTH_SHORT).show();
                         editor.putBoolean("IS_SAVED", false);

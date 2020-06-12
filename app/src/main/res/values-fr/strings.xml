@@ -18,10 +18,10 @@
     <string name="enter_verification_code">"Entrez le code de vérification"</string>
     <string name="logout">Se déconnecter</string>
     <string name="settings">"Paramètres"</string>
-    <string name="event_nhistory">"Historique de\n l'événement"</string>
-    <string name="check_front_ndoor">Devant la\n maison</string>
-    <string name="family_partners">Famille et\n partenaires</string>
-    <string name="contact_us">"Contactez\n nous"</string>
+    <string name="event_nhistory">"Historique de\nl'événement"</string>
+    <string name="check_front_ndoor">Devant la\nmaison</string>
+    <string name="family_partners">Famille et\npartenaires</string>
+    <string name="contact_us">"Contactez\nnous"</string>
     <string name="empty_fullname">Veuillez saisir votre nom ici</string>
     <string name="empty_email">Veuillez saisir votre e-mail ici</string>
     <string name="empty_boxId">Veuillez entrer votre ID boîte ici</string>

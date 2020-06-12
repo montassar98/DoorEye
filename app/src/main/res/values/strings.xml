@@ -74,4 +74,13 @@
     <string name="register">Register</string>
     <string name="back_button">back button</string>
     <string name="decline">Decline</string>
+    <string name="no_internet">No Internet</string>
+    <string name="check_your_internet">Check your Internet connection and try again</string>
+    <string name="please_turn_on">Please turn on</string>
+    <string name="wifi">Wifi</string>
+    <string name="mobile_data">Mobile data</string>
+    <string name="turned_on_airplane_mod">You have turned on the airplane mode.</string>
+    <string name="please_turn_off">Please turn off</string>
+    <string name="airplane_mode">Airplane mode</string>
+
 </resources>

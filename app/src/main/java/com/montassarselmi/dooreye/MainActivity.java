@@ -8,8 +8,10 @@ import androidx.core.content.ContextCompat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +32,9 @@ import com.montassarselmi.dooreye.Services.ForegroundCallService;
 
 import com.squareup.picasso.Picasso;
 
+import org.imaginativeworld.oopsnointernet.ConnectionCallback;
+import org.imaginativeworld.oopsnointernet.NoInternetDialog;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity{
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity{
     private TextView userName;
     private CircleImageView imgUser;
     public static String boxId;
+    private NoInternetDialog noInternetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +148,36 @@ public class MainActivity extends AppCompatActivity{
         super.onStart();
         Log.d(TAG, "onStart: ");
        // stopService();
+        IntentFilter filter = new IntentFilter();
+
+
+    }
+
+    private void initNoInternetDialog(){
+        // No Internet Dialog
+        NoInternetDialog.Builder builder1 = new NoInternetDialog.Builder(this);
+
+        builder1.setConnectionCallback(new ConnectionCallback() { // Optional
+            @Override
+            public void hasActiveConnection(boolean hasActiveConnection) {
+                // ...
+            }
+        });
+        builder1.setCancelable(false); // Optional
+        builder1.setNoInternetConnectionTitle(getResources().getString(R.string.no_internet)); // Optional
+        builder1.setNoInternetConnectionMessage(getResources().getString(R.string.check_your_internet)); // Optional
+        builder1.setShowInternetOnButtons(true); // Optional
+        builder1.setPleaseTurnOnText(getResources().getString(R.string.please_turn_on)); // Optional
+        builder1.setWifiOnButtonText(getResources().getString(R.string.wifi)); // Optional
+        builder1.setMobileDataOnButtonText(getResources().getString(R.string.mobile_data)); // Optional
+
+        builder1.setOnAirplaneModeTitle(getResources().getString(R.string.no_internet)); // Optional
+        builder1.setOnAirplaneModeMessage(getResources().getString(R.string.turned_on_airplane_mod)); // Optional
+        builder1.setPleaseTurnOffText(getResources().getString(R.string.please_turn_off)); // Optional
+        builder1.setAirplaneModeOffButtonText(getResources().getString(R.string.airplane_mode)); // Optional
+        builder1.setShowAirplaneModeOffButtons(true); // Optional
+
+        noInternetDialog = builder1.build();
 
 
     }
@@ -150,6 +186,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
+        //initiate no internet dialog.
+        initNoInternetDialog();
+
 
     }
 
@@ -197,6 +236,11 @@ public class MainActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: ");
+
+        // No Internet Dialog
+        if (noInternetDialog != null) {
+            noInternetDialog.destroy();
+        }
     }
 
     @Override

@@ -138,8 +138,8 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         //get current date time with Date()
         Date date = new Date();
         String time = dateFormat.format(date);
-        Live live = new Live(id, time,name);
-        boxHistoryRef.child("live").child(time).setValue(live);
+        Live live = new Live(id, date,name);
+        boxHistoryRef.child("live").child("Fri May 14 16:01:34 GMT+01:00 2020").setValue(live);
     }
     public void fetchSessionConnectionData() {
         RequestQueue reqQueue = Volley.newRequestQueue(this);
@@ -254,7 +254,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         Date date = new Date();
         String time = dateFormat.format(date);
         ring.setId(id);
-        ring.setEventTime(time);
+        ring.setEventTime(date);
         ring.setStatus("Ring");
         ring.setResponder(name);
         instantImagePathRef.addListenerForSingleValueEvent(new ValueEventListener() {

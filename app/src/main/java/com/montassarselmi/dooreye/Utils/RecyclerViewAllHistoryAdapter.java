@@ -39,7 +39,7 @@ public class RecyclerViewAllHistoryAdapter extends RecyclerView.Adapter<Recycler
         int icon = item.getIcon();
         holder.imgState.setImageDrawable(mContext.getDrawable(item.getIcon()));
         holder.rlExpand.setVisibility(View.GONE);
-        holder.txtTime.setText(item.getEventTime());
+        holder.txtTime.setText(item.getEventTime().toString());
         if (item.getResponder() != null) {
             if (item.getResponder().equals("No one"))
                 holder.txtResponder.setText(mContext.getResources().getString(R.string.no_responder));

@@ -6,16 +6,18 @@ import androidx.annotation.Nullable;
 
 import com.montassarselmi.dooreye.R;
 
+import java.util.Date;
+
 public class EventHistory {
 
     private int id;
-    private String eventTime;
+    private Date eventTime;
     private  int icon;
     private String status;
     private String responder;
     private String visitorImage;
 
-    public EventHistory( int id, String eventTime, String status, @Nullable String responder, @Nullable String visitorImage) {
+    public EventHistory( int id, Date eventTime, String status, @Nullable String responder, @Nullable String visitorImage) {
         this.id = id;
         this.eventTime = eventTime;
         this.status = status;
@@ -69,11 +71,11 @@ public class EventHistory {
         this.id = id;
     }
 
-    public String getEventTime() {
+    public Date getEventTime() {
         return eventTime;
     }
 
-    public void setEventTime(String eventTime) {
+    public void setEventTime(Date eventTime) {
         this.eventTime = eventTime;
     }
 

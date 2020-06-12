@@ -62,7 +62,7 @@
                 android:orientation="horizontal">
                 <Button
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="35dp"
                     android:layout_weight="0.5"
                     android:background="@drawable/btn_accept"
                     android:text="@string/accept"
@@ -72,9 +72,10 @@
                     android:id="@+id/btn_accept"/>
                 <Button
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="35dp"
                     android:layout_weight="0.5"
                     android:layout_marginStart="5dp"
+                    android:theme="@style/Theme.AppCompat.Light"
                     android:background="@drawable/btn_decline"
                     android:text="@string/decline"
                     android:gravity="center"

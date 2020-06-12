@@ -40,14 +40,14 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/RegisterTextColor"
-                android:text="Name"/>
+                android:text="@string/name"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:focusableInTouchMode="true"
                 android:inputType="textPersonName"
                 android:id="@+id/edt_full_name_edit"
-                android:hint="Your Name"
+                android:hint="@string/full_name"
                 android:textSize="20sp"
                 android:background="@drawable/flag_transparent"
                 android:layout_marginEnd="15dp"
@@ -68,14 +68,14 @@
                 android:layout_marginTop="25dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/RegisterTextColor"
-                android:text="Email"/>
+                android:text="@string/email"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:focusableInTouchMode="true"
                 android:inputType="textEmailAddress"
                 android:id="@+id/edt_email_edit"
-                android:hint="Your Email"
+                android:hint="exp@email.com"
                 android:textSize="20sp"
                 android:background="@drawable/flag_transparent"
                 android:layout_marginEnd="15dp"

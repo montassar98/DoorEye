@@ -139,7 +139,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         Date date = new Date();
         String time = dateFormat.format(date);
         Live live = new Live(id, date,name);
-        boxHistoryRef.child("live").child("Fri May 14 16:01:34 GMT+01:00 2020").setValue(live);
+        boxHistoryRef.child("live").child(date.toString()).setValue(live);
     }
     public void fetchSessionConnectionData() {
         RequestQueue reqQueue = Volley.newRequestQueue(this);

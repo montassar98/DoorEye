@@ -174,8 +174,11 @@ public class RequestsFragment extends Fragment implements RequestsRVAdapter.onRe
         mRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getCurrentUser().getUid()).child("status").getValue().toString().equals("admin")) {
-                    Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber").equalTo(mDataSet.get(position).getPhoneNumber());
+                if (dataSnapshot.child("BoxList").child(boxId).child("users").child(mAuth.getCurrentUser()
+                        .getUid()).child("status").getValue().toString().equals("admin")) {
+
+                    Query mUserQuery = mRefUser.child("BoxList").child(boxId).child("users").orderByChild("phoneNumber")
+                            .equalTo(mDataSet.get(position).getPhoneNumber());
                     mUserQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -192,6 +195,22 @@ public class RequestsFragment extends Fragment implements RequestsRVAdapter.onRe
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
+                    }
+                    );
+                    // change status below Users ref.
+                    Query mUserQuery1 = mRefUser.child("Users").orderByChild("phoneNumber")
+                            .equalTo(mDataSet.get(position).getPhoneNumber());
+                    mUserQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot appleSnapshot : dataSnapshot.getChildren())
+                                appleSnapshot.getRef().child("status").setValue("user");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
                     });
                 }else Toast.makeText(getContext(), getContext().getResources().getText(R.string.you_cant_accept), Toast.LENGTH_SHORT).show();
 
@@ -202,6 +221,7 @@ public class RequestsFragment extends Fragment implements RequestsRVAdapter.onRe
 
             }
         });
+
     }
 
     @Override

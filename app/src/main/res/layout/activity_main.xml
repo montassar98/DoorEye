@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
-            android:text="Dashboard"
+            android:text="@string/dashboard"
             android:textColor="#5E5E5E"
             android:textSize="24dp" />
 
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
-        android:text="Bring Your Home Into Your Phone."
+        android:text="@string/bring_your_home_into_your_phone"
         android:textColor="#5E5E5E"
         android:textSize="18dp" />
 
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_mediumitalic"
-                    android:text="Welcome Back"
+                    android:text="@string/welcome_back"
                     android:textColor="#ffff"
                     android:textSize="18dp" />
 
@@ -118,7 +118,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/switch_notification"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Receive Notifications"
+                    android:text="@string/receive_notifications"
                     android:textColor="#ffff"
                     android:textSize="18dp" />
 
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@id/switch_calls"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Receive Calls"
+                    android:text="@string/receive_calls"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
                     android:textColor="#ffff"
@@ -169,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/roboto_medium"
-            android:text="Your Options"
+            android:text="@string/your_options"
             android:textColor="#5E5E5E"
             android:textSize="18dp" />
 

@@ -13,7 +13,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2.5"
             android:background="@drawable/back_contact_us"
              />
         <RelativeLayout
@@ -26,7 +26,6 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         app:cardCornerRadius="15dp"
-
         android:layout_gravity="center_horizontal|bottom"
         android:elevation="3dp"
         android:layout_marginBottom="20dp">

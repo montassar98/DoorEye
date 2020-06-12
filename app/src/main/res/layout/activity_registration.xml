@@ -147,11 +147,13 @@
             android:textColor="@color/colorTextPrimary"
             android:id="@+id/txt_any_sms"/>
         <Button
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/continu"
             android:id="@+id/btn_continue"
             android:textSize="12sp"
+            android:textColor="@color/ColorPurple"
+            android:theme="@style/Theme.AppCompat.Light"
             android:background="@drawable/btn_continu"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"/>

@@ -85,4 +85,11 @@
     <string name="please_turn_off">Please turn off</string>
     <string name="airplane_mode">Airplane mode</string>
     <string name="decline">Decline</string>
+    <string name="waiting_for_the_admin">Waiting For The Admin To Accept Your Invitation.</string>
+    <string name="bring_your_home_into_your_phone">Bring Your Home Into Your Phone.</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="receive_notifications">Receive Notifications</string>
+    <string name="receive_calls">Receive Calls</string>
+    <string name="your_options">Your Options</string>
 </resources>

@@ -37,6 +37,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
+    public static boolean isActivityRunning;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +182,18 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(new Intent(CallingActivity.this, VideoChatActivity.class));
         finish();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActivityRunning = false;
     }
 
 }

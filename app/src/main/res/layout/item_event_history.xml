@@ -72,16 +72,17 @@
                 android:textSize="18sp"
                 android:textColor="@color/common_google_signin_btn_text_light"
                 android:text=" - "/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_responder"
-            android:layout_marginStart="4dp"
-            android:textStyle="bold"
-            android:fontFamily="@font/roboto_bold"
-            android:textSize="18sp"
-            android:textColor="@color/common_google_signin_btn_text_light"
-            android:text="hsin"/>
+
+            <TextView
+                android:id="@+id/txt_responder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="hsin"
+                android:textColor="@color/common_google_signin_btn_text_light"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
 

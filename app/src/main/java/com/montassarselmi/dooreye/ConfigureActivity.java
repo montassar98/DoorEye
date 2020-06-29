@@ -39,6 +39,8 @@ public class ConfigureActivity extends AppCompatActivity {
     private DatabaseReference  mRefBoxUser,mRefBoxStatus, mRefUsers;
     public SharedPreferences mSharedPreferences;
     public SharedPreferences.Editor editor;
+    public static boolean isActivityRunning;
+
 
 
     @Override
@@ -219,4 +221,15 @@ public class ConfigureActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActivityRunning = false;
+    }
 }

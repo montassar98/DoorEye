@@ -24,6 +24,8 @@ public class CheckFrontDoorActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef,userBoxRef;
     private FirebaseAuth mAuth;
+    public static boolean isActivityRunning;
+
 
 
     @Override
@@ -50,5 +52,15 @@ public class CheckFrontDoorActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
 
-  }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
+    }
+}

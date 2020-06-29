@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EventHistoryActivity"></activity>
+        <activity android:name=".IncommingMessage">
+        </activity>
+        <activity android:name=".EventHistoryActivity" />
         <activity android:name=".CheckFrontDoorActivity" />
         <activity
             android:name=".ContactUsActivity"
@@ -35,6 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".VideoChatActivity" />
         <activity android:name=".CallingActivity" />
         <activity android:name=".ConfigureActivity" />
@@ -49,16 +52,22 @@
             android:exported="true"
             tools:ignore="InnerclassSeparator" />
 
+        <service
+            android:name=".Services.MyFCMService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
-        
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
-
     </application>
 
 </manifest>

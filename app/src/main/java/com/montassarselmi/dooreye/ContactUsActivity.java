@@ -21,6 +21,8 @@ public class ContactUsActivity extends AppCompatActivity {
     private static final String TAG = ContactUsActivity.class.getSimpleName();
     private EditText edtName, edtEmail, edtMessage;
     private FloatingActionButton fabSent;
+    public static boolean isActivityRunning;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,5 +101,17 @@ public class ContactUsActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
     }
 }

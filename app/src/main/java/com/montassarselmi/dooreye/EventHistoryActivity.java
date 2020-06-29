@@ -34,6 +34,8 @@ public class EventHistoryActivity extends AppCompatActivity implements BottomNav
     private ViewPager2 mViewPager2;
     private ArrayList<Fragment> arrayList = new ArrayList<>();
     private HistoryViewPager2Adapter mAdapter;
+    public static boolean isActivityRunning;
+
 
 
 
@@ -139,4 +141,15 @@ public class EventHistoryActivity extends AppCompatActivity implements BottomNav
         finish();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
+    }
 }

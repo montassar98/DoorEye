@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity{
     private CircleImageView imgUser;
     public static String boxId;
     private NoInternetDialog noInternetDialog;
+    public static boolean isActivityRunning;
+
+
 
 
     @Override
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity{
         Log.d(TAG, "onStart: ");
        // stopService();
         IntentFilter filter = new IntentFilter();
-
+        isActivityRunning = true;
 
     }
 
@@ -268,6 +271,7 @@ public class MainActivity extends AppCompatActivity{
         super.onStop();
        // startService();
         Log.d(TAG, "onStop: ");
+        isActivityRunning = false;
 
     }
 
@@ -304,7 +308,7 @@ public class MainActivity extends AppCompatActivity{
     public void onSettingsClicked(View view) {
         Log.d(TAG, "onSettingsClicked ");
         Toast.makeText(this, "onSettingsClicked ", Toast.LENGTH_SHORT).show();
-        //startActivity(new Intent(MainActivity.this, EditActivity.class));
+        startActivity(new Intent(MainActivity.this, IncommingMessage.class));
     }
 
     public void onContactUsClicked(View view) {
@@ -321,4 +325,6 @@ public class MainActivity extends AppCompatActivity{
         finish();
 
     }
+
+
 }

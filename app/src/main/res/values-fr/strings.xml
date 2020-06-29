@@ -66,7 +66,7 @@
     <string name="there_are_no_rings_yet">Il n\'y a pas encore des sonnes</string>
     <string name="there_are_no_motions_yet">Il n\'y a pas encore de motions</string>
     <string name="there_are_no_events_yet">Il n\'y a pas encore d\'événements</string>
-    <string name="no_responder">Répondant manquant</string>
+    <string name="no_responder">aucun repondant</string>
     <string name="confirm">Confirmer</string>
     <string name="box_id">ID boîte</string>
     <string name="full_name">Nom complet</string>

@@ -75,6 +75,8 @@ public class RegistrationActivity extends AppCompatActivity {
     public SharedPreferences.Editor editor;
     private TextView txtResend,txtPleaseEnter,txtContactUs,mTextField;
     private ImageView imgBack;
+    public static boolean isActivityRunning;
+
 
 
 
@@ -394,6 +396,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        isActivityRunning = true;
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!=null)
         {
@@ -424,6 +427,6 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
+        isActivityRunning = false;
     }
 }

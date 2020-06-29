@@ -34,6 +34,8 @@ public class FamilyActivity extends AppCompatActivity  {
     int[] tabIconsEnabled = {R.drawable.ic_members_enabled,R.drawable.ic_requests_enabled};
     int[] tabIconsDisabled = {R.drawable.ic_members_disabled,R.drawable.ic_requests_disabled};
     ViewPager2 myViewPager2;
+    public static boolean isActivityRunning;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,5 +132,15 @@ public class FamilyActivity extends AppCompatActivity  {
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
+    }
 }

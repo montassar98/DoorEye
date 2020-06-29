@@ -26,6 +26,8 @@ public class WaitingActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
+    public static boolean isActivityRunning;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,5 +70,17 @@ public class WaitingActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
     }
 }

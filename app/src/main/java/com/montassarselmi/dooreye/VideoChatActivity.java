@@ -90,6 +90,8 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     private boolean isLive = false;
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
     private DatabaseReference instantImagePathRef;
+    public static boolean isActivityRunning;
+
 
 
     private View main;
@@ -367,5 +369,17 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning =false;
     }
 }

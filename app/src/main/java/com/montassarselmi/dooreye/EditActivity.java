@@ -67,6 +67,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isImagePicked = false;
     private boolean isBitmap;
     private Uri selectedImage;
+    public static boolean isActivityRunning;
+
 
 
     @Override
@@ -344,7 +346,15 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
+    }
 }

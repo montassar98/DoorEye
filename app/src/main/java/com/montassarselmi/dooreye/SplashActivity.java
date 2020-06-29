@@ -17,6 +17,8 @@ public class SplashActivity extends AppCompatActivity {
     private ImageView imgSplashLogo;
     private Animation animFadeIn, animTranslate, topAnim, bottomAnim;
     private MediaPlayer mediaPlayer;
+    public static boolean isActivityRunning;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +56,17 @@ public class SplashActivity extends AppCompatActivity {
                 SplashActivity.this.finish();
             }
         },5000);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
     }
 }

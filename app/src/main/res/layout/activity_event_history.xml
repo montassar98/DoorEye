@@ -15,16 +15,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:theme="@style/AppTheme2"
         >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_history"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:background="#FFF"
         android:elevation="5dp"
         app:layout_scrollFlags="scroll|enterAlways|snap"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="#673AB7" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -46,7 +44,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/white"
         app:menu="@menu/event_history_menu"/>
     </RelativeLayout>
 

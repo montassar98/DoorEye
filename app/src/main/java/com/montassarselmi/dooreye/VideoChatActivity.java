@@ -1,7 +1,6 @@
 package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -17,15 +16,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
 import android.opengl.GLSurfaceView;
-import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.montassarselmi.dooreye.Model.Live;
 import com.montassarselmi.dooreye.Model.Ring;
 
@@ -44,26 +36,18 @@ import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
 import com.opentok.android.Session;
 
-import android.os.Environment;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -95,6 +79,9 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
 
     private CustomProgress  mProgressDialog = CustomProgress.getInstance();
 
+    private ToggleButton toggleSoundState, toggleDoorState, toggleSwapCamera, toggleVideo;
+    private boolean isMuted = false;
+    private boolean isVideoPublished = false;
 
     private View main;
     private  Ring ring;
@@ -118,6 +105,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
+        DatabaseReference mDoorRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null")).child("door");
         boxHistoryRef = database.getReference("BoxList/"+mSharedPreferences.getString("BOX_ID","Null")+"/history/");
         instantImagePathRef = database.getReference().child("BoxList")
                 .child(mSharedPreferences.getString("BOX_ID","Null")).child("history").child("instantImagePath");
@@ -128,6 +116,38 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
 
         findViewById(R.id.btn_end_video_call).setOnClickListener(this);
         findViewById(R.id.btn_end_video_call).setVisibility(View.GONE);
+        toggleDoorState = findViewById(R.id.toggle_door_state);
+        toggleSoundState = findViewById(R.id.toggle_sound_state);
+        toggleSwapCamera = findViewById(R.id.toggle_swap_state);
+        toggleVideo = findViewById(R.id.toggle_video_state);
+        toggleDoorState.setVisibility(View.GONE);
+        toggleSoundState.setVisibility(View.GONE);
+        toggleSwapCamera.setVisibility(View.GONE);
+        toggleVideo.setVisibility(View.GONE);
+
+        toggleDoorState.setOnClickListener(view -> {
+                mDoorRef.setValue(1);
+                toggleDoorState.setEnabled(false);
+        });
+        toggleSoundState.setOnClickListener(view -> {
+            if (!isMuted)
+                mPublisher.setPublishAudio(false);
+            else mPublisher.setPublishAudio(true);
+
+            isMuted=!isMuted;
+        });
+        toggleVideo.setOnClickListener(view ->{
+            if (!isVideoPublished)
+                mPublisher.setPublishVideo(false);
+            else mPublisher.setPublishVideo(true);
+
+            isVideoPublished=!isVideoPublished;
+        });
+
+        toggleSwapCamera.setOnClickListener(view -> {
+            mPublisher.swapCamera();
+        });
+
         mPublisherViewContainer.setVisibility(View.GONE);
         if (mPublisher !=null){mPublisher.destroy();}
         if (mSubscriber !=null){mSubscriber.destroy();}
@@ -253,6 +273,10 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             mProgressDialog.hideProgress();
             findViewById(R.id.btn_end_video_call).setVisibility(View.VISIBLE);
             mPublisherViewContainer.setVisibility(View.VISIBLE);
+            toggleDoorState.setVisibility(View.VISIBLE);
+            toggleSoundState.setVisibility(View.VISIBLE);
+            toggleVideo.setVisibility(View.VISIBLE);
+            toggleSwapCamera.setVisibility(View.VISIBLE);
         }
     }
 
@@ -293,6 +317,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         if (mSubscriber != null) {
             mSubscriber = null;
             mSubscriberViewContainer.removeAllViews();
+            
         }
     }
 

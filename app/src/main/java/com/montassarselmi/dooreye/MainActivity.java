@@ -2,6 +2,7 @@ package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
@@ -9,15 +10,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.common.internal.FallbackServiceBroker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +39,9 @@ import com.squareup.picasso.Picasso;
 
 import org.imaginativeworld.oopsnointernet.ConnectionCallback;
 import org.imaginativeworld.oopsnointernet.NoInternetDialog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,6 +59,10 @@ public class MainActivity extends AppCompatActivity{
     public static String boxId;
     private NoInternetDialog noInternetDialog;
     public static boolean isActivityRunning;
+    private LottieAnimationView lottieOpenDoor;
+    private boolean isAnimated= false;
+
+    private DatabaseReference mDoorRef;
 
 
 
@@ -62,10 +77,12 @@ public class MainActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
+        mDoorRef =database.getReference("BoxList").child(findBoxId()).child("door");
         //-------------------------------------------------------
         //get current user info
         userName = (TextView) findViewById(R.id.txt_user_name);
-        imgUser = (CircleImageView) findViewById(R.id.user_image) ;
+        imgUser = (CircleImageView) findViewById(R.id.user_image);
+        lottieOpenDoor = findViewById(R.id.lottie_open_door);
         //--------------------------------------------------------
         usersRef = database.getReference("BoxList/"+findBoxId()+"/users");
         getCurrentUserInfo();
@@ -73,7 +90,29 @@ public class MainActivity extends AppCompatActivity{
         checkForCalls();
         boxId = findBoxId();
 
+        lottieOpenDoor.setOnClickListener(v -> {
+            Toast.makeText(this, "Door Opened", Toast.LENGTH_LONG).show();
+            if (isAnimated)
+                lottieOpenDoor.reverseAnimationSpeed();
+            lottieOpenDoor.playAnimation();
+            //TODO open door
+            mDoorRef.setValue(1);
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                lottieOpenDoor.reverseAnimationSpeed();
+                lottieOpenDoor.playAnimation();
+                isAnimated = true;
+                lottieOpenDoor.setEnabled(true);
+                Toast.makeText(this, "Door Closed", Toast.LENGTH_LONG).show();
+            },5 * 1000);
+            lottieOpenDoor.setEnabled(false);
+
+        });
+
     }
+
+
+
 
 
     private void getCurrentUserInfo() {
@@ -107,7 +146,17 @@ public class MainActivity extends AppCompatActivity{
           //  activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN| View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             // edited here
-            activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
+            boolean isNightMode = (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==Configuration.UI_MODE_NIGHT_YES;
+            TypedValue typedValue = new TypedValue();
+            if (isNightMode) {
+                activity.getTheme().resolveAttribute(android.R.attr.colorBackground, typedValue, true);
+                activity.getWindow().setNavigationBarColor(typedValue.data);
+                activity.getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, typedValue, true);
+                activity.getWindow().setStatusBarColor(typedValue.data);
+            }else {
+                activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
+
+            }
 
         }
     }
@@ -307,6 +356,7 @@ public class MainActivity extends AppCompatActivity{
         Log.d(TAG, "onSettingsClicked ");
         Toast.makeText(this, "onSettingsClicked ", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        finish();
     }
 
     public void onContactUsClicked(View view) {

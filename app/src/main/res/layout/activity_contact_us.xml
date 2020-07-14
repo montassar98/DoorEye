@@ -23,12 +23,12 @@
         </RelativeLayout>
     </LinearLayout>
     <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         app:cardCornerRadius="15dp"
         android:layout_gravity="center_horizontal|bottom"
         android:elevation="3dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="110dp">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -77,7 +77,7 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="55dp"
         android:src="@drawable/ic_send_contact_us"
         android:id="@+id/fab_sent"
         android:elevation="5dp"/>

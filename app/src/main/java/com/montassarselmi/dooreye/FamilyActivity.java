@@ -23,6 +23,7 @@ import com.montassarselmi.dooreye.Utils.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 
+import static com.montassarselmi.dooreye.MainActivity.changeStatusBarToWhite;
 
 
 public class FamilyActivity extends AppCompatActivity  {
@@ -108,14 +109,7 @@ public class FamilyActivity extends AppCompatActivity  {
 
     }
 
-    public static void changeStatusBarToWhite(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            // edited here
-            activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
 
-        }
-    }
 
     private void setUpViewPager(ViewPager2 viewPager) {
 

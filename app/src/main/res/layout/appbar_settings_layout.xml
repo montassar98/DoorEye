@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="46dp"
+    android:theme="@style/Theme.AppCompat.DayNight"
     android:orientation="horizontal">
 
     <ImageView
@@ -22,6 +23,5 @@
         android:textStyle="bold"
         android:gravity="center_horizontal"
         android:text="@string/settings"
-        android:textColor="@color/ColorTextGris"
         android:textSize="20sp"/>
 </LinearLayout>

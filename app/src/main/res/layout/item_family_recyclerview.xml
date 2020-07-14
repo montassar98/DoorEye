@@ -23,7 +23,7 @@
             android:background="#c0c0c0"
             android:gravity="center"
             android:text="@string/edit"
-            android:textColor="#fff" />
+             />
 
         <TextView
             android:id="@+id/tvDelete"
@@ -106,7 +106,6 @@
                     android:layout_height="wrap_content"
                     android:text="Hsin ye Behy"
                     android:textSize="20sp"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:id="@+id/txt_user_name"
                     android:fontFamily="@font/roboto_medium"/>
                 <TextView
@@ -115,7 +114,6 @@
                     android:text="+216 96 858 415"
                     android:textSize="18sp"
                     android:layout_marginTop="3dp"
-                    android:textColor="@color/common_google_signin_btn_text_light_focused"
                     android:id="@+id/txt_user_phone"
                     android:fontFamily="@font/roboto_regular"/>
                 <TextView

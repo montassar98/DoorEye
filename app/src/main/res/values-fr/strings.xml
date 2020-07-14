@@ -78,11 +78,11 @@
     <string name="seconds_remaining">" Secondes restantes pour renvoyer votre code"</string>
     <string name="no_internet">Pas d\'Internet</string>
     <string name="check_your_internet">Vérifiez votre connexion Internet et réessayez</string>
-    <string name="please_turn_on">Veuillez allumer</string>
+    <string name="please_turn_on">Veuillez activer</string>
     <string name="wifi">Wifi</string>
     <string name="mobile_data">Données mobiles</string>
     <string name="turned_on_airplane_mod">Vous avez activé le mode avion.</string>
-    <string name="please_turn_off">Veuillez éteindre</string>
+    <string name="please_turn_off">Veuillez désactiver</string>
     <string name="airplane_mode">Mode avion.</string>
     <string name="decline">Déclin</string>
     <string name="waiting_for_the_admin">En attendant que l\'administrateur accepte votre demande.</string>
@@ -92,5 +92,9 @@
     <string name="receive_notifications">Recevoir des notifications</string>
     <string name="receive_calls">Recevoir des appels</string>
     <string name="your_options">Vos options</string>
+    <string name="change_language">Changer la langue</string>
+    <string name="subscribe_to_notification">S\'abonner à la notification</string>
+    <string name="subscribe">S\'abonner</string>
+    <string name="open_door">Open Door</string>
 
 </resources>

@@ -99,4 +99,7 @@
     <string name="change_language">Change language</string>
     <string name="subscribe_to_notification">Subscribe to Notification</string>
     <string name="subscribe">Subscribe</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="open_door">Open Door</string>
 </resources>

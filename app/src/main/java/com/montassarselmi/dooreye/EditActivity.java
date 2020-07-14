@@ -44,7 +44,7 @@ import java.io.IOException;
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static com.montassarselmi.dooreye.FamilyActivity.changeStatusBarToWhite;
+import static com.montassarselmi.dooreye.MainActivity.changeStatusBarToWhite;
 
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
     private static  final  String TAG = EditText.class.getSimpleName();

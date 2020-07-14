@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/dashboard"
-            android:textColor="#5E5E5E"
             android:textSize="24dp" />
 
         <View
@@ -45,7 +44,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
         android:text="@string/bring_your_home_into_your_phone"
-        android:textColor="#5E5E5E"
         android:textSize="18dp" />
 
 
@@ -53,7 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp">
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,8 +71,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_mediumitalic"
                     android:text="@string/welcome_back"
-                    android:textColor="#ffff"
-                    android:textSize="18dp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:id="@+id/txt_user_name"
                     android:text="Android Developer"
-                    android:textColor="#ffff"
+                    android:textColor="@android:color/white"
                     android:textSize="24dp" />
             </LinearLayout>
             <RelativeLayout
@@ -119,8 +119,8 @@
                     android:layout_toLeftOf="@id/switch_notification"
                     android:fontFamily="@font/roboto_medium"
                     android:text="@string/receive_notifications"
-                    android:textColor="#ffff"
-                    android:textSize="18dp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
@@ -142,8 +142,8 @@
                     android:text="@string/receive_calls"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
-                    android:textColor="#ffff"
-                    android:textSize="18dp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
@@ -154,7 +154,34 @@
             </RelativeLayout>
 
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_open_door"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                app:lottie_progress="0"
+                app:lottie_rawRes="@raw/open_door1"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_open_door"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/open_door"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
 
+                />
+            </LinearLayout>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
 
@@ -170,7 +197,6 @@
             android:layout_gravity="center"
             android:fontFamily="@font/roboto_medium"
             android:text="@string/your_options"
-            android:textColor="#5E5E5E"
             android:textSize="18dp" />
 
         <View
@@ -210,8 +236,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/event_nhistory"
-                    android:textColor="#5E5E5E"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -247,8 +272,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/check_front_ndoor"
-                    android:textColor="#5E5E5E"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -290,8 +314,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/family_partners"
-                    android:textColor="#5E5E5E"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -326,8 +349,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/settings"
-                    android:textColor="#5E5E5E"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="47dp"
@@ -371,8 +393,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/contact_us"
-                    android:textColor="#5E5E5E"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -406,8 +427,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/logout"
-                    android:textColor="#5E5E5E"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="50dp"

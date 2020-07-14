@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="46dp"
+    android:theme="@style/Theme.AppCompat.DayNight"
     android:orientation="horizontal">
 
     <ImageView
@@ -19,6 +20,5 @@
         android:id="@+id/action_bar_title"
         android:textStyle="bold"
         android:text="@string/event_history"
-        android:textColor="@color/ColorTextGris"
         android:textSize="20sp"/>
 </LinearLayout>

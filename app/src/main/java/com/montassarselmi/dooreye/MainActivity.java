@@ -2,7 +2,6 @@ package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
@@ -11,14 +10,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import com.montassarselmi.dooreye.Model.EventHistory;
 import com.montassarselmi.dooreye.Services.ForegroundCallService;
 
 import com.squareup.picasso.Picasso;
@@ -257,14 +253,14 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-    @Override
+  /*  @Override
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "onRestart: ");
         Intent refresh = new Intent(this, MainActivity.class);
         startActivity(refresh);//Start the same Activity
         finish(); //finish Activity.
-    }
+    }*/
 
     @Override
     protected void onStop() {
@@ -297,6 +293,8 @@ public class MainActivity extends AppCompatActivity{
         Log.d(TAG, "onCheckFrontDoorClicked");
         Toast.makeText(this, "onCheckFrontDoorClicked", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, CheckFrontDoorActivity.class));
+        finish();
+
     }
 
     public void onFamilyClicked(View view) {
@@ -308,7 +306,7 @@ public class MainActivity extends AppCompatActivity{
     public void onSettingsClicked(View view) {
         Log.d(TAG, "onSettingsClicked ");
         Toast.makeText(this, "onSettingsClicked ", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(MainActivity.this, IncommingMessage.class));
+        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
     }
 
     public void onContactUsClicked(View view) {

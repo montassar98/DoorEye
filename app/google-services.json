@@ -8,12 +8,49 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:11583270716:android:02cc258e9377eb25c3f839",
+        "android_client_info": {
+          "package_name": "com.mag_solutions.dooreyebox1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11583270716-fo7kqg2qfc2nat3pu6ti7cnfpqeu42g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2o5ZG7O2eTqPxUj_b3Thne551Tjg3eyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "11583270716-fo7kqg2qfc2nat3pu6ti7cnfpqeu42g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:11583270716:android:1061a53fdc9d58d3c3f839",
         "android_client_info": {
           "package_name": "com.montassarselmi.dooreye"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "11583270716-gvv8qkh2g0ivk5fvcse83nid8m8fe7ar.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.montassarselmi.dooreye",
+            "certificate_hash": "7c55a7687158c01a383f8472fe6dc607446983fd"
+          }
+        },
         {
           "client_id": "11583270716-964qci9n86u5f8to6fc1h3j96ipb8efv.apps.googleusercontent.com",
           "client_type": 1,

@@ -38,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 import com.montassarselmi.dooreye.Model.Live;
 import com.montassarselmi.dooreye.Model.Ring;
 
+import com.montassarselmi.dooreye.Utils.CustomProgress;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
@@ -92,6 +93,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     private DatabaseReference instantImagePathRef;
     public static boolean isActivityRunning;
 
+    private CustomProgress  mProgressDialog = CustomProgress.getInstance();
 
 
     private View main;
@@ -125,8 +127,11 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         name = mSharedPreferences.getString("USERNAME", "Null");
 
         findViewById(R.id.btn_end_video_call).setOnClickListener(this);
+        findViewById(R.id.btn_end_video_call).setVisibility(View.GONE);
+        mPublisherViewContainer.setVisibility(View.GONE);
         if (mPublisher !=null){mPublisher.destroy();}
         if (mSubscriber !=null){mSubscriber.destroy();}
+        mProgressDialog.showProgress(this, "Waiting For The Connection", false);
     }
 
 
@@ -220,6 +225,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         }
 
         mSession.publish(mPublisher);
+
     }
 
     @Override
@@ -243,6 +249,10 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
             else
             createRingHistory();
 
+
+            mProgressDialog.hideProgress();
+            findViewById(R.id.btn_end_video_call).setVisibility(View.VISIBLE);
+            mPublisherViewContainer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -310,7 +320,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
 
     @Override
     public void onError(PublisherKit publisherKit, OpentokError opentokError) {
-
+        Log.d(LOG_TAG, "onError: " + opentokError.getMessage());
     }
 
     @Override

@@ -38,6 +38,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
     private SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
     public static boolean isActivityRunning;
+    public static boolean noPickUp = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,14 +87,19 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void checkIfSomeonePickedUp()
     {
+
+        Log.d(TAG, "checkIfSomeonePickedUp: ");
         // close the calling activity when someone else has picked up the call.
         userInfoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChild("Ringing") && !dataSnapshot.hasChild("pickup"))
+                Log.d(TAG, "checkIfSomeonePickedUp data: "+ dataSnapshot.toString());
+                if (!dataSnapshot.hasChild("Ringing") && !dataSnapshot.hasChild("pickup") && noPickUp)
                 {
+                    Log.d(TAG, "checkIfSomeonePickedUp data: no ringing no pickup");
                     startActivity(new Intent(CallingActivity.this, MainActivity.class));
                     finish();
+                    noPickUp = false;
                 }
             }
 
@@ -143,7 +149,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild("Calling")) {
-                    userBoxRef.child("Calling").child(mAuth.getUid()).removeValue();
+                    userBoxRef.child("Calling").child(mAuth.getCurrentUser().getUid()).removeValue();
                 }
             }
 

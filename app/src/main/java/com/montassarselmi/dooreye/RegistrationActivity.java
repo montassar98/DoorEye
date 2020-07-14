@@ -45,8 +45,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
 import com.montassarselmi.dooreye.Model.User;
 
-import org.imaginativeworld.oopsnointernet.ConnectionCallback;
-import org.imaginativeworld.oopsnointernet.NoInternetDialog;
 
 import java.util.concurrent.TimeUnit;
 

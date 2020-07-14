@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".IncommingMessage">
+        <activity android:name=".SettingsActivity">
         </activity>
         <activity android:name=".EventHistoryActivity" />
         <activity android:name=".CheckFrontDoorActivity" />

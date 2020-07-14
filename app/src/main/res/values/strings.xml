@@ -23,7 +23,7 @@
     <string name="family_partners">Family &amp;\nPartners</string>
     <string name="contact_us">Contact\nUs</string>
     <string name="empty_fullname">Please enter your name here</string>
-    <string name="empty_email">Please enter your mail here</string>
+    <string name="empty_email">Please enter your email here</string>
     <string name="empty_boxId">Please enter your box id here</string>
     <string name="empty_message">Please enter your message here</string>
     <string name="error_email">Please enter your real email</string>
@@ -96,4 +96,7 @@
     <string name="channel_description" translatable="false">com.montassarselmi.dooreye.channel_description</string>
     <string name="default_notification_channel_id" translatable="false">com.montassarselmi.dooreye.default_notification_channel_id</string>
     <string name="default_notification_channel_name" translatable="false">com.montassarselmi.dooreye.default_notification_channel_name</string>
+    <string name="change_language">Change language</string>
+    <string name="subscribe_to_notification">Subscribe to Notification</string>
+    <string name="subscribe">Subscribe</string>
 </resources>

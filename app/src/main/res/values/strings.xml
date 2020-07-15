@@ -102,4 +102,7 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="save_changes">Save Changes</string>
     <string name="open_door">Open Door</string>
+    <string name="waiting_for_connection">Waiting For The Connection</string>
+    <string name="door_opened">Door Opened</string>
+    <string name="door_closed">Door Closed</string>
 </resources>

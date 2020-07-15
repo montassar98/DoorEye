@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
-        mDoorRef =database.getReference("BoxList").child(findBoxId()).child("door");
+        mDoorRef =database.getReference("BoxList").child(findBoxId()).child("hardware").child("door");
         //-------------------------------------------------------
         //get current user info
         userName = (TextView) findViewById(R.id.txt_user_name);
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity{
         boxId = findBoxId();
 
         lottieOpenDoor.setOnClickListener(v -> {
-            Toast.makeText(this, "Door Opened", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.door_opened), Toast.LENGTH_LONG).show();
             if (isAnimated)
                 lottieOpenDoor.reverseAnimationSpeed();
             lottieOpenDoor.playAnimation();
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity{
                 lottieOpenDoor.playAnimation();
                 isAnimated = true;
                 lottieOpenDoor.setEnabled(true);
-                Toast.makeText(this, "Door Closed", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.door_closed), Toast.LENGTH_LONG).show();
             },5 * 1000);
             lottieOpenDoor.setEnabled(false);
 

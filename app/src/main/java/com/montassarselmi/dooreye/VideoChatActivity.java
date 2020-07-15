@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.opentok.android.Stream;
@@ -69,7 +70,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
     private FirebaseDatabase database;
-    private DatabaseReference userInfoRef,userBoxRef, boxHistoryRef;
+    private DatabaseReference userInfoRef,userBoxRef, boxHistoryRef, mDoorsRef;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private boolean isLive = false;
@@ -105,7 +106,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         userInfoRef = database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"))
                 .child("users").child(mAuth.getUid());
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
-        DatabaseReference mDoorRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null")).child("door");
+        mDoorsRef =userBoxRef.child("hardware").child("door");
         boxHistoryRef = database.getReference("BoxList/"+mSharedPreferences.getString("BOX_ID","Null")+"/history/");
         instantImagePathRef = database.getReference().child("BoxList")
                 .child(mSharedPreferences.getString("BOX_ID","Null")).child("history").child("instantImagePath");
@@ -126,8 +127,9 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         toggleVideo.setVisibility(View.GONE);
 
         toggleDoorState.setOnClickListener(view -> {
-                mDoorRef.setValue(1);
-                toggleDoorState.setEnabled(false);
+            mDoorsRef.setValue(1);
+            Toast.makeText(this, getResources().getString(R.string.door_opened), Toast.LENGTH_LONG).show();
+            toggleDoorState.setEnabled(false);
         });
         toggleSoundState.setOnClickListener(view -> {
             if (!isMuted)
@@ -151,7 +153,7 @@ public class VideoChatActivity extends AppCompatActivity implements Session.Sess
         mPublisherViewContainer.setVisibility(View.GONE);
         if (mPublisher !=null){mPublisher.destroy();}
         if (mSubscriber !=null){mSubscriber.destroy();}
-        mProgressDialog.showProgress(this, "Waiting For The Connection", false);
+        mProgressDialog.showProgress(this, getResources().getString(R.string.waiting_for_connection), false);
     }
 
 

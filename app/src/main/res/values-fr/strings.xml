@@ -95,6 +95,11 @@
     <string name="change_language">Changer la langue</string>
     <string name="subscribe_to_notification">S\'abonner à la notification</string>
     <string name="subscribe">S\'abonner</string>
-    <string name="open_door">Open Door</string>
+    <string name="dark_mode">Mode nuit</string>
+    <string name="save_changes">Enregistrer</string>
+    <string name="open_door">Ouvrir la porte</string>
+    <string name="waiting_for_connection">En attente de la connexion</string>
+    <string name="door_opened">Porte ouverte</string>
+    <string name="door_closed">Porte fermée</string>
 
 </resources>

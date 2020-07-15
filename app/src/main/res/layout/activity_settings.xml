@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".SettingsActivity">
-    <include layout="@layout/appbar_settings" android:id="@+id/appbar"/>
 
-    <RelativeLayout
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/appbar_settings" android:id="@+id/appbar"/>
+
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_margin="15dp"
         android:layout_height="70dp">
@@ -144,4 +148,5 @@
         android:text="@string/save_changes"
         android:textColor="@android:color/white"
         android:onClick="onSaveChangesClicked"/>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -96,5 +96,10 @@
     <string name="change_language">تغيير اللغة</string>
     <string name="subscribe_to_notification">اشترك في الإشعارات</string>
     <string name="subscribe">اشترك</string>
-    <string name="open_door">Open Door</string>
+    <string name="dark_mode">الوضع المظلم</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="open_door">افتح الباب</string>
+    <string name="waiting_for_connection">في انتظار الاتصال</string>
+    <string name="door_opened">تم فتح الباب</string>
+    <string name="door_closed">الباب مغلق</string>
 </resources>

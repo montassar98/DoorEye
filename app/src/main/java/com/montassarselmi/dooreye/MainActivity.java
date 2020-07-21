@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity{
                 Log.d(TAG, "onDataChange: data "+ dataSnapshot.getValue());
                     if (dataSnapshot.child(mAuth.getUid()).hasChild("Ringing") && dataSnapshot.child(mAuth.getUid()).hasChild("pickup")) {
                         if (dataSnapshot.child(mAuth.getUid()).child("pickup").getValue().equals(false)) {
-                            Log.d(TAG, " user have a call");
+                            Log.d(TAG, "onDataChange: data user have a call");
                             Toast.makeText(MainActivity.this, getResources().getString(R.string.uset_have_call), Toast.LENGTH_LONG).show();
                             startActivity(new Intent(MainActivity.this, CallingActivity.class));
                             finish();

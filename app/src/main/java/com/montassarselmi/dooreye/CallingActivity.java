@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +33,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
 
     private final String TAG="CallingActivity";
 
+    private MediaPlayer media;
     private ImageView imgEndCall, imgPickUpCall;
     private ImageView imgVisitor;
     private Animation animCall;
@@ -39,6 +44,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
     private FirebaseAuth mAuth;
     public static boolean isActivityRunning;
     public static boolean noPickUp = true;
+    private Ringtone r;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +71,14 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         userBoxRef=database.getReference("BoxList").child(mSharedPreferences.getString("BOX_ID","Null"));
         checkVisitorImage();
         checkIfSomeonePickedUp();
+
+        Uri ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        r = RingtoneManager.getRingtone(getApplicationContext(), ringtone);
+        r.play();
+
+        noPickUp = true;
+
+
     }
 
     private void checkVisitorImage() {
@@ -93,7 +107,7 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
         userInfoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "checkIfSomeonePickedUp data: "+ dataSnapshot.toString());
+                Log.d(TAG, "checkIfSomeonePickedUp data: "+ dataSnapshot.toString() + noPickUp);
                 if (!dataSnapshot.hasChild("Ringing") && !dataSnapshot.hasChild("pickup") && noPickUp)
                 {
                     Log.d(TAG, "checkIfSomeonePickedUp data: no ringing no pickup");
@@ -200,6 +214,9 @@ public class CallingActivity extends AppCompatActivity implements View.OnClickLi
     protected void onPause() {
         super.onPause();
         isActivityRunning = false;
+        //media.stop();
+        r.stop();
+
     }
 
 }

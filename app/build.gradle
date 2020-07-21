@@ -67,7 +67,7 @@ dependencies {
 
 
     // FCM Notification
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.3'
 
     //nice spinner
     implementation 'com.github.arcadefire:nice-spinner:1.4.4'

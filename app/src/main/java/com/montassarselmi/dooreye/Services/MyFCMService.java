@@ -43,28 +43,31 @@ public class MyFCMService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, "onMessageReceived: " +remoteMessage.toString());
-        if (remoteMessage.getNotification() != null){
-            Log.d(TAG, "notification title: " +remoteMessage.getNotification().getTitle());
-            Log.d(TAG, "notification body: " +remoteMessage.getNotification().getBody());
-            Log.d(TAG, "channel id: " +remoteMessage.getNotification().getChannelId());
-            sendNotification(remoteMessage.getNotification().getBody());
-            sendChatMessageNotification("title","body");
+            /**
+             *         if (remoteMessage.getNotification() != null){
+             *             Log.d(TAG, "notification title: " +remoteMessage.getNotification().getTitle());
+             *             Log.d(TAG, "notification body: " +remoteMessage.getNotification().getBody());
+             *             Log.d(TAG, "channel id: " +remoteMessage.getNotification().getChannelId());
+             *             sendNotification(remoteMessage.getNotification().getBody());
+             *             sendChatMessageNotification("title","body");
+             *
+             *
+             *             if (!remoteMessage.getNotification().getBody().equals("null")){
+             *                 Log.d(TAG, "user receive a call. ");
+             *                 //TODO code for receiving a call
+             *                 basicNotification("Call From Home",remoteMessage.getNotification().getBody());
+             *                 sendBroadcastNotification("Call From Home",remoteMessage.getNotification().getBody());
+             *                 sendNotification(remoteMessage.getNotification().getBody());
+             *                 sendChatMessageNotification("title","body");
+             *
+             *             }else {
+             *                 Log.d(TAG, "the call ended.");
+             *                 //TODO code for receiving a call
+             *
+             *             }
+             *         }
+             * */
 
-
-            if (!remoteMessage.getNotification().getBody().equals("null")){
-                Log.d(TAG, "user receive a call. ");
-                //TODO code for receiving a call
-                basicNotification("Call From Home",remoteMessage.getNotification().getBody());
-                sendBroadcastNotification("Call From Home",remoteMessage.getNotification().getBody());
-                sendNotification(remoteMessage.getNotification().getBody());
-                sendChatMessageNotification("title","body");
-
-            }else {
-                Log.d(TAG, "the call ended.");
-                //TODO code for receiving a call
-
-            }
-        }
         if (remoteMessage.getData().size() > 0){
             Log.d(TAG, "Message Data payload: "+ remoteMessage.getData());
             if (isApplicationInForeground()){
@@ -73,6 +76,7 @@ public class MyFCMService extends FirebaseMessagingService {
                 sendBroadcastNotification(title, body);
                 sendNotification1(title, body);
                 sendChatMessageNotification(title,body);
+                //MainActivity.startService(getApplicationContext());
 
             }
             //status: app in background or closed

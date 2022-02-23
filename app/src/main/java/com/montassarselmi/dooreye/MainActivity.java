@@ -1,6 +1,7 @@
 package com.montassarselmi.dooreye;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.common.internal.FallbackServiceBroker;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity{
     private boolean isAnimated= false;
 
     private DatabaseReference mDoorRef;
+    private DatabaseReference mMotionsRef,mRingsRef, mLiveRef;
 
 
 
@@ -78,6 +81,10 @@ public class MainActivity extends AppCompatActivity{
         mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
         mDoorRef =database.getReference("BoxList").child(findBoxId()).child("hardware").child("door");
+
+        mLiveRef =database.getReference("BoxList").child(findBoxId()).child("history").child("live");
+        mMotionsRef =database.getReference("BoxList").child(findBoxId()).child("history").child("motions");
+        mRingsRef =database.getReference("BoxList").child(findBoxId()).child("history").child("rings");
         //-------------------------------------------------------
         //get current user info
         userName = (TextView) findViewById(R.id.txt_user_name);
@@ -110,6 +117,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
     }
+
 
 
 
@@ -197,10 +205,10 @@ public class MainActivity extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
-       // stopService();
+        stopService();
         IntentFilter filter = new IntentFilter();
         isActivityRunning = true;
-
+        notificationHandler();
     }
 
 
@@ -314,13 +322,13 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-       // startService();
+        startService();
         Log.d(TAG, "onStop: ");
         isActivityRunning = false;
 
     }
 
-    public void startService() {
+    public  void startService() {
         //if deleteSharedPreferences()
         Intent serviceIntent = new Intent(this, ForegroundCallService.class);
         serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
@@ -375,4 +383,94 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    private void notificationHandler(){
+        //=== this event created to handle the live checks history notification
+        mLiveRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "notificationHandler onChildAdded-> Live : "+snapshot.toString());
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //=== this event created to handle the motions history notification
+        mMotionsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "notificationHandler onChildAdded-> Motions : "+snapshot.toString());
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //=== this event created to handle the rings history notification
+        mRingsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "notificationHandler onChildAdded-> Ring : "+snapshot.toString());
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
 }

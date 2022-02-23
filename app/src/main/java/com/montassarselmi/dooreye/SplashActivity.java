@@ -3,7 +3,9 @@ package com.montassarselmi.dooreye;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +22,8 @@ public class SplashActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     public static boolean isActivityRunning;
 
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,9 @@ public class SplashActivity extends AppCompatActivity {
         //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_splash);
 
-
+        mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
+        SettingsActivity.setAppLanguage(this,mSharedPreferences.getString("LAN_SEL", "en"));
 
         //===========/Hide Status Bar/===========
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

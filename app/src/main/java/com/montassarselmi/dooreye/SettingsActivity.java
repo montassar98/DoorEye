@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -31,10 +34,11 @@ public class SettingsActivity extends AppCompatActivity implements OnSpinnerItem
 
     private String itemSelected = "en";
 
-    private static int languagePosSelected = 0;
+    public static int languagePosSelected = 0;
     private static boolean nightModeEnabled = false;
 
-
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,8 @@ public class SettingsActivity extends AppCompatActivity implements OnSpinnerItem
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_edit);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+        mSharedPreferences = getBaseContext().getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -86,10 +92,12 @@ public class SettingsActivity extends AppCompatActivity implements OnSpinnerItem
             switchNightMode.setChecked(false);
         }
 
-        switchNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                nightModeEnabled = isChecked;
+        switchNightMode.setOnCheckedChangeListener((buttonView, isChecked) ->{
+            if (isChecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
             }
         });
 
@@ -102,7 +110,7 @@ public class SettingsActivity extends AppCompatActivity implements OnSpinnerItem
 
     }
 
-    private void setAppLanguage(String languageSelected){
+    public static void setAppLanguage(Activity activity, String languageSelected){
         switch (languageSelected){
             case "English":
                 languageSelected = "en";
@@ -117,7 +125,7 @@ public class SettingsActivity extends AppCompatActivity implements OnSpinnerItem
                 languagePosSelected = 2;
                 break;
         }
-        Resources res = getResources();
+        Resources res = activity.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
         config.setLocale(new Locale(languageSelected.toLowerCase()));
@@ -125,14 +133,11 @@ public class SettingsActivity extends AppCompatActivity implements OnSpinnerItem
     }
 
     public void onSaveChangesClicked(View view) {
-        setAppLanguage(itemSelected);
+        editor.putString("LAN_SEL", itemSelected);
+        editor.apply();
+        setAppLanguage(this, itemSelected);
 
-        if (nightModeEnabled){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        }
 
 
         startActivity(new Intent(this, MainActivity.class));
